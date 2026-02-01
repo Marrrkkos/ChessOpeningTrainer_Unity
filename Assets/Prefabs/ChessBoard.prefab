@@ -51,6 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DrawOnBoard
   board: {fileID: 2322110258127106414}
   arrow: {fileID: 5633712200503528934}
+  boardScaler: {fileID: 0}
 --- !u!1 &4144213972774211881
 GameObject:
   m_ObjectHideFlags: 0
@@ -61,6 +62,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3763251025850896969}
   - component: {fileID: 2322110258127106414}
+  - component: {fileID: 6935328135591874447}
   m_Layer: 5
   m_Name: ChessBoard
   m_TagString: Untagged
@@ -107,9 +109,8 @@ MonoBehaviour:
     result: 0
     moves: []
     simpleMovesIndex: 0
-  opening: {fileID: 0}
   rotation: 1
-  drawOnBoard: {fileID: 0}
+  drawOnBoard: {fileID: 9222936849459583732}
   fields:
   - {fileID: 8096835297803764998}
   - {fileID: 3526475942403408347}
@@ -176,6 +177,20 @@ MonoBehaviour:
   - {fileID: 4596222773274610324}
   - {fileID: 3674037951204690252}
   pieceSet: {fileID: 0}
+--- !u!114 &6935328135591874447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4144213972774211881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bec0c69db1683847a1864f74b01b478, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BoardScaler
+  board: {fileID: 3763251025850896969}
+  cellSize: 0
 --- !u!1 &7963422784807953746
 GameObject:
   m_ObjectHideFlags: 0

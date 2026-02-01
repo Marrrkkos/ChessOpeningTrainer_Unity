@@ -3,17 +3,25 @@ using UnityEngine.UI;
 
 public class OpeningCreator : MonoBehaviour
 {
-    Board board;
-    public Image color;
-    
+    public Board board;
+    public BoardScaler boardScaler;
+    public Image colorImage;
 
-    public void switchColor() { 
-        
+    private bool colorToggle = true;
+    public void switchColor() {
+        if (colorToggle)
+        {
+            colorImage.color = Color.brown;
+        }
+        else {
+            colorImage.color = Color.white;
+        }
+        boardScaler.rotate();
     }
+
 
     public void createOpening() { 
     
     }
-
 
 }
