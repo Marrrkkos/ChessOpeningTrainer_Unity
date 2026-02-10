@@ -43,7 +43,7 @@ public class King : Piece
         {
             for (int x = -1; x <= 1; x++)
             {
-                if (x == 0 && y == 0) continue; // Das eigene Feld überspringen
+                if (x == 0 && y == 0) continue; // Das eigene Feld ï¿½berspringen
 
                 int targetRow = currentRow + y;
                 int targetCol = currentCol + x;
@@ -118,7 +118,7 @@ public class King : Piece
 
             // ADD MOVE TO GAME
             Move move = new Move(currentPos, finalPos, this, null, specialRule, this.hasMoved, false, false);
-            game.moves.Add(move);
+            game.playedMoves.Add(move);
             
             // SET HAS MOVED
             this.hasMoved = true;
@@ -142,7 +142,7 @@ public class King : Piece
 
             // ADD MOVE TO GAME
             Move move = new Move(currentPos, finalPos, this, null, specialRule, this.hasMoved, false, false);
-            game.moves.Add(move);
+            game.playedMoves.Add(move);
 
             // SET HAS MOVED
             this.hasMoved = true;
@@ -156,9 +156,9 @@ public class King : Piece
     {
         Game game = this.board.currentGame;
 
-        if (game.moves.Count == 0) return null;
+        if (game.playedMoves.Count == 0) return null;
         
-        Move move = game.moves[game.moves.Count - 1];
+        Move move = game.playedMoves[game.playedMoves.Count - 1];
 
         if (move.specialRule == 1) {
 
@@ -173,7 +173,7 @@ public class King : Piece
             this.position = move.from;
 
             // UNDO MOVE IN GAME
-            game.moves.RemoveAt(game.moves.Count - 1);
+            game.playedMoves.RemoveAt(game.playedMoves.Count - 1);
 
             // UNDO HASMOVED
             hasMoved = move.oldHasMoved;
@@ -192,7 +192,7 @@ public class King : Piece
             this.board.fields[move.from - 4].piece.position = move.from - 4;
             this.position = move.from;
             // UNDO MOVE IN GAME
-            game.moves.RemoveAt(game.moves.Count - 1);
+            game.playedMoves.RemoveAt(game.playedMoves.Count - 1);
 
             // UNDO HASMOVED
             hasMoved = move.oldHasMoved;

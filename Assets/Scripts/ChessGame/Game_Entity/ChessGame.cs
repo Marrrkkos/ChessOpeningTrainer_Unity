@@ -17,11 +17,11 @@ public class Game
         public string san;
     }
 
-    public List<Move> moves = new List<Move>();
+    public List<Move> playedMoves = new List<Move>();
     public List<SimpleMove> movesMemory = new List<SimpleMove>();
 
-    public int simpleMovesIndex = 0;
-    public List<SimpleMove> simpleMoves = new List<SimpleMove>();
+    public int loadedGameMovesIndex = 0;
+    public List<SimpleMove> loadedGame = new List<SimpleMove>();
     public Game(Player[] players) {
         this.players = players;
     }

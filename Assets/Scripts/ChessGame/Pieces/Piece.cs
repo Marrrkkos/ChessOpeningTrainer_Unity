@@ -58,7 +58,7 @@ public abstract class Piece
         }
         Move move = new Move(currentPos, finalPos, this, capturedPiece, 0, this.hasMoved, false, false);
         // ADD MOVE TO GAME
-        game.moves.Add(move);
+        game.playedMoves.Add(move);
 
 
         //SET HASMOVED
@@ -69,9 +69,9 @@ public abstract class Piece
     }
     public Move undoMove(bool refreshGUI) {
         Game game = this.board.currentGame;
-        if (game.moves.Count == 0) return null;
+        if (game.playedMoves.Count == 0) return null;
 
-        Move move = game.moves[game.moves.Count - 1];
+        Move move = game.playedMoves[game.playedMoves.Count - 1];
 
         if (move.specialRule != 0)
         {
@@ -79,7 +79,7 @@ public abstract class Piece
         }
 
         // UNDO MOVE IN GAME
-        game.moves.RemoveAt(game.moves.Count - 1);
+        game.playedMoves.RemoveAt(game.playedMoves.Count - 1);
 
         // UNDO PIECES IN BOARD
         this.board.fields[move.from].setPiece(this, refreshGUI);

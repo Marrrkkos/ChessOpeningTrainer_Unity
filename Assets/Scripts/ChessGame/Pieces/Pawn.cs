@@ -30,7 +30,7 @@ public class Pawn : Piece
     public List<Vector2Int> getPossibleMoves()
     {
         bool rotation = this.board.rotation;
-        List<Move> currentMoves = this.board.currentGame.moves;
+        List<Move> currentMoves = this.board.currentGame.playedMoves;
 
         List<Vector2Int> possibleMoves = new List<Vector2Int>();
 
@@ -155,7 +155,7 @@ public class Pawn : Piece
 
             // ADD MOVE TO GAME
             Move move = new Move (currentPos, finalPos, this, capturedPiece, specialRule, this.hasMoved, false, false);
-            game.moves.Add(move);
+            game.playedMoves.Add(move);
             return move; 
         }
 
@@ -198,7 +198,7 @@ public class Pawn : Piece
 
             Move move = new Move(currentPos, finalPos, this, capturedPiece, specialRule, this.hasMoved, false, false);
             // ADD MOVE TO GAME
-            game.moves.Add(move);
+            game.playedMoves.Add(move);
             return move;
         }
 
@@ -210,10 +210,10 @@ public class Pawn : Piece
     {
         Game game = this.board.currentGame;
 
-        if (game.moves.Count == 0) return null;
+        if (game.playedMoves.Count == 0) return null;
 
 
-        Move move = game.moves[game.moves.Count - 1];
+        Move move = game.playedMoves[game.playedMoves.Count - 1];
 
         if (move.specialRule == 3)
         {
@@ -241,7 +241,7 @@ public class Pawn : Piece
         }
 
         hasMoved = move.oldHasMoved;
-        game.moves.RemoveAt(game.moves.Count - 1);
+        game.playedMoves.RemoveAt(game.playedMoves.Count - 1);
 
         this.position = move.from;
         if (move.capturedPiece != null)

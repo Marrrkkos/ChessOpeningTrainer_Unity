@@ -51,7 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DrawOnBoard
   board: {fileID: 2322110258127106414}
   arrow: {fileID: 5633712200503528934}
-  boardScaler: {fileID: 0}
+  boardScaler: {fileID: 6935328135591874447}
 --- !u!1 &4144213972774211881
 GameObject:
   m_ObjectHideFlags: 0

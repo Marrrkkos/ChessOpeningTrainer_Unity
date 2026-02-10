@@ -220,7 +220,7 @@ public class Tests : MonoBehaviour
     {
 
 
-        int x = board.currentGame.moves.Count;
+        int x = board.currentGame.playedMoves.Count;
 
         //Debug.Log(name + "\n");
         //System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();

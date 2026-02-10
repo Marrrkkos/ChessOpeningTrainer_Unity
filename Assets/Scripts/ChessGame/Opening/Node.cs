@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Node
 {
     public Move move;
@@ -10,7 +11,10 @@ public class Node
         this.move = move;
         this.children = new List<Node>();
     }
-
+    public Node()
+    {
+        this.children = new List<Node>();
+    }
     public void addChild(Node node) {
         children.Add(node);
     }

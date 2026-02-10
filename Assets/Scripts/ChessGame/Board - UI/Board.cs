@@ -73,8 +73,8 @@ public class Board : MonoBehaviour
         currentGame = new Game(new Player[] { new Player("Player 1", 0, true), new Player("Player 2", 0, false) });
     }
     public bool undoMove(bool refreshGUI) {
-        if (currentGame.moves.Count == 0) { return false;}
-        Piece piece = currentGame.moves[currentGame.moves.Count - 1].movedPiece;
+        if (currentGame.playedMoves.Count == 0) { return false;}
+        Piece piece = currentGame.playedMoves[currentGame.playedMoves.Count - 1].movedPiece;
         piece.undoMove(refreshGUI);
         nextTurn(refreshGUI);
         return true;
@@ -85,7 +85,7 @@ public class Board : MonoBehaviour
     }
 
     public bool doSANMove(string san, bool refreshGUI) {
-        return doSimpleMove(BoardUtil.SANToMove(this, san, currentGame.players[currentGame.currentPlayer].color, true), refreshGUI);
+        return doSimpleMove(SAN_Handler.SANToMove(this, san, currentGame.players[currentGame.currentPlayer].color, true), refreshGUI);
     }
     public bool doMove(int specialRule, string m1, string m2, bool refreshGUI)
     {
@@ -107,7 +107,7 @@ public class Board : MonoBehaviour
         
         move.check = GameRules.checkOchecks(this, !piece.color);
         move.checkMate = GameRules.checkCheckMate(this, !piece.color);
-        move.san = BoardUtil.MoveToSAN(this, move);
+        move.san = SAN_Handler.MoveToSAN(this, move);
         nextTurn(refreshGUI);
         return true;
     }
@@ -161,7 +161,7 @@ public class Board : MonoBehaviour
         whiteKing = null;
         blackKing = null;
 
-        currentGame.moves.Clear();
+        currentGame.playedMoves.Clear();
         //Pawns
         for (int i = 0; i < 8; i++)
         {
@@ -202,10 +202,6 @@ public class Board : MonoBehaviour
 
         currentGame.currentPlayer = 0;
     }
-    private string GetShortName(Piece p)
-    {
-        return p.GetType().Name.Substring(0, 1).ToUpper();
-    }
 
     // HELPER FUNCTIONS
     public int getID(string fieldName) {
@@ -240,33 +236,10 @@ public class Board : MonoBehaviour
             numberIndex = id % 8;
         }
 
-        // Umwandlung der Zahlen (0-7) zurück in Zeichen ('a'-'h' und '1'-'8')
+        // Umwandlung der Zahlen (0-7) zurï¿½ck in Zeichen ('a'-'h' und '1'-'8')
         char letter = (char)('a' + letterIndex);
         char number = (char)('1' + numberIndex);
 
         return $"{letter}{number}";
-    }
-
-
-
-
-    // DEBUG
-
-
-
-
-
-
-
-    public void checkSynchro() {
-        for (int i = 0; i < 64; i++)
-        {
-            if(fields[i].piece != null){
-
-                if (i != fields[i].piece.position) {
-                    Debug.Log("SYNCHROERROR    -   DU ARRRRSSSCHHHHHHLLLOOOOOCCCCHHHHHHHHHHH");
-                }
-            } 
-        }
     }
 }

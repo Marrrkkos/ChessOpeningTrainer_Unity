@@ -13,6 +13,10 @@ public class GameManager : MonoBehaviour
 
     [Header("DataBases")]
     public PieceSetDataBase pieceSetData;
+
+    public List <Opening> openings = new List<Opening>();
+
+    public SnapPreview snapPreview;
     //SingleTon
     void Awake() {
         if (instance == null)

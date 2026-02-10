@@ -89,14 +89,13 @@ public class pgn_converter : MonoBehaviour
         foreach (string move in moves) {
 
             //Debug.Log(BoardUtil.SANToMove(board, move, color, true).from + " " + BoardUtil.SANToMove(board, move, color, true).to);
-            Game.SimpleMove sm = BoardUtil.SANToMove(board, move, color, board.rotation);
-            game.simpleMoves.Add(sm);
+            Game.SimpleMove sm = SAN_Handler.SANToMove(board, move, color, board.rotation);
+            game.loadedGame.Add(sm);
             board.doSimpleMove(sm, false);
             color = !color;
             count++;
             Debug.Log(count);
         }
-        game.simpleMovesIndex = 0;
         game.result = result;
         GameManager.instance.gameDataBase.Add(game);
     }

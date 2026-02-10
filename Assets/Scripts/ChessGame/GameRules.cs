@@ -5,7 +5,6 @@ public class GameRules
 {
     public static List<Vector2Int> removeChecks(int currentPos, List<Vector2Int> currentPossibles, Board board)
     {
-        board.checkSynchro();
         List<Vector2Int> finalPossibles = new List<Vector2Int>();
         Piece currentPiece = board.fields[currentPos].piece;
 

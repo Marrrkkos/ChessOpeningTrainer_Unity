@@ -1,22 +1,14 @@
+using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Unity.VisualScripting;
 using UnityEngine;
-
-public class BoardUtil
+public class SAN_Handler
 {
+    
     private static readonly Regex SanPattern = new Regex(@"^([NBRQK])?([a-h])?([1-8])?(x)?([a-h][1-8])(=[NBRQ])?([+#])?$");
-
-    public static Vector2Int IndexToPos(int index) => new Vector2Int(index % 8, index / 8);
-    public static int PosToIndex(Vector2Int pos) => pos.y * 8 + pos.x;
-
-    public static bool IsOnBoard(Vector2Int pos)
-    {
-        return pos.x >= 0 && pos.x < 8 && pos.y >= 0 && pos.y < 8;
-    }
-
     public static string MoveToSAN(Board board, Move move)
     {
         int specialRule = move.specialRule;
@@ -25,14 +17,14 @@ public class BoardUtil
 
         string pieceChar = (move.movedPiece.pieceChar == 'P') ?  "" : move.movedPiece.pieceChar + "";
         string capture = (move.capturedPiece != null) ? "x" : "";
-        string targetSquare = GetSquareString(IndexToPos(move.to));
+        string targetSquare = GetSquareString(BoardUtil.IndexToPos(move.to));
         string promotion = GetPromotionString(specialRule);
         string check = GetCheckCondition(move.check, move.checkMate);
 
-        // Bei Bauernschlägen (z.B. exd5) muss die Startlinie angegeben werden
+        // Bei Bauernschlï¿½gen (z.B. exd5) muss die Startlinie angegeben werden
         if (move.movedPiece.id == 0 && move.capturedPiece != null)
         {
-            pieceChar = GetSquareString(IndexToPos(move.from))[0].ToString();
+            pieceChar = GetSquareString(BoardUtil.IndexToPos(move.from))[0].ToString();
         }
 
         string disambiguation = "";
@@ -50,22 +42,22 @@ public class BoardUtil
 
         if (san == "O-O" || san == "0-0")
         {
-            int fromIndex = PosToIndex(new Vector2Int(4, kingY));
-            int toIndex = PosToIndex(new Vector2Int(6, kingY));
+            int fromIndex = BoardUtil.PosToIndex(new Vector2Int(4, kingY));
+            int toIndex = BoardUtil.PosToIndex(new Vector2Int(6, kingY));
             return new Game.SimpleMove { from = fromIndex, to = toIndex, specialRule = 1 };
         }
         if (san == "O-O-O" || san == "0-0-0")
         {
             // e1 -> c1
-            int fromIndex = PosToIndex(new Vector2Int(4, kingY));
-            int toIndex = PosToIndex(new Vector2Int(2, kingY));
+            int fromIndex = BoardUtil.PosToIndex(new Vector2Int(4, kingY));
+            int toIndex = BoardUtil.PosToIndex(new Vector2Int(2, kingY));
             return new Game.SimpleMove { from = fromIndex, to = toIndex, specialRule = 2 };
         }
 
         Match match = SanPattern.Match(san);
         if (!match.Success)
         {
-            Debug.LogError($"Ungültiges SAN Format: {san}");
+            Debug.LogError($"Ungï¿½ltiges SAN Format: {san}");
             return default;
         }
 
@@ -86,7 +78,7 @@ public class BoardUtil
         {
             if (p.id != pieceID) continue;
 
-            Vector2Int currentPos = IndexToPos(p.position);
+            Vector2Int currentPos = BoardUtil.IndexToPos(p.position);
 
             if (!string.IsNullOrEmpty(fromFile) && GetFileChar(currentPos.x) != fromFile[0]) continue;
             if (!string.IsNullOrEmpty(fromRank) && GetRankChar(currentPos.y) != fromRank[0]) continue;
@@ -113,7 +105,7 @@ public class BoardUtil
 
         if (candidates.Count > 1)
         {
-            Debug.LogWarning($"Mehrdeutiger Zug '{san}'. Wähle {GetSquareString(IndexToPos(chosenPiece.position))}.");
+            Debug.LogWarning($"Mehrdeutiger Zug '{san}'. Wï¿½hle {GetSquareString(BoardUtil.IndexToPos(chosenPiece.position))}.");
         }
 
         return new Game.SimpleMove
@@ -123,12 +115,7 @@ public class BoardUtil
             specialRule = GetPromotionRuleID(promotionStr),
             san = san
         };
-    }
-
-
-
-
-    private static string GetDisambiguation(Board board, Move move)
+    }private static string GetDisambiguation(Board board, Move move)
     {
         List<Piece> allies = move.movedPiece.color ? board.whitePieces : board.blackPieces;
         List<Piece> competitors = new List<Piece>();
@@ -154,13 +141,13 @@ public class BoardUtil
 
         if (competitors.Count == 0) return "";
 
-        Vector2Int currentPos = IndexToPos(move.from);
+        Vector2Int currentPos = BoardUtil.IndexToPos(move.from);
         bool fileConflict = false;
         bool rankConflict = false;
 
         foreach (var comp in competitors)
         {
-            Vector2Int compPos = IndexToPos(comp.position);
+            Vector2Int compPos = BoardUtil.IndexToPos(comp.position);
             if (compPos.x == currentPos.x) fileConflict = true;
             if (compPos.y == currentPos.y) rankConflict = true;
         }
@@ -226,7 +213,6 @@ public class BoardUtil
             return (7 - file) * 8 + rank;
         }
     }
-
     private static string GetSquareString(Vector2Int pos)
     {
         return $"{GetFileChar(pos.x)}{GetRankChar(pos.y)}";

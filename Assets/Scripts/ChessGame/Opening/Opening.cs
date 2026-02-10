@@ -1,17 +1,22 @@
 using System.Linq;
 using System.Collections.Generic;
-
 using UnityEngine;
+using UnityEngine.UI;
 
+[System.Serializable]
 public class Opening
 {
-    private string color;
-    private string name;
+    public bool color;
+    public string name;
+    public Texture2D startPos;
     private Node rootNode;
-    public Opening(string name, string color, Node rootNode) {
+    public Opening(string name, bool color, Texture2D startPos, List<Move> moves) {
         this.color = color;
         this.name = name;
-        this.rootNode = rootNode;
+        this.rootNode = new Node();
+        this.startPos = startPos;
+
+        add(moves);
     }
 
 
