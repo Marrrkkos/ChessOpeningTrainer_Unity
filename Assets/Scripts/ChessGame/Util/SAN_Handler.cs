@@ -8,7 +8,7 @@ using UnityEngine;
 public class SAN_Handler
 {
     
-    private static readonly Regex SanPattern = new Regex(@"^([NBRQK])?([a-h])?([1-8])?(x)?([a-h][1-8])(=[NBRQ])?([+#])?$");
+    /*private static readonly Regex SanPattern = new Regex(@"^([NBRQK])?([a-h])?([1-8])?(x)?([a-h][1-8])(=[NBRQ])?([+#])?$");
     public static string MoveToSAN(Board board, Move move)
     {
         int specialRule = move.specialRule;
@@ -200,18 +200,13 @@ public class SAN_Handler
         return "";
     }
 
-    private static int ParseSquareToIndex(string square, bool rotation)
+    private static int ParseSquareToIndex(string square)
     {
         if (string.IsNullOrEmpty(square) || square.Length < 2) return 0;
         int file = square[0] - 'a';
         int rank = square[1] - '1';
-        if (rotation)
-        {
-            return (7 - rank) * 8 + file;
-        }
-        else {
-            return (7 - file) * 8 + rank;
-        }
+
+        return (7 - file) * 8 + rank;       // CHANGED!
     }
     private static string GetSquareString(Vector2Int pos)
     {
@@ -219,5 +214,5 @@ public class SAN_Handler
     }
 
     private static char GetFileChar(int x) => (char)('a' + x);
-    private static char GetRankChar(int y) => (char)('8' - y);
+    private static char GetRankChar(int y) => (char)('8' - y);*/
 }

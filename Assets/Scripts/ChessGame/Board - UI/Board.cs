@@ -81,22 +81,22 @@ public class Board : MonoBehaviour
     }
     public bool doSimpleMove(Game.SimpleMove simpleMove, bool refreshGUI) {
         //Debug.Log("specialrule: " + simpleMove.specialRule + " field1: " + getString(simpleMove.from) + " field2: " + getString(simpleMove.to) + " san: " + simpleMove.san);
-        return doMove(simpleMove.specialRule, BoardUtil.IndexToString(simpleMove.from, rotation), BoardUtil.IndexToString(simpleMove.to, rotation), refreshGUI);
+        return doMove(simpleMove.specialRule, BoardUtil.IndexToString(simpleMove.from), BoardUtil.IndexToString(simpleMove.to), refreshGUI);
     }
     public bool doMove(Move move, bool refreshGUI)
     {
-        string m1 = BoardUtil.IndexToString(move.from, rotation);
-        string m2 = BoardUtil.IndexToString(move.to, rotation);
+        string m1 = BoardUtil.IndexToString(move.from);
+        string m2 = BoardUtil.IndexToString(move.to);
         Debug.Log(m1 + " " + m2);
         return doMove(move.specialRule, m1, m2, refreshGUI);
     }
-    public bool doSANMove(string san, bool refreshGUI) {
-        return doSimpleMove(SAN_Handler.SANToMove(this, san, currentGame.players[currentGame.currentPlayer].color, true), refreshGUI);
-    }
+    //public bool doSANMove(string san, bool refreshGUI) {
+    //        return doSimpleMove(SAN_Handler.SANToMove(this, san, currentGame.players[currentGame.currentPlayer].color, true), refreshGUI);
+    //}
     public bool doMove(int specialRule, string m1, string m2, bool refreshGUI)
     {
-        int fieldID_1 = BoardUtil.StringToIndex(m1, rotation);
-        int fieldID_2 = BoardUtil.StringToIndex(m2, rotation);
+        int fieldID_1 = BoardUtil.StringToIndex(m1);
+        int fieldID_2 = BoardUtil.StringToIndex(m2);
         Piece piece = this.fields[fieldID_1].piece;
 
         if (piece == null) {
@@ -113,13 +113,13 @@ public class Board : MonoBehaviour
         
         move.check = GameRules.checkOchecks(this, !piece.color);
         move.checkMate = GameRules.checkCheckMate(this, !piece.color);
-        move.san = SAN_Handler.MoveToSAN(this, move);
+        //move.san = SAN_Handler.MoveToSAN(this, move);
         nextTurn(refreshGUI);
         return true;
     }
     public List<Vector2Int> getPossible(string m1, bool refreshGUI)
     {
-        int fieldID = BoardUtil.StringToIndex(m1, rotation);
+        int fieldID = BoardUtil.StringToIndex(m1);
         Piece piece = this.fields[fieldID].piece;
 
         if (piece == null)

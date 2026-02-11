@@ -29,13 +29,12 @@ public class Pawn : Piece
     override
     public List<Vector2Int> getPossibleMoves()
     {
-        bool rotation = this.board.rotation;
         List<Move> currentMoves = this.board.currentGame.playedMoves;
 
         List<Vector2Int> possibleMoves = new List<Vector2Int>();
 
         Vector2Int pos = BoardUtil.IndexToPos(position);
-        int direction = (color == rotation) ? 1 : -1;
+        int direction = color ? -1 : 1;
 
         Vector2Int[] offSets = { 
             new Vector2Int(0,1) * direction + pos, new Vector2Int(0, 2) * direction + pos,

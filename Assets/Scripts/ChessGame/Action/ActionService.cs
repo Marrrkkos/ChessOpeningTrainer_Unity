@@ -94,14 +94,13 @@ public class ActionService
     public void showPromotion()
     {
         promotion = true;
-        bool rotation = board.rotation;
-        int fieldID = BoardUtil.StringToIndex(m2, rotation);
-        Piece piece = board.fields[BoardUtil.StringToIndex(m1, rotation)].piece;
+        int fieldID = BoardUtil.StringToIndex(m2);
+        Piece piece = board.fields[BoardUtil.StringToIndex(m1)].piece;
 
 
         setPiecesActive(board, false);
 
-        int direction = (rotation == piece.color) ? 1 : -1;
+        int direction = piece.color ? 1 : -1;
 
 
         for (int i = 3; i >= 0; i--)
@@ -115,7 +114,7 @@ public class ActionService
     public void doPromotion(string fieldName)
     {
         promotion = false;
-        int fieldID = BoardUtil.StringToIndex(fieldName, board.rotation);
+        int fieldID = BoardUtil.StringToIndex(fieldName);
         for (int i = 0; i < 4; i++)
         {
             Field field = board.fields[promotionIndexes[i]];
@@ -141,10 +140,10 @@ public class ActionService
     private bool isCorrectPiece()
     {
         Player player = board.currentGame.players[board.currentGame.currentPlayer];
-        int fieldID = BoardUtil.StringToIndex(m1, board.rotation);
-        string mm1 = BoardUtil.IndexToString(fieldID, board.rotation);
+        int fieldID = BoardUtil.StringToIndex(m1);
+        string mm1 = BoardUtil.IndexToString(fieldID);
         Debug.Log(mm1);
-        fieldID = BoardUtil.StringToIndex(mm1, board.rotation);
+        fieldID = BoardUtil.StringToIndex(mm1);
         Debug.Log(fieldID);
         Piece piece = board.fields[fieldID].piece;
         if (piece == null)
@@ -160,7 +159,7 @@ public class ActionService
     private int isCorrectMove() // return -1 bei fail und sonst die specialrule
     {
         Player player = board.currentGame.players[board.currentGame.currentPlayer];
-        int fieldID = BoardUtil.StringToIndex(m2, board.rotation);
+        int fieldID = BoardUtil.StringToIndex(m2);
         Piece piece = board.fields[fieldID].piece;
         if (piece != null) {
             if (piece.color == player.color) {
@@ -173,7 +172,7 @@ public class ActionService
         }
         foreach (Vector2Int pm in possibleMoves)
         {
-            if (BoardUtil.IndexToString(pm.x, board.rotation).Equals(m2)) {
+            if (BoardUtil.IndexToString(pm.x).Equals(m2)) {
             return pm.y; }
         }
         return -1;

@@ -82,9 +82,7 @@ public class GameRules
     }
     private static bool checkOneDiagonals(Board board, int currentPos, bool kingColorToCheck)
     {
-        bool rotation = board.rotation;
-
-        int direction = (kingColorToCheck == rotation) ? -1 : 1;
+        int direction = kingColorToCheck ? -1 : 1;
         int[] sideOffsets = { -1, 1 };
 
         int currentRow = currentPos / 8;

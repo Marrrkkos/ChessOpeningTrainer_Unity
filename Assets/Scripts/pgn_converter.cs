@@ -89,9 +89,9 @@ public class pgn_converter : MonoBehaviour
         foreach (string move in moves) {
 
             //Debug.Log(BoardUtil.SANToMove(board, move, color, true).from + " " + BoardUtil.SANToMove(board, move, color, true).to);
-            Game.SimpleMove sm = SAN_Handler.SANToMove(board, move, color, board.rotation);
-            game.loadedGame.Add(sm);
-            board.doSimpleMove(sm, false);
+            //Game.SimpleMove sm = SAN_Handler.SANToMove(board, move, color);
+            //game.loadedGame.Add(sm);
+            //board.doSimpleMove(sm, false);
             color = !color;
             count++;
             Debug.Log(count);
