@@ -7,7 +7,6 @@ public class GameManager : MonoBehaviour
 
     [Header("Board")]
     public Board mainBoard;
-    public Board dummyBoard;
     public List<Game> gameDataBase = new List<Game>();
     public int gameIndex = 0;
 
@@ -15,6 +14,7 @@ public class GameManager : MonoBehaviour
     public PieceSetDataBase pieceSetData;
 
     public List <Opening> openings = new List<Opening>();
+    public OpeningsManager openingsManager;
 
     public SnapPreview snapPreview;
     //SingleTon

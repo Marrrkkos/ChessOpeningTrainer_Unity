@@ -10,7 +10,8 @@ public class OpeningCreator : MonoBehaviour
     public InputField nameInput;
     public Image colorImage;
 
-    
+    public Board dummyBoard;
+    public BoardScaler dummyBoardScaler;
     private bool colorToggle = true;
     public void switchColor() {
         if (colorToggle)
@@ -30,16 +31,39 @@ public class OpeningCreator : MonoBehaviour
         string name = nameInput.text;
         List<Move> moves = board.currentGame.playedMoves;
 
-        Board dummyBoard = GameManager.instance.dummyBoard;
 
         foreach(Move move in moves){
             dummyBoard.doMove(move, true);
         }
+        if(board.rotation == true)
+        {
+            dummyBoardScaler.rotate();
+
+        }
+
+
         Opening opening = new Opening(name,colorToggle, GameManager.instance.snapPreview.TakePhoto(), moves);
+
+        //reset
         dummyBoard.reset(true);
+        board.reset(true);
+        if(dummyBoard.rotation == true)
+        {
+            dummyBoardScaler.rotate();
+
+        }
 
         GameManager.instance.openings.Add(opening);
         openingsManager.loadOpenings();
     }
 
+    public void discardOpening()
+    {
+        board.reset(true);
+        if(dummyBoard.rotation == true)
+        {
+            dummyBoardScaler.rotate();
+
+        }
+    }
 }

@@ -2,6 +2,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 [System.Serializable]
 public class Opening
@@ -9,12 +10,14 @@ public class Opening
     public bool color;
     public string name;
     public Texture2D startPos;
+    public List<Move> moves;
     private Node rootNode;
     public Opening(string name, bool color, Texture2D startPos, List<Move> moves) {
         this.color = color;
         this.name = name;
         this.rootNode = new Node();
         this.startPos = startPos;
+        this.moves = new List<Move>(moves);
 
         add(moves);
     }

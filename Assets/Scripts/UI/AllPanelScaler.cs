@@ -7,10 +7,12 @@ public class AllPanelScaler : MonoBehaviour
     public float offSet;
     public float controlBarOffSet;
 
+
     public List<RectTransform> panels;
+    public panel2Scaler panel2Scaler;
     public RectTransform canvas;
 
-    void Start() {
+    void Awake() {
         setPanelSize();
     }
 
@@ -29,5 +31,6 @@ public class AllPanelScaler : MonoBehaviour
             RectTransform content = panel.GetChild(0) as RectTransform;
             content.sizeDelta = contentSize;
         }
+        panel2Scaler.scalePanel2(panelSize.x);
     }
 }

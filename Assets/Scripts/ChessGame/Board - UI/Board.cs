@@ -22,7 +22,7 @@ public class Board : MonoBehaviour
     public List<Piece> blackPieces = new List<Piece>();
 
     //INITIALIZE
-    public void Awake()
+    public void Start()
     {
         actionService = new ActionService(this);
         //LOAD BOARD
@@ -66,8 +66,9 @@ public class Board : MonoBehaviour
         }
 
 
-        drawOnBoard.arrow.AddArrow(new Vector2(0, 0), new Vector2(100, 100), UnityEngine.Color.aliceBlue);
-        drawOnBoard.arrow.AddArrow(new Vector2(200, 200), new Vector2(300, 300), UnityEngine.Color.red);
+        drawOnBoard.drawArrow(0, 2);
+        drawOnBoard.drawArrow(0, 18);
+        drawOnBoard.drawArrow(0, 16);
         //LOAD DEFAULT GAME
 
         currentGame = new Game(new Player[] { new Player("Player 1", 0, true), new Player("Player 2", 0, false) });
@@ -170,48 +171,36 @@ public class Board : MonoBehaviour
         //Pawns
         for (int i = 0; i < 8; i++)
         {
-            fields[i + 8].piece = new Pawn(this, false, i + 8);
+            fields[i+8].setPiece(new Pawn(this,false,i + 8), refreshGUI);
         }
         for (int i = 0; i < 8; i++)
         {
-            fields[i + 48].piece = new Pawn(this, true, i + 48);
+            fields[i + 48].setPiece(new Pawn(this,true,i + 48), refreshGUI);
         }
-        fields[0].piece = new Rook(this, false, 0);
-        fields[1].piece = new Knight(this, false, 1);
-        fields[2].piece = new Bishop(this, false, 2);
-        fields[3].piece = new Queen(this, false, 3);
-        fields[4].piece = new King(this, false, 4);
-        fields[5].piece = new Bishop(this, false, 5);
-        fields[6].piece = new Knight(this, false, 6);
-        fields[7].piece = new Rook(this, false, 7);
+        fields[0].setPiece(new Rook(this,false,0), refreshGUI);
+        fields[1].setPiece(new Knight(this,false,1), refreshGUI);
+        fields[2].setPiece(new Bishop(this,false,2), refreshGUI);
+        fields[3].setPiece(new Queen(this,false,3), refreshGUI);
+        fields[4].setPiece(new King(this,false,4), refreshGUI);
+        fields[5].setPiece(new Bishop(this,false,5), refreshGUI);
+        fields[6].setPiece(new Knight(this,false,6), refreshGUI);
+        fields[7].setPiece(new Rook(this,false,7), refreshGUI);
 
-        fields[56].piece = new Rook(this, true, 56);
-        fields[57].piece = new Knight(this, true, 57);
-        fields[58].piece = new Bishop(this, true, 58);
-        fields[59].piece = new Queen(this, true, 59);
-        fields[60].piece = new King(this, true, 60);
-        fields[61].piece = new Bishop(this, true, 61);
-        fields[62].piece = new Knight(this, true, 62);
-        fields[63].piece = new Rook(this, true, 63);
+        fields[56].setPiece(new Rook(this,true,56), refreshGUI);
+        fields[57].setPiece(new Knight(this,true,57), refreshGUI);
+        fields[58].setPiece(new Bishop(this,true,58), refreshGUI);
+        fields[59].setPiece(new Queen(this,true,59), refreshGUI);
+        fields[60].setPiece(new King(this,true,60), refreshGUI);
+        fields[61].setPiece(new Bishop(this,true,61), refreshGUI);
+        fields[62].setPiece(new Knight(this,true,62), refreshGUI);
+        fields[63].setPiece(new Rook(this,true,63), refreshGUI);
 
         whiteKing = fields[60].piece; //WHITE AND BLACK KING 
         blackKing = fields[4].piece;
-        for (int i = 48; i < 64; i++)
-        {
-            whitePieces.Add(fields[i].piece);
-            if(refreshGUI)
-                fields[i].gameObject.SetActive(true);
-        }
-        for (int i = 0; i < 16; i++)
-        {
-            blackPieces.Add(fields[i].piece);
-            if(refreshGUI)
-                fields[i].gameObject.SetActive(true);
-        }
-        for (int i = 17; i < 48; i++)
+        for (int i = 16; i < 48; i++)
         {
             if(refreshGUI)
-                fields[i].gameObject.SetActive(false);
+                fields[i].pieceImage.gameObject.SetActive(false);
         }
 
 

@@ -193,7 +193,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bec0c69db1683847a1864f74b01b478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoardScaler
-  board: {fileID: 3763251025850896969}
+  boardRect: {fileID: 3763251025850896969}
+  board: {fileID: 2322110258127106414}
+  gridLayoutGroup: {fileID: 6491829344489755273}
   cellSize: 0
 --- !u!1 &7963422784807953746
 GameObject:

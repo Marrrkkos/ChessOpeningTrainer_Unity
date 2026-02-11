@@ -30,9 +30,12 @@ public class DrawOnBoard : MonoBehaviour
         currentPossibles.Clear();
     }
     public void drawArrow(int f1, int f2) {
-        Vector2 pos1 = new Vector2(f1 % 8, f1 / 8);
-        Vector2 pos2 = new Vector2(f2 % 8, f2 / 8);
-        arrow.AddArrow(pos1 * boardScaler.cellSize, pos2 * boardScaler.cellSize, UnityEngine.Color.red);
+        Vector2 pos1 = new Vector2(f1 % 8, -f1 / 8);
+        Vector2 pos2 = new Vector2(f2 % 8, -f2 / 8);
+        float offSetF = 3.5f*boardScaler.cellSize;
+        Vector2 offSet = new Vector2(offSetF, -offSetF);
+        Debug.Log("BoardScaler: " + boardScaler.cellSize + " " + pos1 + " " + pos2);
+        arrow.AddArrow(pos1 * boardScaler.cellSize - offSet, pos2 * boardScaler.cellSize - offSet, UnityEngine.Color.red);
     }
 
     public void drawSelected(string f) { }
