@@ -7,7 +7,6 @@ public class OpeningCreator : MonoBehaviour
     public Board board;
     public BoardScaler boardScaler;
     public OpeningsManager openingsManager;
-
     public InputField nameInput;
     public Image colorImage;
 
@@ -30,7 +29,15 @@ public class OpeningCreator : MonoBehaviour
     public void createOpening() { 
         string name = nameInput.text;
         List<Move> moves = board.currentGame.playedMoves;
+
+        Board dummyBoard = GameManager.instance.dummyBoard;
+
+        foreach(Move move in moves){
+            dummyBoard.doMove(move, true);
+        }
         Opening opening = new Opening(name,colorToggle, GameManager.instance.snapPreview.TakePhoto(), moves);
+        dummyBoard.reset(true);
+
         GameManager.instance.openings.Add(opening);
         openingsManager.loadOpenings();
     }

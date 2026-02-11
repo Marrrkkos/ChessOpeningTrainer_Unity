@@ -15,7 +15,8 @@ public class ClickHandler : MonoBehaviour, IPointerEnterHandler, IPointerDownHan
     public void OnPointerDown(PointerEventData eventData)
     {
         board.actionService.setFieldOnMouseDown(fieldName.text);
-        //Debug.Log(GetComponent<Field>().piece.ToString() + " " +  GetComponent<Field>().piece.getColor().ToString());
+        Debug.Log(fieldName.text);
+        Debug.Log(GetComponent<Field>().piece.ToString() + " " +  GetComponent<Field>().piece.color.ToString());
     }
 
     public void OnPointerUp(PointerEventData eventData)

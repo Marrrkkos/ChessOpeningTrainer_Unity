@@ -9,7 +9,7 @@ public class SnapPreview : MonoBehaviour
     public Texture2D TakePhoto()
     {
         // Wir rufen die Funktion auf (Breite/Höhe z.B. 256x256)
-        return CaptureScreenshot(previewCam, 256, 256);
+        return CaptureScreenshot(previewCam, 512, 512);
         
     }
 

@@ -10,6 +10,7 @@ public class OpeningsManager: MonoBehaviour
         for (int i = 0; i < GameManager.instance.openings.Count; i++)
         {
             boardPreviews[i].loadOpening(GameManager.instance.openings[i]);
+            boardPreviews[i].gameObject.SetActive(true);
         }
         
     }

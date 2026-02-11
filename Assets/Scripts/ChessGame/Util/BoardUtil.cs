@@ -16,6 +16,54 @@ public class BoardUtil
     {
         return pos.x >= 0 && pos.x < 8 && pos.y >= 0 && pos.y < 8;
     }
+    public static int StringToIndex(string fieldName, bool rotation)
+    {
+        int letter = fieldName[0] - 'a';
+        int number = fieldName[1] - '1';
+
+
+        if (!rotation)
+        {
+            return (7 - number) * 8 + letter;
+        }
+        else {
+            return (7 - letter) * 8 + number;
+        }
+    }
+    public static string IndexToString(int id, bool rotation)
+    {
+        int letterIndex;
+        int numberIndex;
+
+        if (!rotation)
+        {
+            // Umkehrung von: (7 - number) * 8 + letter
+            letterIndex = id % 8;
+            numberIndex = 7 - (id / 8);
+        }
+        else
+        {
+            // Umkehrung von: (7 - letter) * 8 + number
+            letterIndex = 7 - (id / 8);
+            numberIndex = id % 8;
+        }
+
+        // Umwandlung der Zahlen (0-7) zur�ck in Zeichen ('a'-'h' und '1'-'8')
+        char letter = (char)('a' + letterIndex);
+        char number = (char)('1' + numberIndex);
+
+        return $"{letter}{number}";
+        
+    }
+    public static string GetSquareString(Vector2Int pos)
+    {
+        return $"{GetFileChar(pos.x)}{GetRankChar(pos.y)}";
+    }
+
+    public static char GetFileChar(int x) => (char)('a' + x);
+    public static char GetRankChar(int y) => (char)('8' - y);
+
+
     public static char IdToChar(int id, bool upper)
     {
         char c = ' ';

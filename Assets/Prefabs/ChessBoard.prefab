@@ -107,9 +107,13 @@ MonoBehaviour:
     description: 
     currentPlayer: 0
     result: 0
-    moves: []
-    simpleMovesIndex: 0
-  rotation: 1
+    playedMoves: []
+    loadedGameMovesIndex: 0
+  opening:
+    color: 0
+    name: 
+    startPos: {fileID: 0}
+  rotation: 0
   drawOnBoard: {fileID: 9222936849459583732}
   fields:
   - {fileID: 8096835297803764998}

@@ -7,7 +7,7 @@ public class Board : MonoBehaviour
 {
     public Game currentGame;
     public Opening opening;
-    public bool rotation = true;
+    public bool rotation = false;
 
     [Header("Util")]
     public ActionService actionService;
@@ -81,16 +81,22 @@ public class Board : MonoBehaviour
     }
     public bool doSimpleMove(Game.SimpleMove simpleMove, bool refreshGUI) {
         //Debug.Log("specialrule: " + simpleMove.specialRule + " field1: " + getString(simpleMove.from) + " field2: " + getString(simpleMove.to) + " san: " + simpleMove.san);
-        return doMove(simpleMove.specialRule, getString(simpleMove.from), getString(simpleMove.to), refreshGUI);
+        return doMove(simpleMove.specialRule, BoardUtil.IndexToString(simpleMove.from, rotation), BoardUtil.IndexToString(simpleMove.to, rotation), refreshGUI);
     }
-
+    public bool doMove(Move move, bool refreshGUI)
+    {
+        string m1 = BoardUtil.IndexToString(move.from, rotation);
+        string m2 = BoardUtil.IndexToString(move.to, rotation);
+        Debug.Log(m1 + " " + m2);
+        return doMove(move.specialRule, m1, m2, refreshGUI);
+    }
     public bool doSANMove(string san, bool refreshGUI) {
         return doSimpleMove(SAN_Handler.SANToMove(this, san, currentGame.players[currentGame.currentPlayer].color, true), refreshGUI);
     }
     public bool doMove(int specialRule, string m1, string m2, bool refreshGUI)
     {
-        int fieldID_1 = this.getID(m1);
-        int fieldID_2 = this.getID(m2);
+        int fieldID_1 = BoardUtil.StringToIndex(m1, rotation);
+        int fieldID_2 = BoardUtil.StringToIndex(m2, rotation);
         Piece piece = this.fields[fieldID_1].piece;
 
         if (piece == null) {
@@ -113,7 +119,7 @@ public class Board : MonoBehaviour
     }
     public List<Vector2Int> getPossible(string m1, bool refreshGUI)
     {
-        int fieldID = this.getID(m1);
+        int fieldID = BoardUtil.StringToIndex(m1, rotation);
         Piece piece = this.fields[fieldID].piece;
 
         if (piece == null)
@@ -149,8 +155,7 @@ public class Board : MonoBehaviour
 
 
 
-
-    public void reset()
+    public void reset(bool refreshGUI)
     {
         for (int i = 0; i < 64; i++)
         {
@@ -194,52 +199,25 @@ public class Board : MonoBehaviour
         for (int i = 48; i < 64; i++)
         {
             whitePieces.Add(fields[i].piece);
+            if(refreshGUI)
+                fields[i].gameObject.SetActive(true);
         }
         for (int i = 0; i < 16; i++)
         {
             blackPieces.Add(fields[i].piece);
+            if(refreshGUI)
+                fields[i].gameObject.SetActive(true);
         }
+        for (int i = 17; i < 48; i++)
+        {
+            if(refreshGUI)
+                fields[i].gameObject.SetActive(false);
+        }
+
 
         currentGame.currentPlayer = 0;
     }
 
     // HELPER FUNCTIONS
-    public int getID(string fieldName) {
-
-        int letter = fieldName[0] - 'a';
-        int number = fieldName[1] - '1';
-
-
-        if (rotation)
-        {
-            return (7 - number) * 8 + letter;
-        }
-        else {
-            return (7 - letter) * 8 + number;
-        }
-    }
-    public string getString(int id)
-    {
-        int letterIndex;
-        int numberIndex;
-
-        if (rotation)
-        {
-            // Umkehrung von: (7 - number) * 8 + letter
-            letterIndex = id % 8;
-            numberIndex = 7 - (id / 8);
-        }
-        else
-        {
-            // Umkehrung von: (7 - letter) * 8 + number
-            letterIndex = 7 - (id / 8);
-            numberIndex = id % 8;
-        }
-
-        // Umwandlung der Zahlen (0-7) zur�ck in Zeichen ('a'-'h' und '1'-'8')
-        char letter = (char)('a' + letterIndex);
-        char number = (char)('1' + numberIndex);
-
-        return $"{letter}{number}";
-    }
+    
 }

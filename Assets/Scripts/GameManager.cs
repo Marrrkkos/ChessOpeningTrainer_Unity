@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Board")]
     public Board mainBoard;
-
+    public Board dummyBoard;
     public List<Game> gameDataBase = new List<Game>();
     public int gameIndex = 0;
 

@@ -5,7 +5,7 @@ public class ControllButtons : MonoBehaviour
 {
     public Board board;
     public void start() {
-        board.reset();
+        board.reset(true);
     }
     public void next() {
 
@@ -27,7 +27,7 @@ public class ControllButtons : MonoBehaviour
     public void end() {
         Game game = GameManager.instance.mainBoard.currentGame;
         //game.simpleMovesIndex = 0;
-        GameManager.instance.mainBoard.reset();
+        GameManager.instance.mainBoard.reset(true);
         GameManager.instance.gameIndex++;
     }
 }

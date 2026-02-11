@@ -95,8 +95,8 @@ public class ActionService
     {
         promotion = true;
         bool rotation = board.rotation;
-        int fieldID = board.getID(m2);
-        Piece piece = board.fields[board.getID(m1)].piece;
+        int fieldID = BoardUtil.StringToIndex(m2, rotation);
+        Piece piece = board.fields[BoardUtil.StringToIndex(m1, rotation)].piece;
 
 
         setPiecesActive(board, false);
@@ -115,7 +115,7 @@ public class ActionService
     public void doPromotion(string fieldName)
     {
         promotion = false;
-        int fieldID = board.getID(fieldName);
+        int fieldID = BoardUtil.StringToIndex(fieldName, board.rotation);
         for (int i = 0; i < 4; i++)
         {
             Field field = board.fields[promotionIndexes[i]];
@@ -141,7 +141,11 @@ public class ActionService
     private bool isCorrectPiece()
     {
         Player player = board.currentGame.players[board.currentGame.currentPlayer];
-        int fieldID = board.getID(m1);
+        int fieldID = BoardUtil.StringToIndex(m1, board.rotation);
+        string mm1 = BoardUtil.IndexToString(fieldID, board.rotation);
+        Debug.Log(mm1);
+        fieldID = BoardUtil.StringToIndex(mm1, board.rotation);
+        Debug.Log(fieldID);
         Piece piece = board.fields[fieldID].piece;
         if (piece == null)
         {
@@ -156,7 +160,7 @@ public class ActionService
     private int isCorrectMove() // return -1 bei fail und sonst die specialrule
     {
         Player player = board.currentGame.players[board.currentGame.currentPlayer];
-        int fieldID = board.getID(m2);
+        int fieldID = BoardUtil.StringToIndex(m2, board.rotation);
         Piece piece = board.fields[fieldID].piece;
         if (piece != null) {
             if (piece.color == player.color) {
@@ -169,7 +173,7 @@ public class ActionService
         }
         foreach (Vector2Int pm in possibleMoves)
         {
-            if (board.getString(pm.x).Equals(m2)) {
+            if (BoardUtil.IndexToString(pm.x, board.rotation).Equals(m2)) {
             return pm.y; }
         }
         return -1;
