@@ -29,6 +29,10 @@ public class DrawOnBoard : MonoBehaviour
         }
         currentPossibles.Clear();
     }
+    public void ClearArrows()
+    {
+        arrow.activeArrows.Clear();
+    }
     public void drawArrow(int f1, int f2) {
         Vector2 pos1 = new Vector2(f1 % 8, -f1 / 8);
         Vector2 pos2 = new Vector2(f2 % 8, -f2 / 8);

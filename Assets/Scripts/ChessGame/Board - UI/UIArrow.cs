@@ -5,7 +5,6 @@ using UnityEngine.UI;
 [RequireComponent(typeof(CanvasRenderer))]
 public class UIArrow : MaskableGraphic
 {
-    // Eine kleine Struktur, um die Daten eines Pfeils zu speichern
     [System.Serializable]
     public struct ArrowData
     {
@@ -18,7 +17,7 @@ public class UIArrow : MaskableGraphic
     public float shaftWidth = 10f;
     public float headSize = 30f;
 
-    // Methode, um einen Pfeil zur Liste hinzuzufügen
+    // Methode, um einen Pfeil zur Liste hinzuzufï¿½gen
     public void AddArrow(Vector2 from, Vector2 to, Color col)
     {
         activeArrows.Add(new ArrowData { start = from, end = to, color = col });
@@ -66,7 +65,7 @@ public class UIArrow : MaskableGraphic
         AddTriangle(vh, t1, t2, t3, data.color);
     }
 
-    // Hilfsfunktion: Fügt ein Viereck zum Mesh hinzu
+    // Hilfsfunktion: Fï¿½gt ein Viereck zum Mesh hinzu
     private void AddQuad(VertexHelper vh, Vector2 v1, Vector2 v2, Vector2 v3, Vector2 v4, Color color)
     {
         int index = vh.currentVertCount;
@@ -83,7 +82,7 @@ public class UIArrow : MaskableGraphic
         vh.AddTriangle(index + 2, index + 1, index + 3);
     }
 
-    // Hilfsfunktion: Fügt ein Dreieck zum Mesh hinzu
+    // Hilfsfunktion: Fï¿½gt ein Dreieck zum Mesh hinzu
     private void AddTriangle(VertexHelper vh, Vector2 v1, Vector2 v2, Vector2 v3, Color color)
     {
         int index = vh.currentVertCount;
@@ -97,14 +96,4 @@ public class UIArrow : MaskableGraphic
 
         vh.AddTriangle(index + 0, index + 1, index + 2);
     }
-    
-    #if UNITY_EDITOR
-    // Diese Funktion wird aufgerufen, wenn du im Inspector einen Wert änderst
-    protected override void OnValidate()
-    {
-        base.OnValidate();
-        // Zwingt Unity, das Mesh neu zu berechnen
-        SetVerticesDirty();
-    }
-#endif
 }

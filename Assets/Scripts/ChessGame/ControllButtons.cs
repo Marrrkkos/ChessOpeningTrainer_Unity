@@ -4,10 +4,10 @@ using UnityEngine.UI;
 public class ControllButtons : MonoBehaviour
 {
     public Board board;
-    public void start() {
-        board.reset(true);
+    public void GoStart() {
+        board.ResetBoard(true);
     }
-    public void next() {
+    public void GoNext() {
 
 
 
@@ -21,13 +21,13 @@ public class ControllButtons : MonoBehaviour
         }
 
     }
-    public void undo() {
+    public void DoUndo() {
         GameManager.instance.mainBoard.undoMove(true);
     }
-    public void end() {
+    public void GoEnd() {
         Game game = GameManager.instance.mainBoard.currentGame;
         //game.simpleMovesIndex = 0;
-        GameManager.instance.mainBoard.reset(true);
+        GameManager.instance.mainBoard.ResetBoard(true);
         GameManager.instance.gameIndex++;
     }
 }

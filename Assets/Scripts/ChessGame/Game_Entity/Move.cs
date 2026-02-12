@@ -31,7 +31,7 @@ public class Move
 
 
     public bool equals(Move other) { 
-        return (from == other.from) && (to == other.to) && (movedPiece.id == other.movedPiece.id) && (capturedPiece.id == other.capturedPiece.id) && (specialRule == other.specialRule) && (oldHasMoved == other.oldHasMoved) && (check == other.check) && (checkMate == other.checkMate); 
+        return (from == other.from) && (to == other.to) && (movedPiece?.id == other.movedPiece?.id) && (capturedPiece?.id == other.capturedPiece?.id) && (specialRule == other.specialRule) && (oldHasMoved == other.oldHasMoved) && (check == other.check) && (checkMate == other.checkMate); 
     }
 
 }

@@ -45,8 +45,8 @@ public class OpeningCreator : MonoBehaviour
         Opening opening = new Opening(name,colorToggle, GameManager.instance.snapPreview.TakePhoto(), moves);
 
         //reset
-        dummyBoard.reset(true);
-        board.reset(true);
+        dummyBoard.ResetBoard(true);
+        board.ResetBoard(true);
         if(dummyBoard.rotation == true)
         {
             dummyBoardScaler.rotate();
@@ -59,7 +59,7 @@ public class OpeningCreator : MonoBehaviour
 
     public void discardOpening()
     {
-        board.reset(true);
+        board.ResetBoard(true);
         if(dummyBoard.rotation == true)
         {
             dummyBoardScaler.rotate();

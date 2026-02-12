@@ -23,7 +23,7 @@ public class OpeningsManager: MonoBehaviour
     {
         Opening opening = GameManager.instance.openings[openingIndex];
         mainBoard.opening = opening;
-        mainBoard.reset(true);
+        mainBoard.ResetBoard(true);
 
         foreach(Move move in opening.moves)
         {

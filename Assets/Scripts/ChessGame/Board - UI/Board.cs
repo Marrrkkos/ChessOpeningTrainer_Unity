@@ -7,6 +7,7 @@ public class Board : MonoBehaviour
 {
     public Game currentGame;
     public Opening opening;
+    public OpeningController openingController;
     public bool rotation = false;
 
     [Header("Util")]
@@ -65,10 +66,6 @@ public class Board : MonoBehaviour
             blackPieces.Add(fields[i].piece);
         }
 
-
-        drawOnBoard.drawArrow(0, 2);
-        drawOnBoard.drawArrow(0, 18);
-        drawOnBoard.drawArrow(0, 16);
         //LOAD DEFAULT GAME
 
         currentGame = new Game(new Player[] { new Player("Player 1", 0, true), new Player("Player 2", 0, false) });
@@ -152,11 +149,17 @@ public class Board : MonoBehaviour
         int x = this.currentGame.currentPlayer;
         this.currentGame.currentPlayer = (x + 1) % 2;
         this.drawOnBoard.refreshPossibles(refreshGUI);
+        if(opening.name != "")
+        {
+            openingController.ClearOpeningArrows();
+            openingController.DrawOpeningArrows();
+        }
+
     }
 
 
 
-    public void reset(bool refreshGUI)
+    public void ResetBoard(bool refreshGUI)
     {
         for (int i = 0; i < 64; i++)
         {
