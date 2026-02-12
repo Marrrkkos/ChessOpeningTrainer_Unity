@@ -170,7 +170,6 @@ GameObject:
   - component: {fileID: 9193391340572946424}
   - component: {fileID: 4388987533584203836}
   - component: {fileID: 4234291378442022492}
-  - component: {fileID: 8474878212707997754}
   - component: {fileID: 289623376899196927}
   m_Layer: 5
   m_Name: startButton
@@ -281,9 +280,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8474878212707997754}
+      - m_Target: {fileID: 1057062090340409069}
         m_TargetAssemblyTypeName: ControllButtons, Assembly-CSharp
-        m_MethodName: start
+        m_MethodName: GoStart
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -293,18 +292,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &8474878212707997754
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4102124267572547115}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2272dbed66995e408711233ea4bdc7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
 --- !u!114 &289623376899196927
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -490,7 +477,6 @@ GameObject:
   - component: {fileID: 3165264009382298618}
   - component: {fileID: 1770310999731042981}
   - component: {fileID: 5293197298887224417}
-  - component: {fileID: 431110262749328439}
   - component: {fileID: 1625850117490245958}
   m_Layer: 5
   m_Name: endButton
@@ -601,9 +587,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 431110262749328439}
+      - m_Target: {fileID: 1057062090340409069}
         m_TargetAssemblyTypeName: ControllButtons, Assembly-CSharp
-        m_MethodName: end
+        m_MethodName: GoEnd
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -613,18 +599,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &431110262749328439
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6786861129923134069}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2272dbed66995e408711233ea4bdc7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
 --- !u!114 &1625850117490245958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -650,6 +624,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7654103059970394220}
   - component: {fileID: 8251361100289656769}
+  - component: {fileID: 1057062090340409069}
   m_Layer: 5
   m_Name: ControlButtons
   m_TagString: Untagged
@@ -669,10 +644,10 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 388954587466979818}
   - {fileID: 5424855737825169987}
-  - {fileID: 2302634808420034465}
+  - {fileID: 388954587466979818}
   - {fileID: 6363392634657178349}
+  - {fileID: 2302634808420034465}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -706,6 +681,19 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1057062090340409069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7270160414483574164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2272dbed66995e408711233ea4bdc7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ControllButtons
+  board: {fileID: 0}
 --- !u!1 &7908881389995683125
 GameObject:
   m_ObjectHideFlags: 0
@@ -718,7 +706,6 @@ GameObject:
   - component: {fileID: 1286354982640173121}
   - component: {fileID: 3548904224615055929}
   - component: {fileID: 2550076617132256585}
-  - component: {fileID: 1310134165157384674}
   - component: {fileID: 5520063314315743337}
   m_Layer: 5
   m_Name: nextButton
@@ -829,9 +816,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1310134165157384674}
+      - m_Target: {fileID: 1057062090340409069}
         m_TargetAssemblyTypeName: ControllButtons, Assembly-CSharp
-        m_MethodName: next
+        m_MethodName: GoNext
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -841,18 +828,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1310134165157384674
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7908881389995683125}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2272dbed66995e408711233ea4bdc7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
 --- !u!114 &5520063314315743337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -880,7 +855,6 @@ GameObject:
   - component: {fileID: 623217219809407549}
   - component: {fileID: 5163961105092867925}
   - component: {fileID: 6811174662038721075}
-  - component: {fileID: 1032092070589964293}
   - component: {fileID: 8381366198750800021}
   m_Layer: 5
   m_Name: undoButton
@@ -991,9 +965,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1032092070589964293}
+      - m_Target: {fileID: 1057062090340409069}
         m_TargetAssemblyTypeName: ControllButtons, Assembly-CSharp
-        m_MethodName: undo
+        m_MethodName: DoUndo
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1003,18 +977,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1032092070589964293
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9133481340864303331}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2272dbed66995e408711233ea4bdc7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
 --- !u!114 &8381366198750800021
 MonoBehaviour:
   m_ObjectHideFlags: 0

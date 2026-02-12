@@ -141,10 +141,6 @@ public class ActionService
     {
         Player player = board.currentGame.players[board.currentGame.currentPlayer];
         int fieldID = BoardUtil.StringToIndex(m1);
-        string mm1 = BoardUtil.IndexToString(fieldID);
-        Debug.Log(mm1);
-        fieldID = BoardUtil.StringToIndex(mm1);
-        Debug.Log(fieldID);
         Piece piece = board.fields[fieldID].piece;
         if (piece == null)
         {

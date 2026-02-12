@@ -18,9 +18,8 @@ public class Game
     }
 
     public List<Move> playedMoves = new List<Move>();
-    public List<SimpleMove> movesMemory = new List<SimpleMove>();
 
-    public int loadedGameMovesIndex = 0;
+    public List<Move> movesMemory = new List<Move>();
     public List<SimpleMove> loadedGame = new List<SimpleMove>();
     public Game(Player[] players) {
         this.players = players;

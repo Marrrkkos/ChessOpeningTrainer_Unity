@@ -81,6 +81,8 @@ public class Opening
     public void remove(List<Move> gameMoves) {
         Node node = rootNode;
 
+        Move lastMove = gameMoves.Last();
+        gameMoves.Remove(lastMove);
         // get last move in line
         foreach (Move m in gameMoves) {
             foreach (Node n in node.children) { 
@@ -90,7 +92,11 @@ public class Opening
             }
         }
 
-        node.children.Clear();
+        foreach (Node n in node.children) { 
+            if(n.move.equals(lastMove)) {
+                node.children.Remove(n);
+            }
+        }
     }
 
 }

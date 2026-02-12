@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
-
+using System.Linq;
 public class Board : MonoBehaviour
 {
     public Game currentGame;
@@ -70,12 +70,16 @@ public class Board : MonoBehaviour
 
         currentGame = new Game(new Player[] { new Player("Player 1", 0, true), new Player("Player 2", 0, false) });
     }
-    public bool undoMove(bool refreshGUI) {
-        if (currentGame.playedMoves.Count == 0) { return false;}
+    public Move undoMove(bool refreshGUI) {
+        Debug.Log("Undo Move!");
+        if (currentGame.playedMoves.Count == 0) { return null;}
         Piece piece = currentGame.playedMoves[currentGame.playedMoves.Count - 1].movedPiece;
-        piece.undoMove(refreshGUI);
+        Move move = piece.undoMove(refreshGUI);
+
+        currentGame.movesMemory.Add(move);
+
         nextTurn(refreshGUI);
-        return true;
+        return move;
     }
     public bool doSimpleMove(Game.SimpleMove simpleMove, bool refreshGUI) {
         //Debug.Log("specialrule: " + simpleMove.specialRule + " field1: " + getString(simpleMove.from) + " field2: " + getString(simpleMove.to) + " san: " + simpleMove.san);
@@ -93,6 +97,7 @@ public class Board : MonoBehaviour
     //}
     public bool doMove(int specialRule, string m1, string m2, bool refreshGUI)
     {
+        Debug.Log("Move!");
         int fieldID_1 = BoardUtil.StringToIndex(m1);
         int fieldID_2 = BoardUtil.StringToIndex(m2);
         Piece piece = this.fields[fieldID_1].piece;
@@ -112,6 +117,21 @@ public class Board : MonoBehaviour
         move.check = GameRules.checkOchecks(this, !piece.color);
         move.checkMate = GameRules.checkCheckMate(this, !piece.color);
         //move.san = SAN_Handler.MoveToSAN(this, move);
+
+
+        if (currentGame.movesMemory.Count != 0)
+        {
+            Move m = currentGame.movesMemory.Last();
+            if (m.equals(move))
+            {
+                currentGame.movesMemory.Remove(m);
+            }
+            else
+            {
+                currentGame.movesMemory.Clear();
+            }
+        }
+
         nextTurn(refreshGUI);
         return true;
     }
