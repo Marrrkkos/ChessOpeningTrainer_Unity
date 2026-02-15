@@ -12,21 +12,17 @@ public class OpeningsManager: MonoBehaviour
 
     public void Start()
     {
-        //Debug.Log(Application.persistentDataPath);
-        bool x = true;
-        int i = 0;
-        //while (x)
-        //{
-            Opening opening = new Opening(i);
-            x = opening.LoadGame(i);
 
-            if (x)
-            {
-                GameManager.instance.openings.Add(opening);
-                i++;
-                opening.PrintTreeDepth5();
-            }
-        //}
+        OpeningsTreesData openingsTreesData = OpeningsTreesData.Load();
+        GameManager.instance.openingTreesData = openingsTreesData;
+        //Debug.Log(Application.persistentDataPath);
+        foreach(string openingString in openingsTreesData.openingNames)
+        {
+            Opening opening = new();
+            opening.LoadGame(openingString);
+            GameManager.instance.openings.Add(opening);
+            //opening.PrintTreeDepth5();
+        }
         loadOpenings();
 
 
@@ -46,16 +42,16 @@ public class OpeningsManager: MonoBehaviour
     public void loadOpening(int openingIndex)
     {
         Opening opening = GameManager.instance.openings[openingIndex];
-        mainBoard.opening = opening;
-        mainBoard.ResetBoard(true);
+        GameManager.instance.mainBoard.opening = opening;
+        GameManager.instance.mainBoard.ResetBoard(true);
 
         foreach(Move move in opening.moves)
         {
-            mainBoard.doMove(move, true);
+            GameManager.instance.mainBoard.doMove(move, true);
         }
-        if (!opening.color)
-        {
-            mainBoardScaler.rotate();
-        }
+        //if (!opening.color)
+        //{
+        //    GameManager.instance.mainBoard.mainBoardScaler.rotate();
+        //}
     }
 }

@@ -7558,6 +7558,8 @@ MonoBehaviour:
   gameIndex: 0
   pieceSetData: {fileID: 11400000, guid: 6b1503b06a61c2948820d87919cc4ca2, type: 2}
   openings: []
+  openingTreesData:
+    openingNames: []
   openingsManager: {fileID: 1142887133}
   snapPreview: {fileID: 1576003745}
 --- !u!4 &1594358585

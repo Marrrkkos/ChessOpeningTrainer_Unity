@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    
     public static GameManager instance;
 
     [Header("Board")]
@@ -13,7 +14,8 @@ public class GameManager : MonoBehaviour
     [Header("DataBases")]
     public PieceSetDataBase pieceSetData;
 
-    public List <Opening> openings = new List<Opening>();
+    public List <Opening> openings = new ();
+    public OpeningsTreesData openingTreesData = new();
     public OpeningsManager openingsManager;
 
     public SnapPreview snapPreview;
@@ -22,6 +24,7 @@ public class GameManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(instance);
         }
         else {
             Destroy(gameObject);

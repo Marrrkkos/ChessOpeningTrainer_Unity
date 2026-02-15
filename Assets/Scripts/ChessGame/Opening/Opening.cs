@@ -16,7 +16,6 @@ public class Opening
         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
     };
 
-    public int openingID;
     public bool color;
     public string name;
     
@@ -30,23 +29,16 @@ public class Opening
     [JsonProperty] private Node rootNode; 
 
     // --- KONSTRUKTOREN ---
-    public Opening(string name, bool color, Texture2D startPos, List<Move> moves, int openingID) 
+    public Opening(string name, bool color, Texture2D startPos, List<Move> moves) 
     {
         this.color = color;
         this.name = name;
         this.rootNode = new Node();
         this.startPos = startPos;
         this.moves = new List<Move>(moves);
-        this.openingID = openingID;
         Add(moves);
     }
     
-    public Opening(int openingID)
-    {
-        this.openingID = openingID;
-        this.rootNode = new Node();
-    }
-
     // Leerer Konstruktor für Newtonsoft (wichtig beim Laden!)
     public Opening() { }
 
@@ -63,7 +55,7 @@ public class Opening
         public Node rootNode;
     }
 
-    public void SaveGame(int i)
+    public void SaveGame(string openingName)
     {
         // 1. Daten in den Container packen
         SaveDataContainer data = new SaveDataContainer
@@ -75,19 +67,19 @@ public class Opening
         };
 
         // 2. Pfad bauen
-        string filename = "savegame" + i + ".json";
+        string filename = "savegame" + openingName + ".json";
         string path = Path.Combine(Application.persistentDataPath, filename);
 
         // 3. Speichern (Newtonsoft macht den Rest)
         string json = JsonConvert.SerializeObject(data, JsonSettings);
         File.WriteAllText(path, json);
 
-        Debug.Log($"Opening {i} gespeichert unter: {path}");
+        Debug.Log($"Opening {openingName} gespeichert unter: {path}");
     }
 
-    public bool LoadGame(int i)
+    public bool LoadGame(string openingName)
     {
-        string filename = "savegame" + i + ".json";
+        string filename = "savegame" + openingName + ".json";
         string path = Path.Combine(Application.persistentDataPath, filename);
 
         if (!File.Exists(path)) return false;
@@ -106,13 +98,12 @@ public class Opening
             this.color = data.color;
             this.moves = data.moves ?? new List<Move>();
             this.rootNode = data.rootNode ?? new Node();
-            this.openingID = i;
 
             return true;
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"Fehler beim Laden von Opening {i}: {e.Message}");
+            Debug.LogError($"Fehler beim Laden von Opening {openingName}: {e.Message}");
             return false;
         }
     }
@@ -178,7 +169,7 @@ public class Opening
             currentNode = newNode;
         }
     }
-    SaveGame(openingID);
+    SaveGame(name);
     }
     public void Remove(List<Move> gameMoves, int nextMoveF1, int nextMoveF2) {
         Node node = rootNode;
@@ -199,7 +190,7 @@ public class Opening
                 return;
             }
         }
-        SaveGame(openingID);
+        SaveGame(name);
     }
     public void PrintTreeDepth5()
     {

@@ -42,8 +42,11 @@ public class OpeningCreator : MonoBehaviour
         }
 
 
-        Opening opening = new Opening(name,colorToggle, GameManager.instance.snapPreview.TakePhoto(), moves, GameManager.instance.openings.Count);
-        opening.SaveGame(GameManager.instance.openings.Count);
+        Opening opening = new Opening(name,colorToggle, GameManager.instance.snapPreview.TakePhoto(), moves);
+        opening.SaveGame(name);
+
+        
+
         //reset
         dummyBoard.ResetBoard(true);
         board.ResetBoard(true);
@@ -54,6 +57,9 @@ public class OpeningCreator : MonoBehaviour
         }
 
         GameManager.instance.openings.Add(opening);
+        GameManager.instance.openingTreesData.openingNames.Add(opening.name);
+        GameManager.instance.openingTreesData.Save();
+
         openingsManager.loadOpenings();
     }
 
