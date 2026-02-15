@@ -171,7 +171,6 @@ public class Board : MonoBehaviour
         this.drawOnBoard.refreshPossibles(refreshGUI);
         if(opening.name != "")
         {
-            openingController.ClearOpeningArrows();
             openingController.DrawOpeningArrows();
         }
 

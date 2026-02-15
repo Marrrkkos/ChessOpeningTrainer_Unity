@@ -3,7 +3,6 @@ using System.Drawing;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static Game;
-
 public class Pawn : Piece
 {
     override

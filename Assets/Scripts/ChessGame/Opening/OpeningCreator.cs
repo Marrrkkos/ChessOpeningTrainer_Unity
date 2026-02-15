@@ -42,8 +42,8 @@ public class OpeningCreator : MonoBehaviour
         }
 
 
-        Opening opening = new Opening(name,colorToggle, GameManager.instance.snapPreview.TakePhoto(), moves);
-
+        Opening opening = new Opening(name,colorToggle, GameManager.instance.snapPreview.TakePhoto(), moves, GameManager.instance.openings.Count);
+        opening.SaveGame(GameManager.instance.openings.Count);
         //reset
         dummyBoard.ResetBoard(true);
         board.ResetBoard(true);

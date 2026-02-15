@@ -1,34 +1,130 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(CanvasRenderer))]
-public class UIArrow : MaskableGraphic
+public class UIArrow : MaskableGraphic, IPointerClickHandler
 {
     [System.Serializable]
     public struct ArrowData
     {
+        public string from;
+        public string to;
         public Vector2 start;
         public Vector2 end;
         public Color color;
+        public int listIndex;
     }
 
     public List<ArrowData> activeArrows = new List<ArrowData>();
     public float shaftWidth = 10f;
     public float headSize = 30f;
 
-    // Methode, um einen Pfeil zur Liste hinzuzuf�gen
-    public void AddArrow(Vector2 from, Vector2 to, Color col)
-    {
-        activeArrows.Add(new ArrowData { start = from, end = to, color = col });
-        SetVerticesDirty(); // Mesh neu zeichnen
-    }
+    public OpeningController openingController;
+    private int lastSelectedIndex = -1;
 
+    public void AddArrow(string f1, string f2, Vector2 from, Vector2 to, Color col, int index)
+    {
+        activeArrows.Add(new ArrowData {from = f1, to = f2, start = from, end = to, color = col, listIndex = index});
+        SetVerticesDirty();
+    }
     public void ClearArrows()
     {
         activeArrows.Clear();
         SetVerticesDirty();
     }
+    public void OnPointerClick(PointerEventData eventData)
+{
+    Vector2 localPoint;
+    RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform, eventData.position, eventData.pressEventCamera, out localPoint);
+
+    List<int> hitIndices = new List<int>();
+    for (int i = 0; i < activeArrows.Count; i++)
+    {
+        if(activeArrows[i].listIndex != 0){continue;}
+        if (IsPointNearArrow(localPoint, activeArrows[i]))
+        {
+            hitIndices.Add(i);
+        }
+    }
+
+    if (hitIndices.Count == 0) return;
+
+    int nextIndex;
+
+    if (hitIndices.Contains(lastSelectedIndex))
+    {
+        int currentHitListIndex = hitIndices.IndexOf(lastSelectedIndex);
+        int nextHitListIndex = (currentHitListIndex + 1) % hitIndices.Count;
+        nextIndex = hitIndices[nextHitListIndex];
+    }
+    else
+    {
+        nextIndex = hitIndices[0];
+    }
+    lastSelectedIndex = nextIndex;
+    SelectArrow(nextIndex);
+    }
+    private void RepaintArrows()
+    {
+        for(int i = 0; i < activeArrows.Count; i++)
+        {
+            if(activeArrows[i].listIndex == 0)
+            {
+                ArrowData arrow = activeArrows[i];
+                arrow.color = Color.lightGreen;
+                activeArrows[i] = arrow;
+            }
+        }
+    }
+private void SelectArrow(int index)
+{
+    RepaintArrows();
+    ArrowData arrow = activeArrows[index];
+    Debug.Log($"Pfeil {index} ausgewählt! Von {arrow.start} nach {arrow.end}");
+    arrow.color = Color.red;
+    activeArrows[index] = arrow;
+    openingController.UpdateSelectedArrow(arrow.from, arrow.to);
+    MoveToFront(index);
+}
+private void MoveToFront(int index)
+{
+    ArrowData selected = activeArrows[index];
+    activeArrows.RemoveAt(index);
+    activeArrows.Add(selected);
+    lastSelectedIndex = activeArrows.Count - 1;
+    SetVerticesDirty();
+}
+private bool IsPointNearArrow(Vector2 point, ArrowData arrow)
+{
+    Vector2 lineVec = arrow.end - arrow.start;
+    float lineLen = lineVec.magnitude;
+    Vector2 lineDir = lineVec.normalized;
+
+    // 1. Projektion des Punktes auf die Linie (Skalarprodukt)
+    // Wie weit ist der Punkt entlang der Linie vom Startpunkt entfernt?
+    float projection = Vector2.Dot(point - arrow.start, lineDir);
+
+    // Prüfen, ob der Klick innerhalb der Länge des Pfeils liegt
+    if (projection < 0 || projection > lineLen) return false;
+
+    // 2. Senkrechter Abstand zur Linie berechnen
+    Vector2 closestPointOnLine = arrow.start + lineDir * projection;
+    float distanceToLine = Vector2.Distance(point, closestPointOnLine);
+
+    // Klick ist gültig, wenn er nah genug am Schaft ist (Toleranz = shaftWidth)
+    // Oder wir prüfen die Pfeilspitze separat:
+    if (projection > lineLen - headSize) 
+    {
+        // In der Nähe der Spitze darf man etwas weiter weg klicken (Breite der Spitze)
+        return distanceToLine < headSize / 1.5f;
+    }
+    
+    return distanceToLine < shaftWidth * 1.5f; // 1.5x Puffer für bessere Bedienbarkeit
+}
+
 
     protected override void OnPopulateMesh(VertexHelper vh)
     {
