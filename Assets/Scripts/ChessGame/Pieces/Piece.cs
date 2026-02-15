@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Newtonsoft.Json;
 public abstract class Piece
 {
-    public Board board;
+    [JsonIgnore] public Board board;
 
     public Piece(Board board) { 
         this.board = board;

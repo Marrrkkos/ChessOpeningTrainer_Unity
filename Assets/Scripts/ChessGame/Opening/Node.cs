@@ -5,6 +5,7 @@ using UnityEngine;
 public class Node
 {
     public Move move;
+    [SerializeReference]
     public List<Node> children;
 
     public Node(Move move) { 

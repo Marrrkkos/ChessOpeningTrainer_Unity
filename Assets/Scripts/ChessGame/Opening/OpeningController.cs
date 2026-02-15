@@ -27,7 +27,7 @@ public class OpeningController : MonoBehaviour
     public void AddToOpening()
     {
         if(board.opening.name != ""){
-            board.opening.add(board.currentGame.playedMoves);
+            board.opening.Add(board.currentGame.playedMoves);
         }
     }
     public void UpdateSelectedArrow(string m1, string m2)
@@ -57,7 +57,7 @@ public class OpeningController : MonoBehaviour
         {
             return;
         }
-        board.opening.remove(board.currentGame.playedMoves, BoardUtil.StringToIndex(m1), BoardUtil.StringToIndex(m2));
+        board.opening.Remove(board.currentGame.playedMoves, BoardUtil.StringToIndex(m1), BoardUtil.StringToIndex(m2));
         board.drawOnBoard.arrow.raycastTarget = false;
         DrawOpeningArrows();
         m1 = "";

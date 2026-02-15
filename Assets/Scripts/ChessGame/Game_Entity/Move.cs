@@ -8,9 +8,7 @@ public class Move
     //ESSENTIALS
     public int from;
     public int to;
-    [SerializeReference]
     public Piece movedPiece;
-    [SerializeReference]
     public Piece capturedPiece;
     public int specialRule;
     public bool oldHasMoved;
@@ -32,14 +30,13 @@ public class Move
         this.checkMate = checkMate;
     }
 
-
-    public bool equals(Move other) { 
+    public bool Equals(Move other) { 
         return (from == other.from) && (to == other.to) && (movedPiece?.id == other.movedPiece?.id) && (capturedPiece?.id == other.capturedPiece?.id) && (specialRule == other.specialRule) && (oldHasMoved == other.oldHasMoved) && (check == other.check) && (checkMate == other.checkMate); 
     }
     
     override
     public String ToString()
     {
-        return "from: " + BoardUtil.IndexToString(from) + " to: " + BoardUtil.IndexToString(to) + " movedPiece: " + movedPiece?.id + " capturedPieceID: " + capturedPiece?.id + " specialRule: " + specialRule + " oldHasMoved: " + oldHasMoved + " check: " + check + " checkmate: " + checkMate;
+        return "from: " + BoardUtil.IndexToString(from) + " " + BoardUtil.IndexToString(to) + " movedPieceID: " + movedPiece?.id + " capturedPieceID: " + capturedPiece?.id + " specialRule: " + specialRule + " oldHasMoved: " + oldHasMoved + " check: " + check + " checkmate: " + checkMate;
     }
 }

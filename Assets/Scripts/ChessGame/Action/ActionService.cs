@@ -29,6 +29,7 @@ public class ActionService
 
         if (m1 == "")
         {
+            selectedField = fieldName;
             m1 = fieldName;
             if (isCorrectPiece())
             {

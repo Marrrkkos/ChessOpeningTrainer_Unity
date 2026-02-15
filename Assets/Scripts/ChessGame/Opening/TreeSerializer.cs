@@ -1,60 +1,46 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using Newtonsoft.Json; // WICHTIG!
 
 public static class TreeSerializer
 {
+    // Die "Magie-Einstellungen" für Newtonsoft
+    private static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
+    {
+        // 1. Das löst dein Problem mit Piece/Rook/Pawn automatisch!
+        // Er schreibt "$type": "Rook" in die Datei.
+        TypeNameHandling = TypeNameHandling.Auto, 
+
+        // 2. Macht die Datei schön lesbar
+        Formatting = Formatting.Indented, 
+
+        // 3. Verhindert Abstürze bei Kreis-Referenzen (Safety First)
+        ReferenceLoopHandling = ReferenceLoopHandling.Ignore 
+    };
+
+    // --- SAVE ---
     public static void Save(Node root, string name, bool color, List<Move> moves, string filename)
     {
-        TreeSaveData saveData = new TreeSaveData();
-        
-        // A) Metadaten setzen
-        saveData.treeName = name;
-        saveData.useColor = color;
-        saveData.openingMoves = moves;
-        // B) Baum "flachklopfen" (Dein Algorithmus)
-        List<Node> allRealNodes = new List<Node>();
-        Queue<Node> queue = new Queue<Node>();
-        
-        if (root != null) queue.Enqueue(root);
-
-        while (queue.Count > 0)
+        TreeSaveData data = new TreeSaveData
         {
-            Node current = queue.Dequeue();
-            allRealNodes.Add(current);
-            
-            foreach (var child in current.children)
-            {
-                queue.Enqueue(child);
-            }
-        }
+            treeName = name,
+            useColor = color,
+            openingMoves = moves,
+            root = root // Einfach den Startknoten reinwerfen!
+        };
 
-        foreach (Node realNode in allRealNodes)
-        {
-            FlatNode flatNode = new FlatNode();
-            flatNode.move = realNode.move;
-
-            foreach (Node child in realNode.children)
-            {
-                int index = allRealNodes.IndexOf(child);
-                flatNode.childrenIndices.Add(index);
-            }
-
-            saveData.allNodes.Add(flatNode);
-        }
-
-        // D) Speichern
-        string json = JsonUtility.ToJson(saveData, true);
+        // EINE ZEILE macht die ganze Arbeit:
+        string json = JsonConvert.SerializeObject(data, Settings);
+        
         File.WriteAllText(Path.Combine(Application.persistentDataPath, filename), json);
-        Debug.Log("Gespeichert (Name: " + name + ", Color: " + color + ")");
+        Debug.Log($"Gespeichert mit Newtonsoft: {filename}");
     }
 
     // --- LOAD ---
-    // WICHTIG: Wir nutzen 'out', um Name und Color zurückzugeben, 
-    // da der Rückgabewert der Funktion schon für den 'Node' reserviert ist.
     public static Node Load(string filename, out string loadedName, out bool loadedColor, out List<Move> loadedMoves)
     {
-        // Standardwerte, falls Laden fehlschlägt
+        // Defaults
         loadedName = "";
         loadedColor = false;
         loadedMoves = new List<Move>();
@@ -63,34 +49,17 @@ public static class TreeSerializer
         if (!File.Exists(path)) return null;
 
         string json = File.ReadAllText(path);
-        TreeSaveData saveData = JsonUtility.FromJson<TreeSaveData>(json);
 
-        if (saveData == null || saveData.allNodes.Count == 0) return null;
+        // EINE ZEILE baut den ganzen Baum + Unterklassen wieder auf:
+        TreeSaveData data = JsonConvert.DeserializeObject<TreeSaveData>(json, Settings);
 
-        // A) Metadaten extrahieren
-        loadedName = saveData.treeName;
-        loadedColor = saveData.useColor;
-        loadedMoves = saveData.openingMoves;
-        
-        // B) Baum rekonstruieren
-        List<Node> reconstructedNodes = new List<Node>();
-        foreach (var flatNode in saveData.allNodes)
-        {
-            Node n = new Node(flatNode.move);
-            reconstructedNodes.Add(n);
-        }
+        if (data == null) return null;
 
-        for (int i = 0; i < saveData.allNodes.Count; i++)
-        {
-            FlatNode flat = saveData.allNodes[i];
-            Node real = reconstructedNodes[i];
+        // Daten zurückgeben
+        loadedName = data.treeName;
+        loadedColor = data.useColor;
+        loadedMoves = data.openingMoves ?? new List<Move>();
 
-            foreach (int childIndex in flat.childrenIndices)
-            {
-                real.children.Add(reconstructedNodes[childIndex]);
-            }
-        }
-
-        return reconstructedNodes[0];
+        return data.root;
     }
 }

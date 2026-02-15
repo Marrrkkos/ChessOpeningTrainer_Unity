@@ -8,7 +8,7 @@ public class GameRules
         List<Vector2Int> finalPossibles = new List<Vector2Int>();
         Piece currentPiece = board.fields[currentPos].piece;
 
-        if (currentPossibles.Count == null) {
+        if (currentPossibles.Count == 0) {
             return finalPossibles;
         }
         //if (board.fields[currentPos].piece == null || board.whiteKing == null || board.blackKing == null)           // KRITISCHE STELLE

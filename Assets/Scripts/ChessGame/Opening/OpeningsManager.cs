@@ -15,8 +15,8 @@ public class OpeningsManager: MonoBehaviour
         //Debug.Log(Application.persistentDataPath);
         bool x = true;
         int i = 0;
-        while (x)
-        {
+        //while (x)
+        //{
             Opening opening = new Opening(i);
             x = opening.LoadGame(i);
 
@@ -24,9 +24,9 @@ public class OpeningsManager: MonoBehaviour
             {
                 GameManager.instance.openings.Add(opening);
                 i++;
-                //opening.PrintTreeDepth5();
+                opening.PrintTreeDepth5();
             }
-        }
+        //}
         loadOpenings();
 
 

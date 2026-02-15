@@ -71,7 +71,7 @@ public class Board : MonoBehaviour
         currentGame = new Game(new Player[] { new Player("Player 1", 0, true), new Player("Player 2", 0, false) });
     }
     public Move undoMove(bool refreshGUI) {
-        Debug.Log("Undo Move!");
+
         if (currentGame.playedMoves.Count == 0) { return null;}
         Piece piece = currentGame.playedMoves[currentGame.playedMoves.Count - 1].movedPiece;
         Move move = piece.undoMove(refreshGUI);
@@ -97,7 +97,6 @@ public class Board : MonoBehaviour
     //}
     public bool doMove(int specialRule, string m1, string m2, bool refreshGUI)
     {
-        Debug.Log("Move!");
         int fieldID_1 = BoardUtil.StringToIndex(m1);
         int fieldID_2 = BoardUtil.StringToIndex(m2);
         Piece piece = this.fields[fieldID_1].piece;
@@ -122,7 +121,7 @@ public class Board : MonoBehaviour
         if (currentGame.movesMemory.Count != 0)
         {
             Move m = currentGame.movesMemory.Last();
-            if (m.equals(move))
+            if (m.Equals(move))
             {
                 currentGame.movesMemory.Remove(m);
             }
@@ -219,16 +218,23 @@ public class Board : MonoBehaviour
 
         whiteKing = fields[60].piece; //WHITE AND BLACK KING 
         blackKing = fields[4].piece;
-        for (int i = 16; i < 48; i++)
+        for (int i = 48; i < 64; i++)
         {
-            if(refreshGUI)
-                fields[i].pieceImage.gameObject.SetActive(false);
+            whitePieces.Add(fields[i].piece);
         }
-
+        for (int i = 0; i < 16; i++)
+        {
+            blackPieces.Add(fields[i].piece);
+        }
+        if(refreshGUI){
+            for (int i = 16; i < 48; i++)
+            {
+                fields[i].pieceImage.gameObject.SetActive(false);
+            }
+        }
 
         currentGame.currentPlayer = 0;
     }
 
-    // HELPER FUNCTIONS
     
 }

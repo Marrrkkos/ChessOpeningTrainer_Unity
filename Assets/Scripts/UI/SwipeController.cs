@@ -11,14 +11,13 @@ public class SwipeController : MonoBehaviour, IEndDragHandler, IBeginDragHandler
 
     private int totalPages;
     private float[] pagePositions;
-    private bool isSnapping = false;
 
     void Start()
     {
         UpdatePages();
     }
 
-    // Falls du während des Spiels Seiten hinzufügst, ruf diese Methode auf
+    // Falls du wï¿½hrend des Spiels Seiten hinzufï¿½gst, ruf diese Methode auf
     public void UpdatePages()
     {
         totalPages = content.childCount;
@@ -31,9 +30,8 @@ public class SwipeController : MonoBehaviour, IEndDragHandler, IBeginDragHandler
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        // Stop das Snapping, wenn der User wieder anfängt zu ziehen
+        // Stop das Snapping, wenn der User wieder anfï¿½ngt zu ziehen
         StopAllCoroutines();
-        isSnapping = false;
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -42,7 +40,7 @@ public class SwipeController : MonoBehaviour, IEndDragHandler, IBeginDragHandler
         float nearest = float.MaxValue;
         int nearestPage = 0;
 
-        // Finde die nächste Seite
+        // Finde die nï¿½chste Seite
         for (int i = 0; i < totalPages; i++)
         {
             float dist = Mathf.Abs(currentPos - pagePositions[i]);
@@ -58,7 +56,6 @@ public class SwipeController : MonoBehaviour, IEndDragHandler, IBeginDragHandler
 
     private IEnumerator SmoothSnap(float target)
     {
-        isSnapping = true;
         while (Mathf.Abs(scrollRect.horizontalNormalizedPosition - target) > 0.0001f)
         {
             scrollRect.horizontalNormalizedPosition = Mathf.Lerp(
@@ -69,6 +66,5 @@ public class SwipeController : MonoBehaviour, IEndDragHandler, IBeginDragHandler
             yield return null;
         }
         scrollRect.horizontalNormalizedPosition = target;
-        isSnapping = false;
     }
 }
