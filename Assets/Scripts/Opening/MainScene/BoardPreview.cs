@@ -1,22 +1,21 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class BoardPreview: MonoBehaviour
 {
     public RawImage openingPreview;
     public Text openingName;
-    private int openingIndex;
-    public void loadOpening(Opening opening, int index)
+    public void LoadOpening(Opening opening)
     {
         openingName.text = opening.name;
         openingPreview.texture = opening.startPos;
-        openingIndex = index;
     }
 
-    public void getOpening()
+    public void GetOpening()
     {
-        GameManager.instance.openingsManager.loadOpening(openingIndex);
-
+        GameManager.instance.selcetedOpening = openingName.text;
+        SceneManager.LoadScene("OpeningScene");
     }
 }

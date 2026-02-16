@@ -4,7 +4,7 @@ using System.IO;
 using Newtonsoft.Json;
 
 [System.Serializable]
-public class OpeningsTreesData
+public class OpeningTreesData
 {
     public List<string> openingNames = new ();
 
@@ -20,17 +20,17 @@ public class OpeningsTreesData
     }
 
     // --- LADEN (Statische Methode) ---
-    public static OpeningsTreesData Load()
+    public static OpeningTreesData Load()
     {
         if (!File.Exists(PathToSaveFile))
         {
-            return new OpeningsTreesData(); // Gibt leere Liste zurück, wenn noch keine Datei da ist
+            return new OpeningTreesData(); // Gibt leere Liste zurück, wenn noch keine Datei da ist
         }
 
         string json = File.ReadAllText(PathToSaveFile);
-        var data = JsonConvert.DeserializeObject<OpeningsTreesData>(json);
+        var data = JsonConvert.DeserializeObject<OpeningTreesData>(json);
 
-        return data ?? new OpeningsTreesData(); // Sicherheits-Check, falls Datei leer ist
+        return data ?? new OpeningTreesData(); // Sicherheits-Check, falls Datei leer ist
     }
 
 }

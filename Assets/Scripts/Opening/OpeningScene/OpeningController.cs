@@ -13,9 +13,10 @@ public class OpeningController : MonoBehaviour
 
     public void DrawOpeningArrows()
     {
+        Debug.Log("DrawOpeningArrows");
         board.drawOnBoard.arrow.ClearArrows();
         List<Move> openingPossibleMoves = board.opening.GetMoves(board.currentGame.playedMoves);
-        
+        if(openingPossibleMoves.Count == 0){Debug.Log("NULL DU ARSCH!");}
         foreach(Move m in openingPossibleMoves)
         {
             board.drawOnBoard.drawArrow(m.from, m.to, 0);

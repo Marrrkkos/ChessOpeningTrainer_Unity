@@ -31,6 +31,6 @@ public class AllPanelScaler : MonoBehaviour
             RectTransform content = panel.GetChild(0) as RectTransform;
             content.sizeDelta = contentSize;
         }
-        panel2Scaler.scalePanel2(panelSize.x);
+        panel2Scaler.ScalePanel2(panelSize.x);
     }
 }

@@ -171,7 +171,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 768522310926863120}
         m_TargetAssemblyTypeName: BoardPreview, Assembly-CSharp
-        m_MethodName: getOpening
+        m_MethodName: GetOpening
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

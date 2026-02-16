@@ -97,7 +97,7 @@ public class pgn_converter : MonoBehaviour
             Debug.Log(count);
         }
         game.result = result;
-        GameManager.instance.gameDataBase.Add(game);
+        //GameManager.instance.gameDataBase.Add(game);
     }
 
 

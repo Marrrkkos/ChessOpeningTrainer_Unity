@@ -23,7 +23,7 @@ public class Board : MonoBehaviour
     public List<Piece> blackPieces = new List<Piece>();
 
     //INITIALIZE
-    public void Start()
+    public void Awake()
     {
         actionService = new ActionService(this);
         //LOAD BOARD

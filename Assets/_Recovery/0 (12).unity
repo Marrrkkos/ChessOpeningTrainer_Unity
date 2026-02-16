@@ -3993,7 +3993,7 @@ MonoBehaviour:
   colorImage: {fileID: 206111977}
   dummyBoard: {fileID: 1222003140}
   dummyBoardScaler: {fileID: 1222003139}
-  boardPreviewLoader: {fileID: 1142887136}
+  boardPreviewLoader: {fileID: 0}
 --- !u!1001 &1483429351
 PrefabInstance:
   m_ObjectHideFlags: 0

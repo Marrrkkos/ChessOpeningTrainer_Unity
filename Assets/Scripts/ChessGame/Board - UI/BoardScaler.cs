@@ -8,7 +8,7 @@ public class BoardScaler : MonoBehaviour
     public GridLayoutGroup gridLayoutGroup;
     public float cellSize;
     private int currentRotation = 0;
-    public void scaleBoard(float boardSize) { 
+    public void ScaleBoard(float boardSize) { 
         
         boardRect.sizeDelta = new Vector2(boardSize, boardSize);
         cellSize = boardSize/8;

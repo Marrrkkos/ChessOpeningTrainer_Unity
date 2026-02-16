@@ -6,14 +6,14 @@ public class OpeningCreator : MonoBehaviour
 {
     public Board board;
     public BoardScaler boardScaler;
-    public OpeningsManager openingsManager;
     public InputField nameInput;
     public Image colorImage;
-
     public Board dummyBoard;
     public BoardScaler dummyBoardScaler;
+
+    public BoardPreviewLoader boardPreviewLoader;
     private bool colorToggle = true;
-    public void switchColor() {
+    public void SwitchColor() {
         if (colorToggle)
         {
             colorImage.color = Color.brown;
@@ -27,7 +27,7 @@ public class OpeningCreator : MonoBehaviour
     }
 
 
-    public void createOpening() { 
+    public void CreateOpening() { 
         string name = nameInput.text;
         List<Move> moves = board.currentGame.playedMoves;
 
@@ -60,10 +60,18 @@ public class OpeningCreator : MonoBehaviour
         GameManager.instance.openingTreesData.openingNames.Add(opening.name);
         GameManager.instance.openingTreesData.Save();
 
-        openingsManager.loadOpenings();
+        boardPreviewLoader.LoadPreviews();
     }
+    public void DiscardOpening()
+    {
+        board.ResetBoard(true);
+        if(dummyBoard.rotation == true)
+        {
+            dummyBoardScaler.rotate();
 
-    public void discardOpening()
+        }
+    }
+    public void DeleteOpening()
     {
         board.ResetBoard(true);
         if(dummyBoard.rotation == true)
