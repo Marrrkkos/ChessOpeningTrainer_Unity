@@ -16,6 +16,6 @@ public class BoardPreview: MonoBehaviour
     public void GetOpening()
     {
         GameManager.instance.selcetedOpening = openingName.text;
-        SceneManager.LoadScene("OpeningScene");
+        GameManager.instance.sceneSwitcher.Switch();
     }
 }

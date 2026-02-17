@@ -1,18 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using UnityEngine.SceneManagement;
+
 public class GameManager : MonoBehaviour
 {
     
     public static GameManager instance;
-
+    public SceneSwitcher sceneSwitcher;
     [Header("DataBases")]
     public PieceSetDataBase pieceSetData;
 
     public List <Opening> openings = new ();
     public OpeningTreesData openingTreesData = new();
     public string selcetedOpening = "";
-    public SnapPreview snapPreview;
     //SingleTon
     void Awake() {
         if (instance == null)
@@ -23,5 +24,12 @@ public class GameManager : MonoBehaviour
         else {
             Destroy(gameObject);
         }
+
+        // Lädt die Umgebungsszene additiv dazu, falls sie noch nicht offen ist
+        //if (!SceneManager.GetSceneByName("ChessBoardScene").isLoaded)
+        //{
+        //    SceneManager.LoadSceneAsync("ChessBoardScene", LoadSceneMode.Additive);
+        //}
+    
     }
 }

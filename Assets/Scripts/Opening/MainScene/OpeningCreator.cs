@@ -12,6 +12,8 @@ public class OpeningCreator : MonoBehaviour
     public BoardScaler dummyBoardScaler;
 
     public BoardPreviewLoader boardPreviewLoader;
+
+    public SnapPreview snapPreview;
     private bool colorToggle = true;
     public void SwitchColor() {
         if (colorToggle)
@@ -42,7 +44,7 @@ public class OpeningCreator : MonoBehaviour
         }
 
 
-        Opening opening = new Opening(name,colorToggle, GameManager.instance.snapPreview.TakePhoto(), moves);
+        Opening opening = new Opening(name,colorToggle, snapPreview.TakePhoto(), moves);
         opening.SaveGame(name);
 
         
