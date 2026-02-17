@@ -11,27 +11,14 @@ public List<BoardPreview> boardPreviews;
         GameManager.instance.openingTreesData = openingsTreesData;
         //Debug.Log(Application.persistentDataPath);
 
-        bool containsAlready = false;
         foreach(string openingString in openingsTreesData.openingNames)
         {
-            foreach(Opening o in GameManager.instance.openings)
-            {
-                if(o.name == openingString)
-                {
-                    containsAlready = true;
-                }
-            }
-
-            if(!containsAlready){
-                Opening opening = new();
-                opening.LoadGame(openingString);
-                GameManager.instance.openings.Add(opening);
-            }
-            containsAlready = false;
+            Opening opening = new();
+            opening.LoadGame(openingString);
+            GameManager.instance.openings.Add(opening);
             //opening.PrintTreeDepth5();
         }
         LoadPreviews();
-
 
     }
     public void LoadPreviews()

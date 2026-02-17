@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     [Header("DataBases")]
     public PieceSetDataBase pieceSetData;
 
+    public string selectedMode = "";
     public List <Opening> openings = new ();
     public OpeningTreesData openingTreesData = new();
     public string selcetedOpening = "";

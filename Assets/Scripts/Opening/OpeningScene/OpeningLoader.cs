@@ -9,7 +9,7 @@ public class OpeningLoader: MonoBehaviour
     public Board board;
     public BoardScaler boardScaler;
 
-    public void OnEnable()
+    public void LoadOpening()
     {
         string selcetedOpening = GameManager.instance.selcetedOpening;
         if(selcetedOpening == "")
