@@ -16,6 +16,9 @@ public class ControllButtons : MonoBehaviour
         }
 
         board.ResetBoard(true);
+        if(board.opening.name != ""){
+            board.openingController.DrawOpeningArrows();
+        }
     }
     
     public void DoUndo() {

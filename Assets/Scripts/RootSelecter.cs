@@ -3,12 +3,8 @@ using UnityEngine;
 public class RootSelecter : MonoBehaviour
 {
     [Header("GameObjects")]
-    public GameObject OpeningTop;
-    public GameObject OpeningBot;
-
-    public GameObject GameSenseTop;
-    public GameObject GameSenseBot;
-
+    public GameObject Opening;
+    public GameObject GameSense;
     [Header("Loaders")]
 
     public OpeningLoader openingLoader;
@@ -18,20 +14,16 @@ public class RootSelecter : MonoBehaviour
         string selected = GameManager.instance.selectedMode;
         if(selected == "GameSense")
         {
-            GameSenseTop.SetActive(true);
-            GameSenseBot.SetActive(true);
+            GameSense.SetActive(true);
         }else if( selected == "Opening")
         {
-            OpeningTop.SetActive(true);
-            OpeningBot.SetActive(true);
+            Opening.SetActive(true);
             openingLoader.LoadOpening();
         }
     }
     public void OnDisable()
     {
-        OpeningTop.SetActive(false);
-        OpeningBot.SetActive(false);
-        GameSenseTop.SetActive(false);
-        GameSenseBot.SetActive(false);
+        Opening.SetActive(false);
+        GameSense.SetActive(false);
     }
 }

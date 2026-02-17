@@ -119,13 +119,19 @@ public class Opening
 
         Node node = rootNode;
 
+        bool foundOne = false;
         foreach (Move m in gameMoves) {
             foreach (Node n in node.children) { 
-                Debug.Log(n.move.ToString() + "  ||  " + m.ToString());
                 if(n.move.Equals(m)) {
                     node = n;
+                    foundOne = true;
                 }
             }
+            if(foundOne == false)
+            {
+                return new List<Move>();
+            }
+            foundOne = false;
         }
         if(node == rootNode)
         {
@@ -151,25 +157,25 @@ public class Opening
 
         foreach (Move moveToProcess in moves) {
         
-        Node foundChild = null;
+            Node foundChild = null;
         
-        foreach (Node child in currentNode.children) {
-            if (child.move.Equals(moveToProcess)) {
-                foundChild = child;
-                break;
+            foreach (Node child in currentNode.children) {
+                if (child.move.Equals(moveToProcess)) {
+                   foundChild = child;
+                   break;
+                }
+            }
+
+            if (foundChild != null) {
+                currentNode = foundChild;
+            } 
+            else {
+                Node newNode = new Node(moveToProcess);
+                currentNode.addChild(newNode);
+                currentNode = newNode;
             }
         }
-
-        if (foundChild != null) {
-            currentNode = foundChild;
-        } 
-        else {
-            Node newNode = new Node(moveToProcess);
-            currentNode.addChild(newNode);
-            currentNode = newNode;
-        }
-    }
-    SaveGame(name);
+        SaveGame(name);
     }
     public void Remove(List<Move> gameMoves, int nextMoveF1, int nextMoveF2) {
         Node node = rootNode;
