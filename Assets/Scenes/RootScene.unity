@@ -201,8 +201,8 @@ MonoBehaviour:
   openingTreesData:
     openingNames: []
   selcetedOpening: 
-  stockFishActivated: 1
-  openingDataBaseActivated: 0
+  stockFishActivated: 0
+  openingDataBaseActivated: 1
 --- !u!4 &1218856124
 Transform:
   m_ObjectHideFlags: 0

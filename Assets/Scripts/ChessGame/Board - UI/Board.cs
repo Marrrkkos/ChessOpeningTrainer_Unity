@@ -181,7 +181,7 @@ public class Board : MonoBehaviour
         }
         if (openingDataBaseController != null && GameManager.instance.openingDataBaseActivated)
         {
-            openingDataBaseController.DrawOpeningDataBaseArrows();
+            openingDataBaseController.DrawOpeningDataBaseArrows(currentGame.playedMoves);
         }
     }
 

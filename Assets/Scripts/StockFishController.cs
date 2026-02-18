@@ -17,25 +17,11 @@ public class StockFishController : MonoBehaviour
     public void DrawStockFishArrows(List<Move> gameMoves)
     {
         SendCommand("stop");
-        SendCommand("position startpos " + GameToStockFishInput(gameMoves));
+        SendCommand("position startpos moves " + BoardUtil.GameToUCI(gameMoves, true));
         SendCommand("go infinite");
     }
 
-    private string GameToStockFishInput(List<Move> gameMoves)
-{
-    StringBuilder sb = new StringBuilder("moves "); // Das Wort 'moves' muss vor die Liste
-    foreach (Move m in gameMoves)
-    {
-        sb.Append(BoardUtil.IndexToString(m.from)).Append(BoardUtil.IndexToString(m.to));
-        if (m.specialRule >= 5)
-        {
-            sb.Append(BoardUtil.GetPromotionString(m.specialRule));
-        }
-        sb.Append(" ");
-    }
-    UnityEngine.Debug.Log(sb.ToString());
-    return sb.ToString();
-}
+  
     void OnEnable()
     {
         UnityEngine.Debug.Log("Stockfish starting...");

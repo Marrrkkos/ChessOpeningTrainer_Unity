@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using Unity.Collections;
 using Unity.VisualScripting;
@@ -47,7 +48,24 @@ public class BoardUtil
     public static char GetFileChar(int x) => (char)('a' + x);
     public static char GetRankChar(int y) => (char)('8' - y);
 
+    public static string GameToUCI(List<Move> gameMoves, bool stockfish)
+    {
+    StringBuilder sb = new StringBuilder("");
+    for (int i = 0; i < gameMoves.Count; i++)
+    {
+        if(i != 0)
+        {
+            if(stockfish){sb.Append(" ");}else{sb.Append(",");}
+        }
 
+        sb.Append(BoardUtil.IndexToString(gameMoves[i].from)).Append(BoardUtil.IndexToString(gameMoves[i].to));
+        if (gameMoves[i].specialRule >= 5)
+        {
+            sb.Append(BoardUtil.GetPromotionString(gameMoves[i].specialRule, false));
+        }
+    }
+    return sb.ToString();
+    }
     public static char IdToChar(int id, bool upper)
     {
         char c = ' ';
@@ -78,15 +96,28 @@ public class BoardUtil
             default: return -1;
         }
     }
-    public static string GetPromotionString(int specialRule)
+    public static string GetPromotionString(int specialRule, bool san)
     {
-        switch (specialRule)
+        if(san){
+            switch (specialRule)
+            {
+                case 5: return "=Q";
+                case 6: return "=N";
+                case 7: return "=R";
+                case 8: return "=B";
+                default: return "";
+            }
+        }
+        else
         {
-            case 5: return "=Q";
-            case 6: return "=N";
-            case 7: return "=R";
-            case 8: return "=B";
-            default: return "";
+            switch (specialRule)
+            {
+                case 5: return "q";
+                case 6: return "n";
+                case 7: return "r";
+                case 8: return "b";
+                default: return "";
+            }
         }
     }
 }
