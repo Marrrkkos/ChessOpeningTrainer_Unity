@@ -29,7 +29,7 @@ public class OpeningLoader: MonoBehaviour
         }
         if (!opening.color)
         {
-            boardScaler.rotate();
+            boardScaler.SetRotation(false);
         }
     }
 }

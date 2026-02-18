@@ -2,8 +2,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 public class BoardPreviewLoader : MonoBehaviour{
-public List<BoardPreview> boardPreviews;
-
+    public List<BoardPreview> boardPreviews;
+    public Board dummyBoard;
+    public BoardScaler dummyBoardScaler;
+    public SnapPreview snapPreview;
     public void Start()
     {
 
@@ -25,8 +27,20 @@ public List<BoardPreview> boardPreviews;
     {
         for (int i = 0; i < GameManager.instance.openings.Count; i++)
         {
-            boardPreviews[i].LoadOpening(GameManager.instance.openings[i]);
+            Opening opening = GameManager.instance.openings[i];
+            foreach(Move move in opening.moves){
+                dummyBoard.doMove(move, true);
+            }
+            if(!opening.color)
+            {   
+                dummyBoardScaler.SetRotation(false);
+            }
+            opening.startPos = snapPreview.TakePhoto();
+
+            boardPreviews[i].LoadOpening(opening);
             boardPreviews[i].gameObject.SetActive(true);
+
+            dummyBoard.ResetBoard(true);
 
         }
     }

@@ -3809,6 +3809,9 @@ MonoBehaviour:
   - {fileID: 1861241417}
   - {fileID: 1850208722}
   - {fileID: 1236926673}
+  dummyBoard: {fileID: 1222003140}
+  dummyBoardScaler: {fileID: 1222003139}
+  snapPreview: {fileID: 1576003745}
 --- !u!114 &1222003139 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6935328135591874447, guid: 470c4ee31731458448284a49ef0a297e, type: 3}
@@ -3994,7 +3997,7 @@ MonoBehaviour:
   dummyBoard: {fileID: 1222003140}
   dummyBoardScaler: {fileID: 1222003139}
   boardPreviewLoader: {fileID: 1142887136}
-  snapPreview: {fileID: 0}
+  snapPreview: {fileID: 1576003745}
 --- !u!1001 &1483429351
 PrefabInstance:
   m_ObjectHideFlags: 0

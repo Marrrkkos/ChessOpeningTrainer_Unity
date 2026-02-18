@@ -7,31 +7,28 @@ public class BoardScaler : MonoBehaviour
     public Board board;
     public GridLayoutGroup gridLayoutGroup;
     public float cellSize;
-    private int currentRotation = 0;
     public void ScaleBoard(float boardSize) { 
         
         boardRect.sizeDelta = new Vector2(boardSize, boardSize);
         cellSize = boardSize/8;
         gridLayoutGroup.cellSize = new Vector2(cellSize, cellSize);
     }
-    public void rotate()
+    public void SetRotation(bool rotation)
     {
-
-        if (currentRotation == 0)
+        if(rotation)
         {
             boardRect.localEulerAngles = new Vector3(0, 0, 180);
             board.rotation = true;
-            currentRotation = 180;
+            RotatePieces(180);
         }
-        else if (currentRotation == 180)
+        else
         {
             boardRect.localEulerAngles = new Vector3(0, 0, 0);
             board.rotation = false;
-            currentRotation = 0;
+            RotatePieces(0);
         }
-        rotatePieces(currentRotation);
     }
-    private void rotatePieces(int rotation)
+    private void RotatePieces(int rotation)
     {
         Field[] fields = board.fields;
         for (int i = 0; i < 64; i++)

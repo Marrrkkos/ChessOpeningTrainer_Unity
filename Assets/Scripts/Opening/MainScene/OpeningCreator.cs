@@ -25,7 +25,7 @@ public class OpeningCreator : MonoBehaviour
             colorImage.color = Color.white;
             colorToggle = true;
         }
-        boardScaler.rotate();
+        boardScaler.SetRotation(colorToggle);
     }
 
 
@@ -37,11 +37,7 @@ public class OpeningCreator : MonoBehaviour
         foreach(Move move in moves){
             dummyBoard.doMove(move, true);
         }
-        if(board.rotation == true)
-        {
-            dummyBoardScaler.rotate();
-
-        }
+        dummyBoardScaler.SetRotation(board.rotation);
 
 
         Opening opening = new Opening(name,colorToggle, snapPreview.TakePhoto(), moves);
@@ -51,12 +47,8 @@ public class OpeningCreator : MonoBehaviour
 
         //reset
         dummyBoard.ResetBoard(true);
-        board.ResetBoard(true);
-        if(dummyBoard.rotation == true)
-        {
-            dummyBoardScaler.rotate();
-
-        }
+        board.ResetBoard(false);
+        dummyBoardScaler.SetRotation(false);
 
         GameManager.instance.openings.Add(opening);
         GameManager.instance.openingTreesData.openingNames.Add(opening.name);
@@ -67,19 +59,12 @@ public class OpeningCreator : MonoBehaviour
     public void DiscardOpening()
     {
         board.ResetBoard(true);
-        if(dummyBoard.rotation == true)
-        {
-            dummyBoardScaler.rotate();
-
-        }
+        boardScaler.SetRotation(false);
     }
     public void DeleteOpening()
     {
         board.ResetBoard(true);
-        if(dummyBoard.rotation == true)
-        {
-            dummyBoardScaler.rotate();
+        boardScaler.SetRotation(false);
 
-        }
     }
 }

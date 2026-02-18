@@ -11,6 +11,7 @@ public class BoardPreview: MonoBehaviour
     {
         openingName.text = opening.name;
         openingPreview.texture = opening.startPos;
+
     }
 
     public void GetOpening()
