@@ -193,6 +193,8 @@ GameObject:
   - component: {fileID: 80741155}
   - component: {fileID: 80741157}
   - component: {fileID: 80741156}
+  - component: {fileID: 80741159}
+  - component: {fileID: 80741158}
   m_Layer: 5
   m_Name: OpeningPanel
   m_TagString: Untagged
@@ -251,6 +253,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6b08191fce518347820ca78965227bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::panel2Scaler
+--- !u!114 &80741158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 80741154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 683d610ca49d30dc2852b5ccf77bae4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OpeningDataBaseController
+--- !u!114 &80741159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 80741154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28398cdaf72fe2648af88201aa158d0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StockFishController
+  drawOnBoard: {fileID: 984341521}
 --- !u!1 &104055104
 GameObject:
   m_ObjectHideFlags: 0
@@ -1792,6 +1819,14 @@ PrefabInstance:
       propertyPath: openingController
       value: 
       objectReference: {fileID: 80741156}
+    - target: {fileID: 2322110258127106414, guid: 470c4ee31731458448284a49ef0a297e, type: 3}
+      propertyPath: stockFishController
+      value: 
+      objectReference: {fileID: 80741159}
+    - target: {fileID: 2322110258127106414, guid: 470c4ee31731458448284a49ef0a297e, type: 3}
+      propertyPath: openingDataBaseController
+      value: 
+      objectReference: {fileID: 80741158}
     - target: {fileID: 2533727931556017803, guid: 470c4ee31731458448284a49ef0a297e, type: 3}
       propertyPath: m_Sprite
       value: 

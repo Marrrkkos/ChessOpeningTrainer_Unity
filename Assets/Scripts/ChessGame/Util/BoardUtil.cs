@@ -78,4 +78,15 @@ public class BoardUtil
             default: return -1;
         }
     }
+    public static string GetPromotionString(int specialRule)
+    {
+        switch (specialRule)
+        {
+            case 5: return "=Q";
+            case 6: return "=N";
+            case 7: return "=R";
+            case 8: return "=B";
+            default: return "";
+        }
+    }
 }

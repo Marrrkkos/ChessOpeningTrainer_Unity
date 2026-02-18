@@ -15,6 +15,10 @@ public class GameManager : MonoBehaviour
     public List <Opening> openings = new ();
     public OpeningTreesData openingTreesData = new();
     public string selcetedOpening = "";
+
+    [Header("Tools")]
+    public bool stockFishActivated = false;
+    public bool openingDataBaseActivated = false;
     //SingleTon
     void Awake() {
         if (instance == null)

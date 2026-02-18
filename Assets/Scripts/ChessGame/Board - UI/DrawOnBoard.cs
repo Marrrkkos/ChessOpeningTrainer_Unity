@@ -34,8 +34,23 @@ public class DrawOnBoard : MonoBehaviour
         Vector2 pos2 = new Vector2(f2 % 8, -f2 / 8);
         float offSetF = 3.5f*boardScaler.cellSize;
         Vector2 offSet = new Vector2(offSetF, -offSetF);
-        Debug.Log("BoardScaler: " + boardScaler.cellSize + " " + pos1 + " " + pos2);
-        arrow.AddArrow(BoardUtil.IndexToString(f1),BoardUtil.IndexToString(f2),pos1 * boardScaler.cellSize - offSet, pos2 * boardScaler.cellSize - offSet, UnityEngine.Color.lightGreen, index);
+        Color color = new Color();
+        switch (index)
+        {
+            case 0: 
+                color = UnityEngine.Color.lightGreen;
+                break;
+            case 1: 
+                color = UnityEngine.Color.lightBlue;
+                break;
+            case 2:
+                color = UnityEngine.Color.brown;
+                break;
+            default:
+                color = UnityEngine.Color.white;
+                break;
+        }
+        arrow.AddArrow(BoardUtil.IndexToString(f1),BoardUtil.IndexToString(f2),pos1 * boardScaler.cellSize - offSet, pos2 * boardScaler.cellSize - offSet, color, index);
     }
     public void drawSelectedField(string f) { }
 }

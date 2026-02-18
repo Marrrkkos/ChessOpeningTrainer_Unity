@@ -18,7 +18,9 @@ public class UIArrow : MaskableGraphic, IPointerClickHandler
         public int listIndex;
     }
 
-    public List<ArrowData> activeArrows = new List<ArrowData>();
+    public List<ArrowData> activeOpeningArrows = new List<ArrowData>();
+    public List<ArrowData> activeEngineArrows = new List<ArrowData>();
+    public List<ArrowData> activeOpeningBookArrows = new List<ArrowData>();
     public float shaftWidth = 10f;
     public float headSize = 30f;
 
@@ -27,24 +29,53 @@ public class UIArrow : MaskableGraphic, IPointerClickHandler
 
     public void AddArrow(string f1, string f2, Vector2 from, Vector2 to, Color col, int index)
     {
-        activeArrows.Add(new ArrowData {from = f1, to = f2, start = from, end = to, color = col, listIndex = index});
+        switch (index)
+        {
+            case 0:
+                activeOpeningArrows.Add(new ArrowData {from = f1, to = f2, start = from, end = to, color = col, listIndex = index});
+                break;
+            case 1:
+                activeEngineArrows.Add(new ArrowData {from = f1, to = f2, start = from, end = to, color = col, listIndex = index});
+                break;
+            case 2:
+                activeOpeningBookArrows.Add(new ArrowData {from = f1, to = f2, start = from, end = to, color = col, listIndex = index});
+                break;
+        }
+        
         SetVerticesDirty();
     }
-    public void ClearArrows()
+    public void ClearArrows(int index)
     {
-        activeArrows.Clear();
+        switch (index)
+        {
+            case 0:
+                activeOpeningArrows.Clear();
+                break;
+            case 1:
+                activeEngineArrows.Clear();
+                break;
+            case 2:
+                activeOpeningBookArrows.Clear();
+                break;
+        }
         SetVerticesDirty();
+    }
+    public void ClearAllArrows()
+    {
+        activeOpeningArrows.Clear();
+        activeEngineArrows.Clear();
+        activeOpeningBookArrows.Clear();
     }
     public void OnPointerClick(PointerEventData eventData)
-{
+    {
     Vector2 localPoint;
     RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform, eventData.position, eventData.pressEventCamera, out localPoint);
 
     List<int> hitIndices = new List<int>();
-    for (int i = 0; i < activeArrows.Count; i++)
+    for (int i = 0; i < activeOpeningArrows.Count; i++)
     {
-        if(activeArrows[i].listIndex != 0){continue;}
-        if (IsPointNearArrow(localPoint, activeArrows[i]))
+        if(activeOpeningArrows[i].listIndex != 0){continue;}
+        if (IsPointNearArrow(localPoint, activeOpeningArrows[i]))
         {
             hitIndices.Add(i);
         }
@@ -69,32 +100,32 @@ public class UIArrow : MaskableGraphic, IPointerClickHandler
     }
     private void RepaintArrows()
     {
-        for(int i = 0; i < activeArrows.Count; i++)
+        for(int i = 0; i < activeOpeningArrows.Count; i++)
         {
-            if(activeArrows[i].listIndex == 0)
+            if(activeOpeningArrows[i].listIndex == 0)
             {
-                ArrowData arrow = activeArrows[i];
+                ArrowData arrow = activeOpeningArrows[i];
                 arrow.color = Color.lightGreen;
-                activeArrows[i] = arrow;
+                activeOpeningArrows[i] = arrow;
             }
         }
     }
 private void SelectArrow(int index)
 {
     RepaintArrows();
-    ArrowData arrow = activeArrows[index];
+    ArrowData arrow = activeOpeningArrows[index];
     Debug.Log($"Pfeil {index} ausgewählt! Von {arrow.start} nach {arrow.end}");
     arrow.color = Color.red;
-    activeArrows[index] = arrow;
+    activeOpeningArrows[index] = arrow;
     openingController.UpdateSelectedArrow(arrow.from, arrow.to);
     MoveToFront(index);
 }
 private void MoveToFront(int index)
 {
-    ArrowData selected = activeArrows[index];
-    activeArrows.RemoveAt(index);
-    activeArrows.Add(selected);
-    lastSelectedIndex = activeArrows.Count - 1;
+    ArrowData selected = activeOpeningArrows[index];
+    activeOpeningArrows.RemoveAt(index);
+    activeOpeningArrows.Add(selected);
+    lastSelectedIndex = activeOpeningArrows.Count - 1;
     SetVerticesDirty();
 }
 private bool IsPointNearArrow(Vector2 point, ArrowData arrow)
@@ -130,7 +161,15 @@ private bool IsPointNearArrow(Vector2 point, ArrowData arrow)
     {
         vh.Clear();
 
-        foreach (var arrow in activeArrows)
+        foreach (var arrow in activeEngineArrows)
+        {
+            DrawSingleArrow(vh, arrow);
+        }
+        foreach (var arrow in activeOpeningBookArrows)
+        {
+            DrawSingleArrow(vh, arrow);
+        }
+        foreach (var arrow in activeOpeningArrows)
         {
             DrawSingleArrow(vh, arrow);
         }

@@ -196,10 +196,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   sceneSwitcher: {fileID: 1009684268}
   pieceSetData: {fileID: 11400000, guid: 6b1503b06a61c2948820d87919cc4ca2, type: 2}
+  selectedMode: 
   openings: []
   openingTreesData:
     openingNames: []
   selcetedOpening: 
+  stockFishActivated: 1
+  openingDataBaseActivated: 0
 --- !u!4 &1218856124
 Transform:
   m_ObjectHideFlags: 0

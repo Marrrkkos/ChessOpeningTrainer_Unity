@@ -20,7 +20,6 @@ public class OpeningLoader: MonoBehaviour
         {
             if(o.name == selcetedOpening){ opening = o;}
         }
-        Debug.Log(opening.name);
         board.opening = opening;
         board.ResetBoard(true);
 

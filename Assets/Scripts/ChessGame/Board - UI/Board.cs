@@ -7,7 +7,11 @@ public class Board : MonoBehaviour
 {
     public Game currentGame;
     public Opening opening;
+    [Header("Controllers")]
     public OpeningController openingController;
+    public StockFishController stockFishController;
+    public OpeningDataBaseController openingDataBaseController;
+
     public bool rotation = false;
 
     [Header("Util")]
@@ -89,7 +93,6 @@ public class Board : MonoBehaviour
     {
         string m1 = BoardUtil.IndexToString(move.from);
         string m2 = BoardUtil.IndexToString(move.to);
-        Debug.Log(m1 + " " + m2);
         return doMove(move.specialRule, m1, m2, refreshGUI);
     }
     //public bool doSANMove(string san, bool refreshGUI) {
@@ -172,7 +175,14 @@ public class Board : MonoBehaviour
         {
             openingController.DrawOpeningArrows();
         }
-
+        if (stockFishController != null && GameManager.instance.stockFishActivated)
+        {
+            stockFishController.DrawStockFishArrows(currentGame.playedMoves);
+        }
+        if (openingDataBaseController != null && GameManager.instance.openingDataBaseActivated)
+        {
+            openingDataBaseController.DrawOpeningDataBaseArrows();
+        }
     }
 
 
