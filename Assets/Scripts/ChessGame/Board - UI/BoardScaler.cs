@@ -7,6 +7,7 @@ public class BoardScaler : MonoBehaviour
     public Board board;
     public GridLayoutGroup gridLayoutGroup;
     public float cellSize;
+    private bool currentRotation = false;
     public void ScaleBoard(float boardSize) { 
         
         boardRect.sizeDelta = new Vector2(boardSize, boardSize);
@@ -27,6 +28,10 @@ public class BoardScaler : MonoBehaviour
             board.rotation = false;
             RotatePieces(0);
         }
+    }
+    public void Rotate()
+    {
+        SetRotation(!board.rotation);
     }
     private void RotatePieces(int rotation)
     {

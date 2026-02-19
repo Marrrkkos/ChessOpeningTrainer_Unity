@@ -35,7 +35,7 @@ public class OpeningCreator : MonoBehaviour
 
 
         foreach(Move move in moves){
-            dummyBoard.doMove(move, true);
+            dummyBoard.doMove(move, true, false);
         }
         dummyBoardScaler.SetRotation(board.rotation);
 

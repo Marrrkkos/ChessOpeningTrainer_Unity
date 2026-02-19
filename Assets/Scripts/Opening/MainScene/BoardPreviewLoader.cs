@@ -29,7 +29,7 @@ public class BoardPreviewLoader : MonoBehaviour{
         {
             Opening opening = GameManager.instance.openings[i];
             foreach(Move move in opening.moves){
-                dummyBoard.doMove(move, true);
+                dummyBoard.doMove(move, true, false);
             }
             if(!opening.color)
             {   
@@ -41,7 +41,6 @@ public class BoardPreviewLoader : MonoBehaviour{
             boardPreviews[i].gameObject.SetActive(true);
 
             dummyBoard.ResetBoard(true);
-
         }
     }
 }

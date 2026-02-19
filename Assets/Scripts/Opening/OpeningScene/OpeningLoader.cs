@@ -11,21 +11,15 @@ public class OpeningLoader: MonoBehaviour
 
     public void LoadOpening()
     {
-        string selcetedOpening = GameManager.instance.selcetedOpening;
-        if(selcetedOpening == "")
-            return;
+        Opening opening = GameManager.instance.selcetedOpening;
+        if(opening.name == ""){return;}
 
-        Opening opening = new Opening();
-        foreach(Opening o in GameManager.instance.openings)
-        {
-            if(o.name == selcetedOpening){ opening = o;}
-        }
         board.opening = opening;
         board.ResetBoard(true);
 
         foreach(Move move in opening.moves)
         {
-            board.doMove(move, true);
+            board.doMove(move, true, false);
         }
         if (!opening.color)
         {

@@ -12,6 +12,8 @@ public class Board : MonoBehaviour
     public StockFishController stockFishController;
     public OpeningDataBaseController openingDataBaseController;
 
+    public OpeningTrainingController openingTrainingController;
+
     public bool rotation = false;
 
     [Header("Util")]
@@ -74,7 +76,7 @@ public class Board : MonoBehaviour
 
         currentGame = new Game(new Player[] { new Player("Player 1", 0, true), new Player("Player 2", 0, false) });
     }
-    public Move undoMove(bool refreshGUI) {
+    public Move undoMove(bool refreshGUI){
 
         if (currentGame.playedMoves.Count == 0) { return null;}
         Piece piece = currentGame.playedMoves[currentGame.playedMoves.Count - 1].movedPiece;
@@ -82,23 +84,23 @@ public class Board : MonoBehaviour
 
         currentGame.movesMemory.Add(move);
 
-        nextTurn(refreshGUI);
+        nextTurn(refreshGUI, false);
         return move;
     }
-    public bool doSimpleMove(Game.SimpleMove simpleMove, bool refreshGUI) {
+    public bool doSimpleMove(Game.SimpleMove simpleMove, bool refreshGUI, bool botMove) {
         //Debug.Log("specialrule: " + simpleMove.specialRule + " field1: " + getString(simpleMove.from) + " field2: " + getString(simpleMove.to) + " san: " + simpleMove.san);
-        return doMove(simpleMove.specialRule, BoardUtil.IndexToString(simpleMove.from), BoardUtil.IndexToString(simpleMove.to), refreshGUI);
+        return doMove(simpleMove.specialRule, BoardUtil.IndexToString(simpleMove.from), BoardUtil.IndexToString(simpleMove.to), refreshGUI, botMove);
     }
-    public bool doMove(Move move, bool refreshGUI)
+    public bool doMove(Move move, bool refreshGUI, bool botMove)
     {
         string m1 = BoardUtil.IndexToString(move.from);
         string m2 = BoardUtil.IndexToString(move.to);
-        return doMove(move.specialRule, m1, m2, refreshGUI);
+        return doMove(move.specialRule, m1, m2, refreshGUI, botMove);
     }
     //public bool doSANMove(string san, bool refreshGUI) {
     //        return doSimpleMove(SAN_Handler.SANToMove(this, san, currentGame.players[currentGame.currentPlayer].color, true), refreshGUI);
     //}
-    public bool doMove(int specialRule, string m1, string m2, bool refreshGUI)
+    public bool doMove(int specialRule, string m1, string m2, bool refreshGUI, bool botMove)
     {
         int fieldID_1 = BoardUtil.StringToIndex(m1);
         int fieldID_2 = BoardUtil.StringToIndex(m2);
@@ -134,7 +136,7 @@ public class Board : MonoBehaviour
             }
         }
 
-        nextTurn(refreshGUI);
+        nextTurn(refreshGUI, botMove);
         return true;
     }
     public List<Vector2Int> getPossible(string m1, bool refreshGUI)
@@ -162,7 +164,7 @@ public class Board : MonoBehaviour
         return possibleMoves;
     }
     
-    private void nextTurn(bool refreshGUI)
+    private void nextTurn(bool refreshGUI, bool botMove)
     {
         //Move move = currentGame.moves[currentGame.moves.Count - 1];
         //string san = BoardUtil.MoveToSAN(this, move);
@@ -171,6 +173,17 @@ public class Board : MonoBehaviour
         int x = this.currentGame.currentPlayer;
         this.currentGame.currentPlayer = (x + 1) % 2;
         this.drawOnBoard.refreshPossibles(refreshGUI);
+
+        // ******************************************************
+        //                       Opening
+        // ******************************************************
+            if(openingTrainingController != null && GameManager.instance.openingTrainingActive)
+            {
+                if(!botMove){
+                    openingTrainingController.ManageNext();
+                }
+                return;
+            }
         if(opening.name != "")
         {
             openingController.DrawOpeningArrows();

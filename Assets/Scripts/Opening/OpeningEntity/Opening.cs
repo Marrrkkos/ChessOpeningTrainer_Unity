@@ -19,13 +19,10 @@ public class Opening
     public bool color;
     public string name;
     
-    // Texturen können nicht direkt gespeichert werden!
-    // Wir ignorieren sie beim Speichern, sonst stürzt es ab.
     [JsonIgnore] public Texture2D startPos; 
     
     public List<Move> moves;
     
-    // Wir markieren es als JsonProperty, damit auch private Felder gespeichert werden
     [JsonProperty] private Node rootNode; 
 
     // --- KONSTRUKTOREN ---
@@ -151,7 +148,41 @@ public class Opening
         return movesSave;
 
     }
+    public List<List<Move>> GetAllLines(int depth)
+{
+    List<List<Move>> allLines = new List<List<Move>>();
+    
+    if (rootNode == null || depth <= 0) 
+    {
+        return allLines;
+    }
+    
+    FindLinesRecursive(rootNode, 0, depth, new List<Move>(), allLines);
+    
+    return allLines;
+}
 
+private void FindLinesRecursive(Node currentNode, int currentDepth, int maxDepth, List<Move> currentPath, List<List<Move>> allLines)
+{
+    bool isLeaf = currentNode.children == null || currentNode.children.Count == 0;
+
+    if (currentDepth == maxDepth || isLeaf)
+    {
+        if (currentPath.Count > 0)
+        {
+            allLines.Add(new List<Move>(currentPath));
+        }
+        return;
+    }
+    foreach (Node childNode in currentNode.children)
+    {
+        currentPath.Add(childNode.move);
+        
+        FindLinesRecursive(childNode, currentDepth + 1, maxDepth, currentPath, allLines);
+        
+        currentPath.RemoveAt(currentPath.Count - 1);
+    }
+}
     public void Add(List<Move> moves) {
         Node currentNode = rootNode;
 

@@ -91,26 +91,26 @@ public class Tests : MonoBehaviour
 
         //Weird Position 1
         //BoardUtil.SANToMove(board, "e4", true)
-        board.doMove(0, "d2", "d4", withPreview);
-        board.doMove(0, "g8", "f6", withPreview);
+        board.doMove(0, "d2", "d4", withPreview, false);
+        board.doMove(0, "g8", "f6", withPreview, false);
 
-        board.doMove(0, "e2", "e4", withPreview);
-        board.doMove(0, "f6", "e4", withPreview);
+        board.doMove(0, "e2", "e4", withPreview, false);
+        board.doMove(0, "f6", "e4", withPreview, false);
 
-        board.doMove(0, "f1", "c4", withPreview);
-        board.doMove(0, "e4", "f2", withPreview);
+        board.doMove(0, "f1", "c4", withPreview, false);
+        board.doMove(0, "e4", "f2", withPreview, false);
 
-        board.doMove(0, "d4", "d5", withPreview);
-        board.doMove(0, "e7", "e6", withPreview);
+        board.doMove(0, "d4", "d5", withPreview, false);
+        board.doMove(0, "e7", "e6", withPreview, false);
 
-        board.doMove(0, "d5", "e6", withPreview);
-        board.doMove(0, "f8", "e7", withPreview);
+        board.doMove(0, "d5", "e6", withPreview, false);
+        board.doMove(0, "f8", "e7", withPreview, false);
 
-        board.doMove(0, "e6", "d7", withPreview);
-        board.doMove(0, "e8", "f8", withPreview);
+        board.doMove(0, "e6", "d7", withPreview, false);
+        board.doMove(0, "e8", "f8", withPreview, false);
 
-        board.doMove(0, "g1", "e2", withPreview);
-        board.doMove(0, "c7", "c6", withPreview);
+        board.doMove(0, "g1", "e2", withPreview, false);
+        board.doMove(0, "c7", "c6", withPreview, false);
 
         Thread weirdPosition1 = new Thread(() =>
         {
@@ -129,16 +129,16 @@ public class Tests : MonoBehaviour
     private void najdorf() {
 
         // Najdorf
-        board.doMove(0, "e2", "e4", withPreview);
-        board.doMove(0, "c7", "c5", withPreview);
+        board.doMove(0, "e2", "e4", withPreview, false);
+        board.doMove(0, "c7", "c5", withPreview, false);
 
-        board.doMove(0, "g1", "f3", withPreview);
-        board.doMove(0, "d7", "d6", withPreview);
+        board.doMove(0, "g1", "f3", withPreview, false);
+        board.doMove(0, "d7", "d6", withPreview, false);
 
-        board.doMove(0, "d2", "d4", withPreview);
-        board.doMove(0, "c5", "d4", withPreview);
+        board.doMove(0, "d2", "d4", withPreview, false);
+        board.doMove(0, "c5", "d4", withPreview, false);
 
-        board.doMove(0, "f3", "d4", withPreview);
+        board.doMove(0, "f3", "d4", withPreview, false);
 
         Thread najdorf = new Thread(() =>
         {
@@ -157,16 +157,16 @@ public class Tests : MonoBehaviour
     private void friedLiver() {
 
         // Fried Liver
-        board.doMove(0, "e2", "e4", withPreview);
-        board.doMove(0, "e7", "e5", withPreview);
+        board.doMove(0, "e2", "e4", withPreview, false);
+        board.doMove(0, "e7", "e5", withPreview, false);
 
-        board.doMove(0, "g1", "f3", withPreview);
-        board.doMove(0, "b8", "c6", withPreview);
+        board.doMove(0, "g1", "f3", withPreview, false);
+        board.doMove(0, "b8", "c6", withPreview, false);
 
-        board.doMove(0, "f1", "c4", withPreview);
-        board.doMove(0, "g8", "f6", withPreview);
+        board.doMove(0, "f1", "c4", withPreview, false);
+        board.doMove(0, "g8", "f6", withPreview, false);
 
-        board.doMove(0, "f3", "g5", withPreview);
+        board.doMove(0, "f3", "g5", withPreview, false);
 
         Thread friedLiver = new Thread(() =>
         {
@@ -185,13 +185,13 @@ public class Tests : MonoBehaviour
    
     private void kingsGambit() {
         // KönigsGamit
-        board.doMove(0, "e2", "e4", withPreview);
-        board.doMove(0, "e7", "e5", withPreview);
+        board.doMove(0, "e2", "e4", withPreview, false);
+        board.doMove(0, "e7", "e5", withPreview, false);
 
-        board.doMove(0, "f2", "f4", withPreview);
-        board.doMove(0, "e5", "f4", withPreview);
+        board.doMove(0, "f2", "f4", withPreview, false);
+        board.doMove(0, "e5", "f4", withPreview, false);
 
-        board.doMove(0, "g1", "f3", withPreview);
+        board.doMove(0, "g1", "f3", withPreview, false);
 
         Thread kingsGambit = new Thread(() =>
         {

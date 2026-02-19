@@ -58,7 +58,7 @@ public class ActionService
             }
             else
             {
-                board.doMove(rule, m1, m2, true);
+                board.doMove(rule, m1, m2, true, false);
                 refreshTurn();
             }
         }
@@ -84,7 +84,7 @@ public class ActionService
         int rule = isCorrectMove();
         if (rule > 0)
         {
-            board.doMove(rule, m1, m2, true);
+            board.doMove(rule, m1, m2, true, false);
             refreshTurn();
         }
         else
@@ -132,7 +132,7 @@ public class ActionService
         {
             if (promotionIndexes[i] == fieldID)
             {
-                board.doMove(5 + i, m1, m2, true);
+                board.doMove(5 + i, m1, m2, true, false);
             }
         }
         setPiecesActive(board, true);
