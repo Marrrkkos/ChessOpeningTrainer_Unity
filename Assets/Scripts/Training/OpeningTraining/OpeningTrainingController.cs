@@ -20,7 +20,7 @@ public class OpeningTrainingController : MonoBehaviour
         board.ResetBoard(true);
         boardScaler.SetRotation(opening.color);
 
-        GameManager.instance.openingTrainingActive = true;
+        board.openingTrainingActive = true;
         this.opening = opening;
         this.allLines = allLines;
         color = opening.color;
@@ -87,7 +87,7 @@ public class OpeningTrainingController : MonoBehaviour
         {
             board.doMove(m,true,true);
         }
-        GameManager.instance.openingTrainingActive = false;
+        board.openingTrainingActive = false;
         Debug.Log("Training END");
     }
 }

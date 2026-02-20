@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class StockFishController : MonoBehaviour
 {
+    public Board board;
     public DrawOnBoard drawOnBoard;
     private Process engineProcess;
     private StreamWriter engineInput;
@@ -57,7 +58,7 @@ public class StockFishController : MonoBehaviour
 
     void Update()
     {
-        if(GameManager.instance.stockFishActivated){
+        if(board.stockFishActive){
         // Hier holen wir die Daten sicher in den Main-Thread von Unity
         string currentOutput = "";
         lock (lockObject)
@@ -117,5 +118,13 @@ private string GetMoveFromInfo(string line)
             engineProcess.Kill();
             engineProcess.Dispose();
         }
+    }
+    public void SetActive(bool active)
+    {
+        if (active)
+        {
+            DrawStockFishArrows(board.currentGame.playedMoves);
+        }
+        board.stockFishActive = active;
     }
 }

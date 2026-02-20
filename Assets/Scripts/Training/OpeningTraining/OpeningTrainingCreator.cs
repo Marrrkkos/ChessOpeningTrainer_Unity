@@ -12,8 +12,5 @@ public class OpeningTrainingCreator : MonoBehaviour
         List<List<Move>> allLines = opening.GetAllLines(depth);
 
         openingTrainingController.InitTraining(allLines, opening);
-
-
-        GameManager.instance.openingTrainingActive = true;
     }
 }

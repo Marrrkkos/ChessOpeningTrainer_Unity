@@ -16,13 +16,6 @@ public class GameManager : MonoBehaviour
     public OpeningTreesData openingTreesData = new();
     public Opening selcetedOpening = new();
 
-    [Header("Tools")]
-    public bool stockFishActivated = false;
-    public bool openingDataBaseActivated = false;
-
-    [Header("Training")]
-    public bool openingTrainingActive = false;
-
     //SingleTon
     void Awake() {
         if (instance == null)

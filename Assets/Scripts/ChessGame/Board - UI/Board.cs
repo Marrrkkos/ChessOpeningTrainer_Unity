@@ -1,27 +1,40 @@
-using System;
 using System.Collections.Generic;
-using System.Drawing;
 using UnityEngine;
 using System.Linq;
 public class Board : MonoBehaviour
-{
+{   
+    [Header("Current Objective")]
     public Game currentGame;
     public Opening opening;
-    [Header("Controllers")]
+
+    [Header("OpeningController")]
     public OpeningController openingController;
+    
+    [Header("OpeningController")]
     public StockFishController stockFishController;
+    public bool stockFishActive = false;
+    [Header("OpeningController")]
     public OpeningDataBaseController openingDataBaseController;
-
+    public bool openingDataBaseActive = false;
+    [Header("OpeningController")]
     public OpeningTrainingController openingTrainingController;
+    public bool openingTrainingActive = false;
 
-    public bool rotation = false;
 
     [Header("Util")]
-    public ActionService actionService;
     public DrawOnBoard drawOnBoard;
-    public Field[] fields;
-    public PieceSet pieceSet;
+    public bool rotation = false;
 
+    [Header("BoardDesign")]
+    public PieceSet pieceSet;
+    public Color boardColor1;
+    public Color boardColor2;
+
+    // ActionServices
+    public ActionService actionService;
+    // Fields
+    public Field[] fields;
+    // Pieces
     public Piece whiteKing;
     public Piece blackKing;
 
@@ -177,7 +190,7 @@ public class Board : MonoBehaviour
         // ******************************************************
         //                       Opening
         // ******************************************************
-            if(openingTrainingController != null && GameManager.instance.openingTrainingActive)
+            if(openingTrainingController != null && openingTrainingActive)
             {
                 if(!botMove){
                     openingTrainingController.ManageNext();
@@ -188,13 +201,13 @@ public class Board : MonoBehaviour
         {
             openingController.DrawOpeningArrows();
         }
-        if (stockFishController != null && GameManager.instance.stockFishActivated)
+        if (stockFishController != null && stockFishActive)
         {
             stockFishController.DrawStockFishArrows(currentGame.playedMoves);
         }
-        if (openingDataBaseController != null && GameManager.instance.openingDataBaseActivated)
+        if (openingDataBaseController != null && openingDataBaseActive)
         {
-            openingDataBaseController.DrawOpeningDataBaseArrows(currentGame.playedMoves);
+            openingDataBaseController.GetOpeningMoves(currentGame.playedMoves);
         }
     }
 

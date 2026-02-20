@@ -18,9 +18,10 @@ public class UIArrow : MaskableGraphic, IPointerClickHandler
         public int listIndex;
     }
 
-    public List<ArrowData> activeOpeningArrows = new List<ArrowData>();
-    public List<ArrowData> activeEngineArrows = new List<ArrowData>();
-    public List<ArrowData> activeOpeningBookArrows = new List<ArrowData>();
+    public List<ArrowData> activeOpeningArrows = new ();
+    public List<ArrowData> activeEngineArrows = new ();
+    public List<ArrowData> activeOpeningBookArrows = new();
+
     public float shaftWidth = 10f;
     public float headSize = 30f;
 
@@ -38,7 +39,7 @@ public class UIArrow : MaskableGraphic, IPointerClickHandler
                 activeEngineArrows.Add(new ArrowData {from = f1, to = f2, start = from, end = to, color = col, listIndex = index});
                 break;
             case 2:
-                activeOpeningBookArrows.Add(new ArrowData {from = f1, to = f2, start = from, end = to, color = col, listIndex = index});
+                activeOpeningBookArrows[0] = new ArrowData {from = f1, to = f2, start = from, end = to, color = col, listIndex = index};
                 break;
         }
         
