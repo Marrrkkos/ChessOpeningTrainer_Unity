@@ -39,7 +39,10 @@ public class UIArrow : MaskableGraphic, IPointerClickHandler
                 activeEngineArrows.Add(new ArrowData {from = f1, to = f2, start = from, end = to, color = col, listIndex = index});
                 break;
             case 2:
-                activeOpeningBookArrows[0] = new ArrowData {from = f1, to = f2, start = from, end = to, color = col, listIndex = index};
+                if(activeOpeningBookArrows.Count == 1)
+                    activeOpeningBookArrows[0] = new ArrowData {from = f1, to = f2, start = from, end = to, color = col, listIndex = index};
+                    else
+                        activeOpeningBookArrows.Add(new ArrowData {from = f1, to = f2, start = from, end = to, color = col, listIndex = index});
                 break;
         }
         

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 public class BoardPreviewLoader : MonoBehaviour{
@@ -25,6 +26,10 @@ public class BoardPreviewLoader : MonoBehaviour{
     }
     public void LoadPreviews()
     {
+        foreach(BoardPreview boardPreview in boardPreviews)
+        {
+            boardPreview.gameObject.SetActive(false);
+        }
         for (int i = 0; i < GameManager.instance.openings.Count; i++)
         {
             Opening opening = GameManager.instance.openings[i];
@@ -33,7 +38,7 @@ public class BoardPreviewLoader : MonoBehaviour{
             }
             if(!opening.color)
             {   
-                dummyBoardScaler.SetRotation(false);
+                dummyBoardScaler.SetRotation(true);
             }
             opening.startPos = snapPreview.TakePhoto();
 
@@ -43,4 +48,5 @@ public class BoardPreviewLoader : MonoBehaviour{
             dummyBoard.ResetBoard(true);
         }
     }
+
 }

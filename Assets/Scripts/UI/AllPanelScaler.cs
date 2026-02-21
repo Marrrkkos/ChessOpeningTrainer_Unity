@@ -13,7 +13,7 @@ public class AllPanelScaler : MonoBehaviour
     public RectTransform canvas;
 
     void Awake() {
-        setPanelSize();
+        //setPanelSize();
     }
 
     private void setPanelSize() {

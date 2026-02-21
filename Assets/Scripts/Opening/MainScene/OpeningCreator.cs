@@ -14,15 +14,15 @@ public class OpeningCreator : MonoBehaviour
     public BoardPreviewLoader boardPreviewLoader;
 
     public SnapPreview snapPreview;
-    private bool colorToggle = true;
+    private bool colorToggle = false;
     public void SwitchColor() {
         if (colorToggle)
         {
-            colorImage.color = Color.brown;
+            colorImage.color = Color.white;
             colorToggle = false;
         }
         else {
-            colorImage.color = Color.white;
+            colorImage.color = Color.black;
             colorToggle = true;
         }
         boardScaler.SetRotation(colorToggle);
@@ -31,6 +31,13 @@ public class OpeningCreator : MonoBehaviour
 
     public void CreateOpening() { 
         string name = nameInput.text;
+
+        if(name == "")
+        {
+            DiscardOpening();
+            return;
+        }
+
         List<Move> moves = board.currentGame.playedMoves;
 
 
@@ -40,14 +47,14 @@ public class OpeningCreator : MonoBehaviour
         dummyBoardScaler.SetRotation(board.rotation);
 
 
-        Opening opening = new Opening(name,colorToggle, snapPreview.TakePhoto(), moves);
+        Opening opening = new Opening(name,!colorToggle, snapPreview.TakePhoto(), moves);
         opening.SaveGame(name);
 
         
 
         //reset
         dummyBoard.ResetBoard(true);
-        board.ResetBoard(false);
+        board.ResetBoard(true);
         dummyBoardScaler.SetRotation(false);
 
         GameManager.instance.openings.Add(opening);

@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class RootSelecter : MonoBehaviour
@@ -5,6 +6,7 @@ public class RootSelecter : MonoBehaviour
     [Header("GameObjects")]
     public GameObject Opening;
     public GameObject GameSense;
+    public GameObject GameView;
     [Header("Loaders")]
 
     public OpeningLoader openingLoader;
@@ -12,6 +14,7 @@ public class RootSelecter : MonoBehaviour
     public void OnEnable()
     {
         string selected = GameManager.instance.selectedMode;
+        Debug.Log(selected);
         if(selected == "GameSense")
         {
             GameSense.SetActive(true);
@@ -19,11 +22,17 @@ public class RootSelecter : MonoBehaviour
         {
             Opening.SetActive(true);
             openingLoader.LoadOpening();
+        }else if(selected == "GameView")
+        {
+            GameView.SetActive(true);
         }
     }
     public void OnDisable()
     {
-        Opening.SetActive(false);
+        Opening.SetActive(false); 
         GameSense.SetActive(false);
+        GameView.SetActive(false);
     }
+
+    
 }

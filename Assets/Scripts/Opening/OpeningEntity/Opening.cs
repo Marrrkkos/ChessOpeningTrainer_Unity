@@ -51,7 +51,21 @@ public class Opening
         public List<Move> moves;
         public Node rootNode;
     }
+    public void DeleteOpening(string openingName)
+    {
+        string filename = "savegame" + openingName + ".json";
+        string path = Path.Combine(Application.persistentDataPath, filename);
 
+         if (File.Exists(path))
+        {
+            File.Delete(path);
+            Debug.Log("Datei erfolgreich gelöscht: " + path);
+        }
+        else
+        {
+            Debug.LogWarning("Löschen fehlgeschlagen: Datei nicht gefunden.");
+        }
+    }
     public void SaveGame(string openingName)
     {
         // 1. Daten in den Container packen

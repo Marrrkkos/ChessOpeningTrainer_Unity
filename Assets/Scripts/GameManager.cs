@@ -26,12 +26,6 @@ public class GameManager : MonoBehaviour
         else {
             Destroy(gameObject);
         }
-
-        // Lädt die Umgebungsszene additiv dazu, falls sie noch nicht offen ist
-        //if (!SceneManager.GetSceneByName("ChessBoardScene").isLoaded)
-        //{
-        //    SceneManager.LoadSceneAsync("ChessBoardScene", LoadSceneMode.Additive);
-        //}
     
     }
 }
