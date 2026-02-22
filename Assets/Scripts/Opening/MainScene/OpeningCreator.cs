@@ -44,7 +44,7 @@ public class OpeningCreator : MonoBehaviour
         foreach(Move move in moves){
             dummyBoard.doMove(move, true, false);
         }
-        dummyBoardScaler.SetRotation(board.rotation);
+        dummyBoardScaler.SetRotation(colorToggle);
 
 
         Opening opening = new Opening(name,!colorToggle, snapPreview.TakePhoto(), moves);

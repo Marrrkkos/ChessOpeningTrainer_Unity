@@ -54,6 +54,7 @@ public class RootSelecter : MonoBehaviour
     }
     public void SetOpeningTraining()
     {
+        OpeningResult.SetActive(false);
         OpeningTrainingCreator.SetActive(false);
         Opening.SetActive(false); 
         OpeningTraining.SetActive(true);

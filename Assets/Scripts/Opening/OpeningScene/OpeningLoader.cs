@@ -21,9 +21,6 @@ public class OpeningLoader: MonoBehaviour
         {
             board.doMove(move, true, false);
         }
-        if (!opening.color)
-        {
-            boardScaler.SetRotation(false);
-        }
+        boardScaler.SetRotation(!opening.color);
     }
 }
