@@ -1,29 +1,36 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class OpeningTrainingController : MonoBehaviour
 {
+    [Header("Board")]
     public Board board;
     public BoardScaler boardScaler;
+
+    [Header("TrainingPanel")]
+    public Text wrongNumber;
+    public Text rightNumber;
+    public Text percentNumber;
+    public Text time;
+    public Text openingName;
+    public Text possibleLines;
+
+    [Header("OpeningResult")]
+    public OpeningResultController openingResultController;
     private List<List<Move>> allLines = new();
     private int lineIndex = 0;
     private Opening opening;
-
-    private bool color = true;
-    private bool ignore = false;
-
     private List<Move> currentLine = new();
     public void InitTraining(List<List<Move>> allLines, Opening opening)
     {
-
+        board.drawOnBoard.arrow.ClearAllArrows();
         board.ResetBoard(true);
         boardScaler.SetRotation(opening.color);
 
-        board.openingTrainingActive = true;
         this.opening = opening;
         this.allLines = allLines;
-        color = opening.color;
 
         foreach(Move m in opening.moves)
         {
@@ -32,6 +39,14 @@ public class OpeningTrainingController : MonoBehaviour
 
         currentLine = allLines[lineIndex];
 
+        wrongNumber.text = "0";
+        rightNumber.text = "0";
+        percentNumber.text = "100%";
+        time.text = "00:00";
+        openingName.text = opening.name;
+
+
+        board.openingTrainingActive = true;
         if (!opening.color)
         {
             ManageNext();
@@ -88,6 +103,8 @@ public class OpeningTrainingController : MonoBehaviour
             board.doMove(m,true,true);
         }
         board.openingTrainingActive = false;
+
+
         Debug.Log("Training END");
     }
 }

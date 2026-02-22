@@ -3,10 +3,19 @@ using UnityEngine;
 
 public class RootSelecter : MonoBehaviour
 {
-    [Header("GameObjects")]
+    [Header("General GameObjects")]
+    public GameObject InGameSettings;
+
+    [Header("Opening GameObjects")]
     public GameObject Opening;
+    public GameObject OpeningTrainingCreator;
+    public GameObject OpeningTraining;
+    public GameObject OpeningResult;
+    [Header("GameSense GameObjects")]
     public GameObject GameSense;
+    [Header("GameView GameObjects")]
     public GameObject GameView;
+
     [Header("Loaders")]
 
     public OpeningLoader openingLoader;
@@ -34,5 +43,20 @@ public class RootSelecter : MonoBehaviour
         GameView.SetActive(false);
     }
 
-    
+    public void SetDefault()
+    {
+        
+    }
+    public void SetOpeningTraining()
+    {
+        
+    }
+    public void SetOpeningTrainingCreation()
+    {
+        
+    }
+    public void SetOpeningResult()
+    {
+        
+    }
 }
