@@ -22,11 +22,14 @@ public class OpeningTrainingController : MonoBehaviour
     [Header("OpeningResult")]
     public OpeningResultController openingResultController;
     private List<List<Move>> allLines = new();
-    private int lineIndex = 0;
+    private int lineIndex;
     private Opening opening;
     private List<Move> currentLine = new();
     public void InitTraining(List<List<Move>> allLines, Opening opening)
     {
+        if(allLines.Count == 0){rootSelecter.SetOpening(); return; }
+
+        lineIndex = 0;
         board.drawOnBoard.arrow.ClearAllArrows();
         board.ResetBoard(true);
         boardScaler.SetRotation(opening.color);
@@ -49,10 +52,10 @@ public class OpeningTrainingController : MonoBehaviour
 
 
         board.openingTrainingActive = true;
-        if (!opening.color)
-        {
-            ManageNext();
-        }
+        //if (!opening.color)
+        //{
+        //    ManageNext();
+        //}
 
 
     }
@@ -70,14 +73,13 @@ public class OpeningTrainingController : MonoBehaviour
             return;
         }
 
-
-            if(currentLine.Count > board.currentGame.playedMoves.Count){
-                board.doMove(currentLine[board.currentGame.playedMoves.Count], true, true);
-            }
-            else
-            {
-                GoNextLine();
-            }
+        if(currentLine.Count > board.currentGame.playedMoves.Count){
+            board.doMove(currentLine[board.currentGame.playedMoves.Count], true, true);
+        }
+        else
+        {
+           GoNextLine();
+        }
 
     }
 

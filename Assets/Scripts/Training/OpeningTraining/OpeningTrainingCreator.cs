@@ -5,8 +5,6 @@ public class OpeningTrainingCreator : MonoBehaviour
 {
     public OpeningTrainingController openingTrainingController;
 
-    public GameObject trainingsPanel;
-    public GameObject openingPanel;
     private int depth = 10;
     public void StartOpeningTraining()
     {
@@ -14,12 +12,6 @@ public class OpeningTrainingCreator : MonoBehaviour
         List<List<Move>> allLines = opening.GetAllLines(depth);
 
         openingTrainingController.InitTraining(allLines, opening);
-        SwitchTraining(true);
     }
 
-    public void SwitchTraining(bool trainingActive)
-    {
-        trainingsPanel.SetActive(trainingActive);
-        openingPanel.SetActive(!trainingActive);
-    }
 }

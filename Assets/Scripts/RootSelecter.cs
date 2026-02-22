@@ -71,7 +71,11 @@ public class RootSelecter : MonoBehaviour
         OpeningTrainingCreator.SetActive(false);
         OpeningTraining.SetActive(false);
         OpeningResult.SetActive(false);
-
+        InGameSettings.SetActive(false);
         Opening.SetActive(true); 
+    }
+    public void SetIngameSettings()
+    {
+        InGameSettings.SetActive(true);
     }
 }
