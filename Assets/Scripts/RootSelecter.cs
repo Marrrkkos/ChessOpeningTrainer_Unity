@@ -38,25 +38,40 @@ public class RootSelecter : MonoBehaviour
     }
     public void OnDisable()
     {
-        Opening.SetActive(false); 
-        GameSense.SetActive(false);
-        GameView.SetActive(false);
+        SetDefault();
     }
 
     public void SetDefault()
     {
-        
+        Opening.SetActive(false); 
+        GameSense.SetActive(false);
+        GameView.SetActive(false);
+        InGameSettings.SetActive(false);
+        OpeningResult.SetActive(false);
+        OpeningTraining.SetActive(false);
+        OpeningTrainingCreator.SetActive(false);
+
     }
     public void SetOpeningTraining()
     {
-        
+        OpeningTrainingCreator.SetActive(false);
+        Opening.SetActive(false); 
+        OpeningTraining.SetActive(true);
     }
     public void SetOpeningTrainingCreation()
     {
-        
+        OpeningTrainingCreator.SetActive(true);
     }
     public void SetOpeningResult()
     {
-        
+        OpeningResult.SetActive(true);
+    }
+    public void SetOpening()
+    {
+        OpeningTrainingCreator.SetActive(false);
+        OpeningTraining.SetActive(false);
+        OpeningResult.SetActive(false);
+
+        Opening.SetActive(true); 
     }
 }

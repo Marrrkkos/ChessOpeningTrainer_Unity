@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-public class OpeningResultController
+public class OpeningResultController : MonoBehaviour
 {
     public Text AllLines;
     public Text RightLines;

@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class OpeningTrainingController : MonoBehaviour
 {
+    public RootSelecter rootSelecter;
+
     [Header("Board")]
     public Board board;
     public BoardScaler boardScaler;
@@ -103,7 +105,7 @@ public class OpeningTrainingController : MonoBehaviour
             board.doMove(m,true,true);
         }
         board.openingTrainingActive = false;
-
+        rootSelecter.SetOpeningResult();
 
         Debug.Log("Training END");
     }
