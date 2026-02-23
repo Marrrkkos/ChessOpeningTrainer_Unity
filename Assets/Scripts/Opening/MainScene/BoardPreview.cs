@@ -2,12 +2,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.UI.Extensions;
+
 
 public class BoardPreview: MonoBehaviour
 {
     public RawImage openingPreview;
     public Text openingName;
-    public Image color;
+    public UISquircle color;
     public Text sizeText;
     private Opening opening;
     public void LoadOpening(Opening opening)
