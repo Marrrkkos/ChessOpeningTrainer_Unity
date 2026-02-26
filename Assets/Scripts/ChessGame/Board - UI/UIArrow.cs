@@ -28,21 +28,21 @@ public class UIArrow : MaskableGraphic, IPointerClickHandler
     public OpeningController openingController;
     private int lastSelectedIndex = -1;
 
-    public void AddArrow(string f1, string f2, Vector2 from, Vector2 to, Color col, int index)
+    public void AddArrow(string f1, string f2, Vector2 from1, Vector2 to1, Color col, int index)
     {
         switch (index)
         {
             case 0:
-                activeOpeningArrows.Add(new ArrowData {from = f1, to = f2, start = from, end = to, color = col, listIndex = index});
+                activeOpeningArrows.Add(new ArrowData {from = f1, to = f2, start = from1, end = to1, color = col, listIndex = index});
                 break;
             case 1:
-                activeEngineArrows.Add(new ArrowData {from = f1, to = f2, start = from, end = to, color = col, listIndex = index});
+                activeEngineArrows.Add(new ArrowData {from = f1, to = f2, start = from1, end = to1, color = col, listIndex = index});
                 break;
             case 2:
                 if(activeOpeningBookArrows.Count == 1)
-                    activeOpeningBookArrows[0] = new ArrowData {from = f1, to = f2, start = from, end = to, color = col, listIndex = index};
+                    activeOpeningBookArrows[0] = new ArrowData {from = f1, to = f2, start = from1, end = to1, color = col, listIndex = index};
                     else
-                        activeOpeningBookArrows.Add(new ArrowData {from = f1, to = f2, start = from, end = to, color = col, listIndex = index});
+                        activeOpeningBookArrows.Add(new ArrowData {from = f1, to = f2, start = from1, end = to1, color = col, listIndex = index});
                 break;
         }
         

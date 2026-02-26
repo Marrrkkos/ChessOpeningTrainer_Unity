@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     public OpeningTreesData openingTreesData = new();
     public Opening selcetedOpening = new();
 
+    public Settings settings = new Settings();
     //SingleTon
     void Awake() {
         if (instance == null)

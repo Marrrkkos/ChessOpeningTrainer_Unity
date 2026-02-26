@@ -12,13 +12,15 @@ public class RootSelecter : MonoBehaviour
     public GameObject OpeningTraining;
     public GameObject OpeningResult;
     [Header("GameSense GameObjects")]
-    public GameObject GameSense;
+    //public GameObject GameSense;
     [Header("GameView GameObjects")]
-    public GameObject GameView;
+    //public GameObject GameView;
 
     [Header("Loaders")]
 
     public OpeningLoader openingLoader;
+
+    public BoardRootScaler boardRootScaler;
 
     public void OnEnable()
     {
@@ -26,14 +28,14 @@ public class RootSelecter : MonoBehaviour
         Debug.Log(selected);
         if(selected == "GameSense")
         {
-            GameSense.SetActive(true);
+            //GameSense.SetActive(true);
         }else if( selected == "Opening")
         {
             Opening.SetActive(true);
             openingLoader.LoadOpening();
         }else if(selected == "GameView")
         {
-            GameView.SetActive(true);
+            //GameView.SetActive(true);
         }
     }
     public void OnDisable()
@@ -43,14 +45,16 @@ public class RootSelecter : MonoBehaviour
 
     public void SetDefault()
     {
+        
+        boardRootScaler.SetEngineSetUp();
+
         Opening.SetActive(false); 
-        GameSense.SetActive(false);
-        GameView.SetActive(false);
+        //GameSense.SetActive(false);
+        //GameView.SetActive(false);
         InGameSettings.SetActive(false);
         OpeningResult.SetActive(false);
         OpeningTraining.SetActive(false);
         OpeningTrainingCreator.SetActive(false);
-
     }
     public void SetOpeningTraining()
     {
@@ -58,6 +62,8 @@ public class RootSelecter : MonoBehaviour
         OpeningTrainingCreator.SetActive(false);
         Opening.SetActive(false); 
         OpeningTraining.SetActive(true);
+
+        boardRootScaler.SetTrainingSetUp();
     }
     public void SetOpeningTrainingCreation()
     {
@@ -73,7 +79,9 @@ public class RootSelecter : MonoBehaviour
         OpeningTraining.SetActive(false);
         OpeningResult.SetActive(false);
         InGameSettings.SetActive(false);
-        Opening.SetActive(true); 
+        Opening.SetActive(true);
+        
+         boardRootScaler.SetEngineSetUp();
     }
     public void SetIngameSettings()
     {

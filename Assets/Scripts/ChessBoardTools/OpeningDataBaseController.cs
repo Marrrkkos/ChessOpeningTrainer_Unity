@@ -101,6 +101,6 @@ public class OpeningDataBaseController : MonoBehaviour
         {
             GetOpeningMoves(board.currentGame.playedMoves);
         }
-        board.stockFishActive = active;
+        board.openingDataBaseActive = active;
     }
 }
