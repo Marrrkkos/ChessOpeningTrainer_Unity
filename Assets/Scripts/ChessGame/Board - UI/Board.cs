@@ -17,7 +17,7 @@ public class Board : MonoBehaviour
     public OpeningDataBaseController openingDataBaseController;
     public bool openingDataBaseActive = false;
     [Header("OpeningController")]
-    public OpeningTrainingController openingTrainingController;
+    public OpeningTrainingController1 openingTrainingController1;
     public bool openingTrainingActive = false;
 
 
@@ -190,10 +190,10 @@ public class Board : MonoBehaviour
         // ******************************************************
         //                       Opening
         // ******************************************************
-            if(openingTrainingController != null && openingTrainingActive)
+            if(openingTrainingController1 != null && openingTrainingActive)
             {
                 if(!botMove){
-                    openingTrainingController.ManageNext();
+                    openingTrainingController1.ManageNext();
                 }
                 return;
             }

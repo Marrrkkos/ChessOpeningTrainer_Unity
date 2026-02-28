@@ -1,16 +1,18 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Newtonsoft.Json;
 
+[JsonObject(IsReference = true)]
 [System.Serializable]
 public class Node
 {
     public Move move;
-    [SerializeReference]
     public List<Node> children;
-
-    public Node(Move move) { 
+    public Node parentNode;
+    public Node(Move move, Node parentNode) { 
         this.move = move;
         this.children = new List<Node>();
+        this.parentNode = parentNode;
     }
     public Node()
     {

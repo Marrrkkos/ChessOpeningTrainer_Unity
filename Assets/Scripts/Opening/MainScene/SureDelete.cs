@@ -5,11 +5,10 @@ using UnityEngine.UI;
 
 public class SureDelete: MonoBehaviour
 {
-    public GameObject sureDeleteObject;
     public BoardPreviewLoader boardPreviewLoader;
 
     public InputField inputField;
-    
+    public Text sureText;
     private Opening opening;
     public void DeleteOpening()
     {
@@ -28,16 +27,16 @@ public class SureDelete: MonoBehaviour
         GameManager.instance.selcetedOpening = null;
         GameManager.instance.selectedMode = "";
 
+        inputField.text = "";
         boardPreviewLoader.LoadPreviews();
-
-        sureDeleteObject.SetActive(false);
     }
     public void Cancel()
     {
-        sureDeleteObject.SetActive(false);
+        inputField.text = "";
     }
     public void SetOpeninig(Opening opening)
     {
         this.opening = opening;
+        sureText.text = "Are you Sure you want to Delete this Opening: " + opening.name;
     }
 }

@@ -23,7 +23,7 @@ public class Opening
     
     public List<Move> moves;
     
-    [JsonProperty] private Node rootNode; 
+    [JsonProperty] public Node rootNode; 
 
     // --- KONSTRUKTOREN ---
     public Opening(string name, bool color, Texture2D startPos, List<Move> moves) 
@@ -162,6 +162,40 @@ public class Opening
         return movesSave;
 
     }
+    public int GetOpeningSize(){
+    
+    if (rootNode == null) 
+    {
+        return 0;
+    }
+    int count = 0;
+    
+    
+    return FindCounterRecursive(rootNode, 0,new List<Move>(), count);
+}
+
+private int FindCounterRecursive(Node currentNode, int currentDepth, List<Move> currentPath, int count)
+{
+    bool isLeaf = currentNode.children == null || currentNode.children.Count == 0;
+
+    if (isLeaf)
+    {
+        if (currentPath.Count > 0)
+        {
+            count++;
+        }
+        return count;
+    }
+    foreach (Node childNode in currentNode.children)
+    {
+        currentPath.Add(childNode.move);
+        
+        FindCounterRecursive(childNode, currentDepth + 1, currentPath, count);
+        
+        currentPath.RemoveAt(currentPath.Count - 1);
+    }
+    return count;
+}
     public List<List<Move>> GetAllLines(int depth)
 {
     List<List<Move>> allLines = new List<List<Move>>();
@@ -215,7 +249,7 @@ private void FindLinesRecursive(Node currentNode, int currentDepth, int maxDepth
                 currentNode = foundChild;
             } 
             else {
-                Node newNode = new Node(moveToProcess);
+                Node newNode = new Node(moveToProcess, currentNode);
                 currentNode.addChild(newNode);
                 currentNode = newNode;
             }

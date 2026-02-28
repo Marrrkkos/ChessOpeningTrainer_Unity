@@ -32,7 +32,7 @@ public class BoardRootScaler : MonoBehaviour
     public void SetEngineSetUp()
     {
         boardScaler.ScaleBoard(boardEngineSize);
-        board.localPosition = new Vector2(engineBarWidth/2, 0);
+        board.localPosition = new Vector2(-engineBarWidth/2, 0);
     }
     public void SetTrainingSetUp()
     {
