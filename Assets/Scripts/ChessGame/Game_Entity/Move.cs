@@ -1,7 +1,5 @@
-
-using System;
 using UnityEngine;
-
+using Newtonsoft.Json;
 [System.Serializable]
 public class Move
 {
@@ -35,7 +33,7 @@ public class Move
     }
     
     override
-    public String ToString()
+    public string ToString()
     {
         return "from: " + BoardUtil.IndexToString(from) + " " + BoardUtil.IndexToString(to) + " movedPieceID: " + movedPiece?.id + " capturedPieceID: " + capturedPiece?.id + " specialRule: " + specialRule + " oldHasMoved: " + oldHasMoved + " check: " + check + " checkmate: " + checkMate;
     }

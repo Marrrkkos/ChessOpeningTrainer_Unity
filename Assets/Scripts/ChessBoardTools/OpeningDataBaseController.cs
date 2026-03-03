@@ -10,7 +10,6 @@ public class OpeningDataBaseController : MonoBehaviour
     public List<OpeningLineController> openingLineControllers;
     private readonly string baseUrl = "https://explorer.lichess.ovh/masters";
 
-    private readonly string normalFen = "rnbnkqrb/pppppppp/8/8/8/8/PPPPPPPP/RNBNKQRB w KQkq - 0 1";
 
     [System.Serializable]
     public class LichessOpeningData

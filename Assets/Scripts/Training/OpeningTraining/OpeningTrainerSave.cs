@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-
-public class OpeningTrainingController1 : MonoBehaviour
+public class OpeningTrainingControllerSave : MonoBehaviour
 {
     public RootSelecter rootSelecter;
 
@@ -20,7 +20,6 @@ public class OpeningTrainingController1 : MonoBehaviour
 
     [Header("OpeningResult")]
     public OpeningResultController openingResultController;
-    private Opening opening;
 
     private Node currentNode = new();
     private List<Node> queue = new();
@@ -30,12 +29,30 @@ public class OpeningTrainingController1 : MonoBehaviour
     private int lineCounter;
     private float rightCounter;
     private float timer;
-    public void InitTraining(Opening opening)
+
+
+    //Constructor
+    private Opening opening;
+    private int depth;
+    private bool goNextOnWrongMove;
+    private bool shuffle;
+    private bool showRightAfterMiss;
+    private bool startLinesFromStart;
+    public void InitTraining(Opening opening, int depth, bool goNextOnWrongMove, bool shuffle, bool showRightAfterMiss, bool startLinesFromStart)
     {
         if(opening.rootNode.children.Count == 0){rootSelecter.SetOpening(); return; }
 
+        this.opening = opening;
+        this.depth = depth;
+        this.goNextOnWrongMove = goNextOnWrongMove;
+        this.shuffle = shuffle;
+        this.showRightAfterMiss = showRightAfterMiss;
+        this.startLinesFromStart = startLinesFromStart;
+
+
         board.openingTrainingActive = true;
         openingSize = opening.GetOpeningSize();
+        Debug.Log("openingSize: " + openingSize);
         lineCounter = 0;
         rightCounter = 0;
         timer = 0;
@@ -60,31 +77,33 @@ public class OpeningTrainingController1 : MonoBehaviour
         possibleLines.text = "0/" + openingSize;
 
         DoNextBotMove();
-
-
+        
     }
     List<Node> currentNodeSave = new();
+    int childrenCount = 0;
     public void ManageNext()
     {
+        // CheckForCorrectMove()
+        // HandleMultiplePossibles()
+        // 
+        //
+
         bool correctMove = CheckForCorrectMove();
+        if(childrenCount != 0)
+        {   
+            childrenCount--;
+            return;
+        }
+
+
         if (!correctMove)
         {   
-
-            if(queue.Count == 0)
-            {
-                EndTraining();
-                return;
-            }
-            GoNextLine(false);
+            GoNextLine(false); 
             return;
         }
 
         if(!MovesLeft()){
-            if(queue.Count == 0)
-            {
-                EndTraining();
-                return;
-            }
+            
             GoNextLine(true); 
             return;
         }
@@ -93,19 +112,30 @@ public class OpeningTrainingController1 : MonoBehaviour
 
         if(!MovesLeft()){
 
-            if(queue.Count == 0)
-            {
-                EndTraining();
-                return;
-            }
             GoNextLine(true); 
             return;
         }
+
+        if (shuffle)
+        {
+            //Shuffle(queue);
+        }
+
+        InitNextPossibles();
         
+
+    }
+    private void InitNextPossibles()
+    {
+        foreach(Node n in currentNode.children)
+        {   
+            currentNodeSave.Add(n);
+            childrenCount++;
+        }
     }
     private bool MovesLeft()
     {
-        if(currentNode.children.Count == 0){
+        if(currentNode.children.Count == 0 || board.currentGame.playedMoves.Count >= depth){
 
             return false;
         }
@@ -113,63 +143,76 @@ public class OpeningTrainingController1 : MonoBehaviour
     }
     private bool CheckForCorrectMove()
     {
-        
-        //Debug.Log("Current Node Move: " + currentNode.move.ToString());
-        
-
-        //Check for NextLine/End
-        
-
-        //Check For Match
         bool match = false;
-
+        Node matchedNode = new();
         foreach(Node n in currentNode.children)
         {   
             if (n.move.Equals(board.currentGame.playedMoves.Last()))
             {
                 // Good Move
                 match = true;
-                currentNode = n;
-            }
-            else
-            {
-                currentNodeSave.Add(n);
+                matchedNode = n;
+                //currentNode = n;
             }
         }
+        
+        
 
         if (match)
-        {
-            queue.AddRange(currentNodeSave);
+        {   
+            foreach(Node n1 in matchedNode.children)
+            {
+                Debug.Log("Added " + n1.move.ToString() + " to the Queue");
+                queue.Add(n1);
+            }
+            currentNodeSave.Remove(matchedNode);
             return true;
         }
         else
         {
+            if (!goNextOnWrongMove)
+            {
+                foreach(Node n1 in matchedNode.children)
+                {
+                    Debug.Log("Added " + n1.move.ToString() + " to the Queue");
+                    queue.Add(n1);
+                }
+            }
             return false;
         }
+
     }
     private void DoNextBotMove()
     {
-        //Get Next Move for Boot
+        //Get Next Move for Bot
         for(int i = 0; i < currentNode.children.Count; i++)
         {
             if (i != 0)
             {
+                Debug.Log("Added " + currentNode.children[i].move.ToString() + " to the Queue");
                 queue.Add(currentNode.children[i]);
             }
         }
         currentNode = currentNode.children[0];
 
-
+        Debug.Log(currentNode.move.ToString());
         board.doMove(currentNode.move, true, true);
     }
 
     private void GoNextLine(bool everythingRight)
-    {
-        
+    {   
+        lineCounter++;
         if(everythingRight)
         {
             rightCounter++;
         }
+
+        if(queue.Count == 0)
+        {
+            EndTraining();
+            return;
+        }
+
 
         board.ResetBoard(true);
         
@@ -182,14 +225,9 @@ public class OpeningTrainingController1 : MonoBehaviour
         }
         for (int i = movesTillNode.Count - 1; i >= 0; i--)
         {
-            Debug.Log("MovesTillNode: " + movesTillNode[i].ToString());
             board.doMove(movesTillNode[i],true,true);
         }
-        //foreach(Move m in movesTillNode)
-        //{
-        //    Debug.Log("MovesTillNode: " + m.ToString());
-        //    board.doMove(m,true,true);
-        //}
+        
 
         currentNode = queue.First(); 
         queue.RemoveAt(0);
@@ -203,6 +241,7 @@ public class OpeningTrainingController1 : MonoBehaviour
 
     private void EndTraining()
     {
+        Debug.Log("End Trainig");
         board.ResetBoard(true);
         foreach(Move m in opening.moves)
         {
@@ -217,6 +256,7 @@ public class OpeningTrainingController1 : MonoBehaviour
     public void ResetTraining(bool restart)
     {
         board.openingTrainingActive = restart;
+        currentNode = opening.rootNode;
         lineCounter = 0;
         rightCounter = 0;
         board.drawOnBoard.arrow.ClearAllArrows();
@@ -226,6 +266,7 @@ public class OpeningTrainingController1 : MonoBehaviour
         foreach(Move m in opening.moves)
         {
             board.doMove(m, true, true);
+            currentNode = currentNode.children[0];
         }
 
 
@@ -235,9 +276,19 @@ public class OpeningTrainingController1 : MonoBehaviour
         openingName.text = opening.name;
         possibleLines.text = "0/" + openingSize;
 
-        if (!opening.color)
+        DoNextBotMove();
+    }
+    void Shuffle<T>(List<T> list)
+    {
+        for (int i = list.Count - 1; i > 0; i--)
         {
-            ManageNext();
+            // Wähle einen zufälligen Index von 0 bis i
+            int randomIndex = Random.Range(0, i + 1);
+
+            // Tausche die Elemente
+            T temp = list[i];
+            list[i] = list[randomIndex];
+            list[randomIndex] = temp;
         }
     }
 }

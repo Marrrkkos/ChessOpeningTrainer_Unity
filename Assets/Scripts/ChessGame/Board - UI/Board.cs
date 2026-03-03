@@ -17,7 +17,7 @@ public class Board : MonoBehaviour
     public OpeningDataBaseController openingDataBaseController;
     public bool openingDataBaseActive = false;
     [Header("OpeningController")]
-    public OpeningTrainingController1 openingTrainingController1;
+    public OpeningTrainingController openingTrainingController;
     public bool openingTrainingActive = false;
 
 
@@ -97,7 +97,7 @@ public class Board : MonoBehaviour
 
         currentGame.movesMemory.Add(move);
 
-        nextTurn(refreshGUI, false);
+        nextTurn(refreshGUI, true);
         return move;
     }
     public bool doSimpleMove(Game.SimpleMove simpleMove, bool refreshGUI, bool botMove) {
@@ -190,10 +190,11 @@ public class Board : MonoBehaviour
         // ******************************************************
         //                       Opening
         // ******************************************************
-            if(openingTrainingController1 != null && openingTrainingActive)
+            if(openingTrainingController != null && openingTrainingActive)
             {
                 if(!botMove){
-                    openingTrainingController1.ManageNext();
+                    openingController.DrawOpeningArrows();  // For tests
+                    openingTrainingController.ManageNext();
                 }
                 return;
             }

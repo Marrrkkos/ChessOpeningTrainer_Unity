@@ -3,15 +3,14 @@ using UnityEngine;
 
 public class OpeningTrainingCreator : MonoBehaviour
 {
-    public OpeningTrainingController1 openingTrainingController1;
+    public OpeningTrainingController openingTrainingController;
 
-    private int depth = 10;
+    public int depth = 10;
     public void StartOpeningTraining()
     {
         Opening opening = GameManager.instance.selcetedOpening;
-        List<List<Move>> allLines = opening.GetAllLines(depth);
 
-        openingTrainingController1.InitTraining(opening);
+        openingTrainingController.InitTraining(opening, depth, TrainingMode.Normal);
     }
 
 }

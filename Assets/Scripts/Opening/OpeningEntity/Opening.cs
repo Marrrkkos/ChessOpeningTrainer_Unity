@@ -22,7 +22,8 @@ public class Opening
     [JsonIgnore] public Texture2D startPos; 
     
     public List<Move> moves;
-    
+
+    [System.NonSerialized]
     [JsonProperty] public Node rootNode; 
 
     // --- KONSTRUKTOREN ---
@@ -168,33 +169,37 @@ public class Opening
     {
         return 0;
     }
-    int count = 0;
     
-    
-    return FindCounterRecursive(rootNode, 0,new List<Move>(), count);
+    return FindCounterRecursive(rootNode, 0, new List<Move>());
 }
 
-private int FindCounterRecursive(Node currentNode, int currentDepth, List<Move> currentPath, int count)
+private int FindCounterRecursive(Node currentNode, int currentDepth, List<Move> currentPath)
 {
     bool isLeaf = currentNode.children == null || currentNode.children.Count == 0;
 
+    // Wenn wir am Ende eines Pfades sind (und es nicht nur der leere Root ist)
     if (isLeaf)
     {
         if (currentPath.Count > 0)
         {
-            count++;
+            return 1; // Dieser Pfad zählt als 1
         }
-        return count;
+        return 0;
     }
+
+    int totalCount = 0; // Zähler für DIESEN Knoten
+
     foreach (Node childNode in currentNode.children)
     {
         currentPath.Add(childNode.move);
         
-        FindCounterRecursive(childNode, currentDepth + 1, currentPath, count);
+        // WICHTIG: Hier addieren wir das Ergebnis der Kinder auf unseren Zähler!
+        totalCount += FindCounterRecursive(childNode, currentDepth + 1, currentPath);
         
         currentPath.RemoveAt(currentPath.Count - 1);
     }
-    return count;
+    
+    return totalCount; // Gib die Summe aller gefundenen Pfade weiter nach oben
 }
     public List<List<Move>> GetAllLines(int depth)
 {
