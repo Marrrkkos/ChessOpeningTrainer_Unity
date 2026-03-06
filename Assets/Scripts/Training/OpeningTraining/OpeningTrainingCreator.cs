@@ -10,7 +10,7 @@ public class OpeningTrainingCreator : MonoBehaviour
     {
         Opening opening = GameManager.instance.selcetedOpening;
 
-        openingTrainingController.InitTraining(opening, depth, TrainingMode.Normal);
+        openingTrainingController.InitTraining(opening, depth, TrainingMode.Testing);
     }
 
 }

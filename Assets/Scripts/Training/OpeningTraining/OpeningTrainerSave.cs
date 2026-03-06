@@ -51,7 +51,7 @@ public class OpeningTrainingControllerSave : MonoBehaviour
 
 
         board.openingTrainingActive = true;
-        openingSize = opening.GetOpeningSize();
+        //openingSize = opening.GetOpeningSize();
         Debug.Log("openingSize: " + openingSize);
         lineCounter = 0;
         rightCounter = 0;

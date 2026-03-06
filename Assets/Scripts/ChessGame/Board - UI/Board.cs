@@ -193,9 +193,10 @@ public class Board : MonoBehaviour
             if(openingTrainingController != null && openingTrainingActive)
             {
                 if(!botMove){
-                    openingController.DrawOpeningArrows();  // For tests
                     openingTrainingController.ManageNext();
-                }
+
+                    openingController.DrawOpeningArrows();  // For tests
+                }else{openingController.DrawOpeningArrows();}
                 return;
             }
         if(opening.name != "")

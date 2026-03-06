@@ -163,14 +163,55 @@ public class Opening
         return movesSave;
 
     }
-    public int GetOpeningSize(){
+    public int GetNodeMovesSize(Node node)
+{
+    if (node == null) return 0;
+
+    int count = 0;
+    Queue<Node> queue = new();
+
+    // Add initial children to the queue
+    if(node.move.movedPiece.color != color){
+        foreach (var child in node.children)
+        {
+            queue.Enqueue(child);
+        }
+    }
+    else
+    {
+        foreach (var child in node.children)
+            {
+                foreach (var child1 in child.children)
+            {
+                queue.Enqueue(child1);
+            }
+        } 
+    }
+    while (queue.Count > 0)
+    {
+        Node current = queue.Dequeue();
+        count++;
+
+        // Add the next level of children
+        foreach (var child in current.children)
+        {
+            foreach (var child1 in child.children)
+            {
+                queue.Enqueue(child1);
+            }
+        }
+    }
+
+    return count;
+}
+    public int GetNodeLeafSize(Node node){
     
-    if (rootNode == null) 
+    if (node == null) 
     {
         return 0;
     }
     
-    return FindCounterRecursive(rootNode, 0, new List<Move>());
+    return FindCounterRecursive(node, 0, new List<Move>());
 }
 
 private int FindCounterRecursive(Node currentNode, int currentDepth, List<Move> currentPath)
@@ -201,41 +242,12 @@ private int FindCounterRecursive(Node currentNode, int currentDepth, List<Move> 
     
     return totalCount; // Gib die Summe aller gefundenen Pfade weiter nach oben
 }
-    public List<List<Move>> GetAllLines(int depth)
-{
-    List<List<Move>> allLines = new List<List<Move>>();
-    
-    if (rootNode == null || depth <= 0) 
-    {
-        return allLines;
-    }
-    
-    FindLinesRecursive(rootNode, 0, depth, new List<Move>(), allLines);
-    
-    return allLines;
-}
 
-private void FindLinesRecursive(Node currentNode, int currentDepth, int maxDepth, List<Move> currentPath, List<List<Move>> allLines)
-{
-    bool isLeaf = currentNode.children == null || currentNode.children.Count == 0;
 
-    if (currentDepth == maxDepth || isLeaf)
-    {
-        if (currentPath.Count > 0)
-        {
-            allLines.Add(new List<Move>(currentPath));
-        }
-        return;
-    }
-    foreach (Node childNode in currentNode.children)
-    {
-        currentPath.Add(childNode.move);
-        
-        FindLinesRecursive(childNode, currentDepth + 1, maxDepth, currentPath, allLines);
-        
-        currentPath.RemoveAt(currentPath.Count - 1);
-    }
-}
+
+
+
+
     public void Add(List<Move> moves) {
         Node currentNode = rootNode;
 
@@ -282,30 +294,5 @@ private void FindLinesRecursive(Node currentNode, int currentDepth, int maxDepth
         }
         SaveGame(name);
     }
-    public void PrintTreeDepth5()
-    {
-        Node node = rootNode;
-        foreach(Node n in node.children)
-        {
-            Debug.Log(n.move.ToString());
-            foreach(Node n2 in n.children)
-            {
-                Debug.Log(n2.move.ToString());
-                foreach(Node n3 in n2.children)
-                {
-                    Debug.Log(n3.move.ToString());
-                    foreach(Node n4 in n3.children)
-                    {
-                        Debug.Log(n4.move.ToString());
-                        foreach(Node n5 in n4.children)
-                        {   
-                            Debug.Log(n5.move.ToString());
-                        }
-                    }
-                }
-            }
-            Debug.Log("-------------------------------------------");
-        }
-
-    }
+    
 }

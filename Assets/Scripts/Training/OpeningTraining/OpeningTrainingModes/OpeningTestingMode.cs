@@ -1,16 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum TrainingMode
-{
-    Normal = 0,
-    Randomized = 1,
-    Learning = 2
-}
-public class OpeningTrainingController : MonoBehaviour
+public class OpeningTestingMode : MonoBehaviour
 {
     public RootSelecter rootSelecter;
 
@@ -30,7 +23,8 @@ public class OpeningTrainingController : MonoBehaviour
 
     private Node currentNode = new();
     private List<Node> queue = new();
-    private int openingSize = 0;
+    private int openingLeafSize = 0;
+    private int openingNodeSize = 0;
     
     private int lineCounter;
     private float rightCounter;
@@ -41,17 +35,20 @@ public class OpeningTrainingController : MonoBehaviour
     private Opening opening;
     private int depth;
     private TrainingMode mode;
-    public void InitTraining(Opening opening, int depth, TrainingMode mode)
+    public void InitTraining(Opening opening, int depth)
     {
+
         if(opening.rootNode.children.Count == 0){rootSelecter.SetOpening(); return; }
 
         this.opening = opening;
         this.depth = depth;
-        this.mode = mode;
 
         board.openingTrainingActive = true;
-        openingSize = opening.GetOpeningSize();
-        Debug.Log("openingSize: " + openingSize);
+        openingLeafSize = opening.GetNodeLeafSize(opening.rootNode);
+        openingNodeSize = opening.GetNodeMovesSize(opening.rootNode);
+
+        Debug.Log("openingSize: " + openingLeafSize);
+        Debug.Log("openingSize: " + openingNodeSize);
         lineCounter = 0;
         rightCounter = 0;
         timer = 0;
@@ -73,7 +70,7 @@ public class OpeningTrainingController : MonoBehaviour
         percentNumber.text = "-";
         time.text = "00:00";
         openingName.text = opening.name;
-        possibleLines.text = "0/" + openingSize;
+        possibleLines.text = "0/" + openingLeafSize;
 
 
         foreach(Node n in currentNode.children)
@@ -83,7 +80,6 @@ public class OpeningTrainingController : MonoBehaviour
         }
         GoNextLine();
         CalcNewTrys();
-        //ManageNext();
         
     }
     List<Node> currentNodeSave = new();
@@ -99,7 +95,11 @@ public class OpeningTrainingController : MonoBehaviour
                 return;
             }
             else
-            {
+            {   
+                if(mode == TrainingMode.Learning)
+                {
+                    queue.AddRange(currentNodeSave);
+                }
                 currentNodeSave.Clear();
                 GoNextLine();
             }
@@ -221,7 +221,7 @@ public class OpeningTrainingController : MonoBehaviour
         percentNumber.text = "-";
         time.text = "00:00";
         openingName.text = opening.name;
-        possibleLines.text = "0/" + openingSize;
+        possibleLines.text = "0/" + openingLeafSize;
 
         foreach(Node n in currentNode.children)
         {
@@ -230,18 +230,5 @@ public class OpeningTrainingController : MonoBehaviour
         }
         GoNextLine();
         CalcNewTrys();
-    }
-    void Shuffle<T>(List<T> list)
-    {
-        for (int i = list.Count - 1; i > 0; i--)
-        {
-            // Wähle einen zufälligen Index von 0 bis i
-            int randomIndex = Random.Range(0, i + 1);
-
-            // Tausche die Elemente
-            T temp = list[i];
-            list[i] = list[randomIndex];
-            list[randomIndex] = temp;
-        }
     }
 }
