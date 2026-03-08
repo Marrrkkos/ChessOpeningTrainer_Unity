@@ -6,7 +6,7 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class Tests : MonoBehaviour
 {
-    public SliderController sliderController;
+    public SliderControllerFillStand sliderController;
     long currentFillStand;
 
     public Board board;

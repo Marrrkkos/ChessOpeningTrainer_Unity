@@ -163,42 +163,57 @@ public class Opening
         return movesSave;
 
     }
+    public List<Node> GetAllNodes()
+    {
+        List<Node> allNodes = new();
+        if (rootNode == null) return allNodes;
+
+        Queue<Node> queue = new();
+        queue.Enqueue(rootNode);
+
+        while (queue.Count > 0)
+        {
+            Node current = queue.Dequeue();
+
+            // Prüfen, ob dieser Node die gesuchte Farbe hat.
+            // Wichtig: Null-Check für 'move', da die Startposition (Root) evtl. keinen vorherigen Zug hat.
+            if (current.move != null && current.move.movedPiece.color == this.color)
+            {
+                allNodes.Add(current);
+            }
+
+            // Alle direkten Kinder für die weitere Suche zur Queue hinzufügen
+            if (current.children != null)
+            {
+                foreach (var child in current.children)
+                {
+                    queue.Enqueue(child);
+                }
+            }
+        }
+
+        return allNodes;
+    }
     public int GetNodeMovesSize(Node node)
 {
+    // Abbruchbedingung: Wenn der Knoten null ist, gibt es hier nichts zu zählen.
     if (node == null) return 0;
 
     int count = 0;
-    Queue<Node> queue = new();
 
-    // Add initial children to the queue
-    if(node.move.movedPiece.color != color){
-        foreach (var child in node.children)
-        {
-            queue.Enqueue(child);
-        }
+    // Hat der aktuelle Knoten die richtige Farbe? Dann zählen wir ihn als 1.
+    if (node.move != null && node.move.movedPiece.color == this.color)
+    {
+        count = 1;
     }
-    else
+
+    // Jetzt addieren wir die Ergebnisse aller Kinder dazu
+    if (node.children != null)
     {
         foreach (var child in node.children)
-            {
-                foreach (var child1 in child.children)
-            {
-                queue.Enqueue(child1);
-            }
-        } 
-    }
-    while (queue.Count > 0)
-    {
-        Node current = queue.Dequeue();
-        count++;
-
-        // Add the next level of children
-        foreach (var child in current.children)
         {
-            foreach (var child1 in child.children)
-            {
-                queue.Enqueue(child1);
-            }
+            // Die Methode ruft sich selbst auf und addiert das Ergebnis
+            count += GetNodeMovesSize(child); 
         }
     }
 

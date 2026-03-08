@@ -53,6 +53,13 @@ public class OpeningTrainingController : MonoBehaviour
 
         if(opening.rootNode.children.Count == 0){rootSelecter.SetOpening(); return; }
 
+        
+        board.openingTrainingActive = true;
+
+        board.drawOnBoard.arrow.ClearAllArrows();
+        board.ResetBoard(true);
+        boardScaler.SetRotation(!opening.color);
+
         switch (mode)
         {
             case TrainingMode.Testing:
@@ -86,18 +93,27 @@ public class OpeningTrainingController : MonoBehaviour
     
     public void ResetTraining(bool restart)
     {
+        board.openingTrainingActive = restart;
+
+        
+        board.drawOnBoard.arrow.ClearAllArrows();
+        board.ResetBoard(true);
+        boardScaler.SetRotation(!opening.color);
+
+
         switch (mode)
         {
             case TrainingMode.Testing:
-                openingTestingMode.ResetTraining(restart);
+                openingTestingMode.ResetTraining();
                 break;
             case TrainingMode.Randomized:
-                openingRandomizedMode.ResetTraining(restart);
+                openingRandomizedMode.ResetTraining();
                 break;
             case TrainingMode.Learning:
-                openingLearningMode.ResetTraining(restart);
+                openingLearningMode.ResetTraining();
                 break;
         }
     }
+    
     
 }

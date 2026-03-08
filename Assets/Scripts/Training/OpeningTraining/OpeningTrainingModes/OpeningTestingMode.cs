@@ -34,7 +34,6 @@ public class OpeningTestingMode : MonoBehaviour
     //Constructor
     private Opening opening;
     private int depth;
-    private TrainingMode mode;
     public void InitTraining(Opening opening, int depth)
     {
 
@@ -43,18 +42,12 @@ public class OpeningTestingMode : MonoBehaviour
         this.opening = opening;
         this.depth = depth;
 
-        board.openingTrainingActive = true;
         openingLeafSize = opening.GetNodeLeafSize(opening.rootNode);
         openingNodeSize = opening.GetNodeMovesSize(opening.rootNode);
 
-        Debug.Log("openingSize: " + openingLeafSize);
-        Debug.Log("openingSize: " + openingNodeSize);
         lineCounter = 0;
         rightCounter = 0;
         timer = 0;
-        board.drawOnBoard.arrow.ClearAllArrows();
-        board.ResetBoard(true);
-        boardScaler.SetRotation(!opening.color);
 
         this.opening = opening;
         currentNode = opening.rootNode;
@@ -96,18 +89,12 @@ public class OpeningTestingMode : MonoBehaviour
             }
             else
             {   
-                if(mode == TrainingMode.Learning)
-                {
-                    queue.AddRange(currentNodeSave);
-                }
                 currentNodeSave.Clear();
                 GoNextLine();
             }
         }
         //DoNextBotMove();
         CalcNewTrys();
-
-        Debug.Log("Trys For Next Turn: " + trys);
     }
     private void CalcNewTrys()
     {
@@ -145,14 +132,6 @@ public class OpeningTestingMode : MonoBehaviour
         
         if(trys == 0)
         {
-            return false;
-        }
-        return true;
-    }
-    private bool MovesLeft()
-    {
-        if(currentNode.children.Count == 0 || board.currentGame.playedMoves.Count >= depth){
-
             return false;
         }
         return true;
@@ -200,15 +179,12 @@ public class OpeningTestingMode : MonoBehaviour
 
         Debug.Log("Training END");
     }
-    public void ResetTraining(bool restart)
+    public void ResetTraining()
     {
-        board.openingTrainingActive = restart;
+        
         currentNode = opening.rootNode;
         lineCounter = 0;
         rightCounter = 0;
-        board.drawOnBoard.arrow.ClearAllArrows();
-        board.ResetBoard(true);
-        boardScaler.SetRotation(!opening.color);
 
         foreach(Move m in opening.moves)
         {
