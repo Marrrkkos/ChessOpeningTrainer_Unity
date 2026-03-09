@@ -40,9 +40,10 @@ public class OpeningTrainingCreator : MonoBehaviour
     
     public void Init()
     {
-        currentDepth = 3;
-        depthSliderController.Init(0,3,currentDepth);
-        depthSliderController.slider.value = 3;
+        Opening opening = GameManager.instance.selcetedOpening;
+        currentDepth = opening.GetMaxDepth(opening.rootNode);
+        depthSliderController.Init(1,currentDepth,1);
+        depthSliderController.slider.value = 1;
     }
     public void GoNextMode()
     {

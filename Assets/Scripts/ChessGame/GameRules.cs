@@ -22,7 +22,7 @@ public class GameRules
             int targetIndex = move.x;
             int rule = move.y;
 
-            currentPiece.doMove(targetIndex, rule, null, false);
+            currentPiece.doMove(targetIndex, rule, null, false, false);
 
             int kingPosToCheck = (currentPiece.id == 5) ? targetIndex : myKing.position;
 
@@ -31,7 +31,7 @@ public class GameRules
                 finalPossibles.Add(move);
             }
 
-            currentPiece.undoMove(false);
+            currentPiece.undoMove(false, false);
         }
 
         return finalPossibles;

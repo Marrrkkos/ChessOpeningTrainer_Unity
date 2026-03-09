@@ -22,12 +22,12 @@ public class ControllButtons : MonoBehaviour
     }
     
     public void DoUndo() {
-        Move m = board.undoMove(true);
+        Move m = board.undoMove(true, true);
         //board.currentGame.movesMemory.Add(m);
     }
     public void GoNext() {
         if(board.currentGame.movesMemory.Count == 0){return;}
-        board.doMove(board.currentGame.movesMemory.Last(), true, false);
+        board.doMove(board.currentGame.movesMemory.Last(), true, true, false);
         //board.currentGame.movesMemory.RemoveAt(board.currentGame.movesMemory.Count - 1);
         
     }
@@ -36,7 +36,7 @@ public class ControllButtons : MonoBehaviour
         int count = board.currentGame.movesMemory.Count;
         for (int i = 0; i < count; i++)
         {
-            board.doMove(board.currentGame.movesMemory.Last(), true, false);
+            board.doMove(board.currentGame.movesMemory.Last(), true, true, false);
             //board.currentGame.movesMemory.RemoveAt(board.currentGame.movesMemory.Count - 1);
         }
     }

@@ -58,7 +58,7 @@ public class ActionService
             }
             else
             {
-                board.doMove(rule, m1, m2, true, false);
+                board.doMove(rule, m1, m2, true, true, false);
                 refreshTurn();
             }
         }
@@ -84,7 +84,7 @@ public class ActionService
         int rule = isCorrectMove();
         if (rule > 0)
         {
-            board.doMove(rule, m1, m2, true, false);
+            board.doMove(rule, m1, m2, true, true, false);
             refreshTurn();
         }
         else
@@ -132,7 +132,7 @@ public class ActionService
         {
             if (promotionIndexes[i] == fieldID)
             {
-                board.doMove(5 + i, m1, m2, true, false);
+                board.doMove(5 + i, m1, m2, true, true, false);
             }
         }
         setPiecesActive(board, true);
@@ -184,13 +184,13 @@ public class ActionService
         {
             Field field = board.fields[p.position];
             field.pieceImage.gameObject.SetActive(active);
-            field.refreshImage(p.position);
+            field.refreshImage();
         }
         foreach (Piece p in board.blackPieces)
         {
             Field field = board.fields[p.position];
             field.pieceImage.gameObject.SetActive(active);
-            field.refreshImage(p.position);
+            field.refreshImage();
         }
     }
     private void refreshTurn()

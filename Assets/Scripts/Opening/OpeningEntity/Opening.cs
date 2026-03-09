@@ -219,6 +219,31 @@ public class Opening
 
     return count;
 }
+public int GetMaxDepth(Node node)
+{
+    // Wenn der Knoten nicht existiert, ist die Tiefe 0
+    if (node == null) return 0;
+
+    // Wenn der Knoten keine Kinder hat (Blattknoten), ist die Tiefe hier 1
+    if (node.children == null || node.children.Count == 0) return 1;
+
+    int maxChildDepth = 0;
+
+    // Wir fragen jedes Kind nach seiner maximalen Tiefe
+    foreach (var child in node.children)
+    {
+        int childDepth = GetMaxDepth(child);
+        
+        // Wenn dieses Kind tiefer ist als unser bisheriges Maximum, merken wir uns diesen neuen Rekord
+        if (childDepth > maxChildDepth)
+        {
+            maxChildDepth = childDepth;
+        }
+    }
+
+    // Die Tiefe dieses Knotens ist 1 (für sich selbst) + die Tiefe seines tiefsten Kindes
+    return maxChildDepth + 1;
+}
     public int GetNodeLeafSize(Node node){
     
     if (node == null) 

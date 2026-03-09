@@ -43,7 +43,7 @@ public class OpeningTrainingControllerOld : MonoBehaviour
 
         foreach(Move m in opening.moves)
         {
-            board.doMove(m, true, true);
+            board.doMove(m, true, false, true);
         }
 
         currentLine = allLines[lineIndex];
@@ -78,7 +78,7 @@ public class OpeningTrainingControllerOld : MonoBehaviour
             return;
         }
 
-        board.doMove(currentLine[board.currentGame.playedMoves.Count], true, true);
+        board.doMove(currentLine[board.currentGame.playedMoves.Count], true, false, true);
 
         if(currentLine.Count <= board.currentGame.playedMoves.Count)
         {
@@ -103,7 +103,7 @@ public class OpeningTrainingControllerOld : MonoBehaviour
         board.ResetBoard(true);
         foreach(Move m in opening.moves)
         {
-            board.doMove(m,true,true);
+            board.doMove(m,true,false,true);
         }
 
         
@@ -123,7 +123,7 @@ public class OpeningTrainingControllerOld : MonoBehaviour
         board.ResetBoard(true);
         foreach(Move m in opening.moves)
         {
-            board.doMove(m,true,true);
+            board.doMove(m,true,false,true);
         }
         board.openingTrainingActive = false;
         openingResultController.SetResult(lineIndex, rightCounter, timer);
@@ -142,7 +142,7 @@ public class OpeningTrainingControllerOld : MonoBehaviour
 
         foreach(Move m in opening.moves)
         {
-            board.doMove(m, true, true);
+            board.doMove(m, true,false, true);
         }
 
         currentLine = allLines[lineIndex];

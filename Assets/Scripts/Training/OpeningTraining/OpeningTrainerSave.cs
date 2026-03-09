@@ -65,7 +65,7 @@ public class OpeningTrainingControllerSave : MonoBehaviour
 
         foreach(Move m in opening.moves)
         {
-            board.doMove(m, true, true);
+            board.doMove(m, true,false, true);
             currentNode = currentNode.children[0];
         }
 
@@ -196,7 +196,7 @@ public class OpeningTrainingControllerSave : MonoBehaviour
         currentNode = currentNode.children[0];
 
         Debug.Log(currentNode.move.ToString());
-        board.doMove(currentNode.move, true, true);
+        board.doMove(currentNode.move, true,false, true);
     }
 
     private void GoNextLine(bool everythingRight)
@@ -225,7 +225,7 @@ public class OpeningTrainingControllerSave : MonoBehaviour
         }
         for (int i = movesTillNode.Count - 1; i >= 0; i--)
         {
-            board.doMove(movesTillNode[i],true,true);
+            board.doMove(movesTillNode[i],true,false,true);
         }
         
 
@@ -245,7 +245,7 @@ public class OpeningTrainingControllerSave : MonoBehaviour
         board.ResetBoard(true);
         foreach(Move m in opening.moves)
         {
-            board.doMove(m,true,true);
+            board.doMove(m,true,false,true);
         }
         board.openingTrainingActive = false;
         openingResultController.SetResult(lineCounter, rightCounter, timer);
@@ -265,7 +265,7 @@ public class OpeningTrainingControllerSave : MonoBehaviour
 
         foreach(Move m in opening.moves)
         {
-            board.doMove(m, true, true);
+            board.doMove(m, true,false, true);
             currentNode = currentNode.children[0];
         }
 

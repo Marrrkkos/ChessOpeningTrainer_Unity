@@ -22,6 +22,7 @@ public class Board : MonoBehaviour
 
 
     [Header("Util")]
+    public AnimationHandler animationHandler;
     public DrawOnBoard drawOnBoard;
     public bool rotation = false;
 
@@ -89,31 +90,31 @@ public class Board : MonoBehaviour
 
         currentGame = new Game(new Player[] { new Player("Player 1", 0, true), new Player("Player 2", 0, false) });
     }
-    public Move undoMove(bool refreshGUI){
+    public Move undoMove(bool refreshGUI, bool animation){
 
         if (currentGame.playedMoves.Count == 0) { return null;}
         Piece piece = currentGame.playedMoves[currentGame.playedMoves.Count - 1].movedPiece;
-        Move move = piece.undoMove(refreshGUI);
+        Move move = piece.undoMove(refreshGUI, animation);
 
         currentGame.movesMemory.Add(move);
 
         nextTurn(refreshGUI, true);
         return move;
     }
-    public bool doSimpleMove(Game.SimpleMove simpleMove, bool refreshGUI, bool botMove) {
+    public bool doSimpleMove(Game.SimpleMove simpleMove, bool refreshGUI,bool animation, bool botMove) {
         //Debug.Log("specialrule: " + simpleMove.specialRule + " field1: " + getString(simpleMove.from) + " field2: " + getString(simpleMove.to) + " san: " + simpleMove.san);
-        return doMove(simpleMove.specialRule, BoardUtil.IndexToString(simpleMove.from), BoardUtil.IndexToString(simpleMove.to), refreshGUI, botMove);
+        return doMove(simpleMove.specialRule, BoardUtil.IndexToString(simpleMove.from), BoardUtil.IndexToString(simpleMove.to), refreshGUI,animation, botMove);
     }
-    public bool doMove(Move move, bool refreshGUI, bool botMove)
+    public bool doMove(Move move, bool refreshGUI,bool animation, bool botMove)
     {
         string m1 = BoardUtil.IndexToString(move.from);
         string m2 = BoardUtil.IndexToString(move.to);
-        return doMove(move.specialRule, m1, m2, refreshGUI, botMove);
+        return doMove(move.specialRule, m1, m2, refreshGUI,animation, botMove);
     }
     //public bool doSANMove(string san, bool refreshGUI) {
     //        return doSimpleMove(SAN_Handler.SANToMove(this, san, currentGame.players[currentGame.currentPlayer].color, true), refreshGUI);
     //}
-    public bool doMove(int specialRule, string m1, string m2, bool refreshGUI, bool botMove)
+    public bool doMove(int specialRule, string m1, string m2, bool refreshGUI, bool animation, bool botMove)
     {
         int fieldID_1 = BoardUtil.StringToIndex(m1);
         int fieldID_2 = BoardUtil.StringToIndex(m2);
@@ -129,7 +130,7 @@ public class Board : MonoBehaviour
             return false;
         }
 
-        Move move = piece.doMove(fieldID_2, specialRule, getPossible(m1, refreshGUI), refreshGUI);
+        Move move = piece.doMove(fieldID_2, specialRule, getPossible(m1, refreshGUI), refreshGUI, animation);
         
         move.check = GameRules.checkOchecks(this, !piece.color);
         move.checkMate = GameRules.checkCheckMate(this, !piece.color);
@@ -219,7 +220,7 @@ public class Board : MonoBehaviour
     {
         for (int i = 0; i < 64; i++)
         {
-            fields[i].setPiece(null, true);
+            fields[i].SetPiece(null, true);
         }
         whitePieces.Clear();
         blackPieces.Clear();
@@ -230,29 +231,29 @@ public class Board : MonoBehaviour
         //Pawns
         for (int i = 0; i < 8; i++)
         {
-            fields[i+8].setPiece(new Pawn(this,false,i + 8), refreshGUI);
+            fields[i+8].SetPiece(new Pawn(this,false,i + 8), refreshGUI);
         }
         for (int i = 0; i < 8; i++)
         {
-            fields[i + 48].setPiece(new Pawn(this,true,i + 48), refreshGUI);
+            fields[i + 48].SetPiece(new Pawn(this,true,i + 48), refreshGUI);
         }
-        fields[0].setPiece(new Rook(this,false,0), refreshGUI);
-        fields[1].setPiece(new Knight(this,false,1), refreshGUI);
-        fields[2].setPiece(new Bishop(this,false,2), refreshGUI);
-        fields[3].setPiece(new Queen(this,false,3), refreshGUI);
-        fields[4].setPiece(new King(this,false,4), refreshGUI);
-        fields[5].setPiece(new Bishop(this,false,5), refreshGUI);
-        fields[6].setPiece(new Knight(this,false,6), refreshGUI);
-        fields[7].setPiece(new Rook(this,false,7), refreshGUI);
+        fields[0].SetPiece(new Rook(this,false,0), refreshGUI);
+        fields[1].SetPiece(new Knight(this,false,1), refreshGUI);
+        fields[2].SetPiece(new Bishop(this,false,2), refreshGUI);
+        fields[3].SetPiece(new Queen(this,false,3), refreshGUI);
+        fields[4].SetPiece(new King(this,false,4), refreshGUI);
+        fields[5].SetPiece(new Bishop(this,false,5), refreshGUI);
+        fields[6].SetPiece(new Knight(this,false,6), refreshGUI);
+        fields[7].SetPiece(new Rook(this,false,7), refreshGUI);
 
-        fields[56].setPiece(new Rook(this,true,56), refreshGUI);
-        fields[57].setPiece(new Knight(this,true,57), refreshGUI);
-        fields[58].setPiece(new Bishop(this,true,58), refreshGUI);
-        fields[59].setPiece(new Queen(this,true,59), refreshGUI);
-        fields[60].setPiece(new King(this,true,60), refreshGUI);
-        fields[61].setPiece(new Bishop(this,true,61), refreshGUI);
-        fields[62].setPiece(new Knight(this,true,62), refreshGUI);
-        fields[63].setPiece(new Rook(this,true,63), refreshGUI);
+        fields[56].SetPiece(new Rook(this,true,56), refreshGUI);
+        fields[57].SetPiece(new Knight(this,true,57), refreshGUI);
+        fields[58].SetPiece(new Bishop(this,true,58), refreshGUI);
+        fields[59].SetPiece(new Queen(this,true,59), refreshGUI);
+        fields[60].SetPiece(new King(this,true,60), refreshGUI);
+        fields[61].SetPiece(new Bishop(this,true,61), refreshGUI);
+        fields[62].SetPiece(new Knight(this,true,62), refreshGUI);
+        fields[63].SetPiece(new Rook(this,true,63), refreshGUI);
 
         whiteKing = fields[60].piece; //WHITE AND BLACK KING 
         blackKing = fields[4].piece;

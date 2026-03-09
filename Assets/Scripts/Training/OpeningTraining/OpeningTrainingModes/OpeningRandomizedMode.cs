@@ -58,7 +58,7 @@ public class OpeningRandomizedMode : MonoBehaviour
         }
 
         trys--;
-        board.undoMove(true);
+        board.undoMove(true, false);
         
         if(trys == 0)
         {
@@ -100,7 +100,7 @@ public class OpeningRandomizedMode : MonoBehaviour
         }
         for (int i = movesTillNode.Count - 1; i >= 0; i--)
         {
-            board.doMove(movesTillNode[i],true,true);
+            board.doMove(movesTillNode[i],true, false,true);
         }
     }
     private void CalcNewTrys()
@@ -122,7 +122,7 @@ public class OpeningRandomizedMode : MonoBehaviour
         board.ResetBoard(true);
         foreach(Move m in opening.moves)
         {
-            board.doMove(m,true,true);
+            board.doMove(m,true, false,true);
         }
         board.openingTrainingActive = false;
         //openingResultController.SetResult(lineCounter, rightCounter, timer);

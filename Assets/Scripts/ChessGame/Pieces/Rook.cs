@@ -31,13 +31,13 @@ public class Rook : Piece
         return GameRules.getVertical(board, position);
     }
     override
-    public Move doSpecialMove(int finalPos, int specialRule, bool refreshGUI)
+    public Move doSpecialMove(int finalPos, int specialRule, bool refreshGUI, bool animation)
     {
         return null;
     }
 
     override
-    public Move undoSpecialMove(bool refreshGUI)
+    public Move undoSpecialMove(bool refreshGUI, bool animation)
     {
         return null;
     }

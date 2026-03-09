@@ -12,27 +12,28 @@ public class Field : MonoBehaviour
         board = GetComponentInParent<Board>();
     }
 
-    public void setPiece(Piece piece, bool refreshGUI) {
+    public void SetPiece(Piece piece, bool refreshGUI) {
 
         this.piece = piece;
-        if (refreshGUI)
+        if (!refreshGUI)
         {
-            if (piece != null)
+            return;
+        }
+        if (piece != null)
+        {
+            pieceImage.gameObject.SetActive(true);
+            if (piece.color)
             {
-                pieceImage.gameObject.SetActive(true);
-                if (piece.color)
-                {
-                    pieceImage.sprite = board.pieceSet.whitePieces[piece.id];
-                }
-                else
-                {
-                    pieceImage.sprite = board.pieceSet.blackPieces[piece.id];
-                }
+                pieceImage.sprite = board.pieceSet.whitePieces[piece.id];
             }
             else
             {
-                pieceImage.gameObject.SetActive(false);
+                pieceImage.sprite = board.pieceSet.blackPieces[piece.id];
             }
+        }
+        else
+        {
+            pieceImage.gameObject.SetActive(false);
         }
     }
     public void setPieceImage(int i, bool color) {
@@ -53,17 +54,21 @@ public class Field : MonoBehaviour
             }
         }
     }
-    public void refreshImage(int i) {
+    public void refreshImage() {
         if (piece != null)
         {
             if (piece.color)
             {
-                pieceImage.sprite = board.pieceSet.whitePieces[board.fields[i].piece.id];
+                pieceImage.sprite = board.pieceSet.whitePieces[piece.id];
             }
             else
             {
-                pieceImage.sprite = board.pieceSet.blackPieces[board.fields[i].piece.id];
+                pieceImage.sprite = board.pieceSet.blackPieces[piece.id];
             }
+        }
+        else
+        {
+            pieceImage.gameObject.SetActive(false);
         }
     }
 }

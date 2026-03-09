@@ -6,12 +6,14 @@ public class BoardScaler : MonoBehaviour
     public RectTransform boardRect;
     public Board board;
     public GridLayoutGroup gridLayoutGroup;
+    public RectTransform dummyImage;
     public float cellSize;
     public void ScaleBoard(float boardSize) { 
         
         boardRect.sizeDelta = new Vector2(boardSize, boardSize);
         cellSize = boardSize/8;
         gridLayoutGroup.cellSize = new Vector2(cellSize, cellSize);
+        dummyImage.sizeDelta = new Vector2(cellSize, cellSize);
     }
     public void SetRotation(bool rotation)
     {

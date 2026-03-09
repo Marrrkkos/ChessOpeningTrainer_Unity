@@ -15,14 +15,14 @@ public abstract class Piece
     public abstract int position { get; set; }
     public abstract bool color { get; }
     public abstract List<Vector2Int> getPossibleMoves();
-    public abstract Move doSpecialMove(int finalPos, int specialRule, bool refreshGUI);
+    public abstract Move doSpecialMove(int finalPos, int specialRule, bool refreshGUI, bool animation);
 
-    public abstract Move undoSpecialMove(bool refreshGUI);
+    public abstract Move undoSpecialMove(bool refreshGUI, bool animation);
     
 
     
     
-    public Move doMove(int finalPos, int specialRule, List<Vector2Int> possibleMoves, bool refreshGUI) {
+    public Move doMove(int finalPos, int specialRule, List<Vector2Int> possibleMoves, bool refreshGUI, bool animation) {
 
         Game game = this.board.currentGame;
 
@@ -36,17 +36,25 @@ public abstract class Piece
         }
 
         if (specialRule != 0) {
-            return this.doSpecialMove(finalPos, specialRule, refreshGUI);
+            return this.doSpecialMove(finalPos, specialRule, refreshGUI, animation);
         }
         int currentPos = this.position;
 
         Piece capturedPiece = this.board.fields[finalPos].piece;
 
-
+        
         // SET PIECES IN BOARD
-        this.board.fields[finalPos].setPiece(this, refreshGUI);
-        this.board.fields[currentPos].setPiece(null, refreshGUI);
-
+        if (animation)
+        {
+            this.board.fields[finalPos].piece = this;
+            this.board.fields[currentPos].piece = null;
+            int[] refreshIDS = new int[]{currentPos, finalPos};
+            board.animationHandler.DoAnimation(this, currentPos, finalPos, refreshIDS);
+        }
+        else{
+            this.board.fields[finalPos].SetPiece(this, refreshGUI);
+            this.board.fields[currentPos].SetPiece(null, refreshGUI);
+        }
 
 
         // SET NEW POSITION
@@ -68,7 +76,7 @@ public abstract class Piece
 
         return move;
     }
-    public Move undoMove(bool refreshGUI) {
+    public Move undoMove(bool refreshGUI, bool animation) {
         Game game = this.board.currentGame;
         if (game.playedMoves.Count == 0) return null;
 
@@ -76,15 +84,26 @@ public abstract class Piece
 
         if (move.specialRule != 0)
         {
-            return this.undoSpecialMove(refreshGUI);
+            return this.undoSpecialMove(refreshGUI, animation);
         }
 
         // UNDO MOVE IN GAME
         game.playedMoves.RemoveAt(game.playedMoves.Count - 1);
 
+        
         // UNDO PIECES IN BOARD
-        this.board.fields[move.from].setPiece(this, refreshGUI);
-        this.board.fields[move.to].setPiece(move.capturedPiece, refreshGUI);
+        if (animation)
+        {
+            this.board.fields[move.from].piece = this;
+            this.board.fields[move.to].piece = null;
+            int[] refreshIDS = new int[]{move.from, move.to};
+            board.animationHandler.DoAnimation(this, move.to, move.from, refreshIDS);
+        }
+        else
+        {
+            this.board.fields[move.from].SetPiece(this, refreshGUI);
+            this.board.fields[move.to].SetPiece(move.capturedPiece, refreshGUI);
+        }
 
         
 

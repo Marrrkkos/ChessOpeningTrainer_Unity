@@ -34,7 +34,7 @@ public class BoardPreviewLoader : MonoBehaviour{
         {
             Opening opening = GameManager.instance.openings[i];
             foreach(Move move in opening.moves){
-                dummyBoard.doMove(move, true, false);
+                dummyBoard.doMove(move, true, false, false);
             }
             if(!opening.color)
             {   

@@ -119,7 +119,7 @@ public class Pawn : Piece
     }
 
     override
-    public Move doSpecialMove(int finalPos, int specialRule, bool refreshGUI)
+    public Move doSpecialMove(int finalPos, int specialRule, bool refreshGUI, bool animation)
     {
         Game game = this.board.currentGame;
         int currentPos = position;
@@ -131,15 +131,38 @@ public class Pawn : Piece
             if (finalPos < currentPos)
             {
                 capturedPiece = this.board.fields[finalPos + 8].piece;
-                this.board.fields[finalPos + 8].setPiece(null, refreshGUI);
-                this.board.fields[finalPos].setPiece(this, refreshGUI);
+
+                if (animation)
+                {
+                    this.board.fields[finalPos + 8].piece = null;
+                    this.board.fields[finalPos].piece = this;
+                    this.board.fields[currentPos].piece = null;
+                    int[] refreshIDs = new int[]{finalPos + 8,finalPos, currentPos};
+                    board.animationHandler.DoAnimation(this, currentPos, finalPos, refreshIDs);
+                }
+                else{
+                    this.board.fields[finalPos + 8].SetPiece(null, refreshGUI);
+                    this.board.fields[finalPos].SetPiece(this, refreshGUI);
+                    this.board.fields[currentPos].SetPiece(null, refreshGUI);
+                }
             }
             else {
                 capturedPiece = this.board.fields[finalPos - 8].piece;
-                this.board.fields[finalPos - 8].setPiece(null, refreshGUI);
-                this.board.fields[finalPos].setPiece(this, refreshGUI);
+
+                if (animation)
+                {
+                    this.board.fields[finalPos - 8].piece = null;
+                    this.board.fields[finalPos].piece = this;
+                    this.board.fields[currentPos].piece = null;
+                    int[] refreshIDs = new int[]{finalPos - 8,finalPos, currentPos};
+                    board.animationHandler.DoAnimation(this, currentPos, finalPos, refreshIDs);
+                }else{
+                    this.board.fields[finalPos - 8].SetPiece(null, refreshGUI);
+                    this.board.fields[finalPos].SetPiece(this, refreshGUI);
+                    this.board.fields[currentPos].SetPiece(null, refreshGUI);
+                }
             }
-            this.board.fields[currentPos].setPiece(null, refreshGUI);
+            
 
 
             // SET NEW POSITION
@@ -165,8 +188,17 @@ public class Pawn : Piece
             promotedPiece = pieces[specialRule-5];
 
             // SET PIECES IN BOARD
-            this.board.fields[finalPos].setPiece(promotedPiece, refreshGUI);
-            this.board.fields[currentPos].setPiece(null, refreshGUI);
+            if (animation)
+            {
+                this.board.fields[finalPos].piece = promotedPiece;
+                this.board.fields[currentPos].piece = null;
+                int[] refreshIDs = new int[]{finalPos, currentPos};
+                board.animationHandler.DoAnimation(this, currentPos, finalPos, refreshIDs);
+            }
+            else{
+                this.board.fields[finalPos].SetPiece(promotedPiece, refreshGUI);
+                this.board.fields[currentPos].SetPiece(null, refreshGUI);
+            }
 
             // SET POSITION
             this.position = finalPos;
@@ -204,7 +236,7 @@ public class Pawn : Piece
     }
 
     override
-    public Move undoSpecialMove(bool refreshGUI)
+    public Move undoSpecialMove(bool refreshGUI, bool animation)
     {
         Game game = this.board.currentGame;
 
@@ -215,19 +247,38 @@ public class Pawn : Piece
 
         if (move.specialRule == 3)
         {
-            this.board.fields[move.from].setPiece(this, refreshGUI);
-            this.board.fields[move.to].setPiece(null, refreshGUI);
+            if (animation)
+            {
+                this.board.fields[move.from].piece = this;
+                this.board.fields[move.to].piece = null;
+                int[] refreshIDs = new int[]{move.from, move.to};
+                board.animationHandler.DoAnimation(this, move.to, move.from, refreshIDs);
+            }
+            else
+            {
+                this.board.fields[move.from].SetPiece(this, refreshGUI);
+                this.board.fields[move.to].SetPiece(null, refreshGUI);
+            }
 
             if (move.to < move.from) {
-                this.board.fields[move.to + 8].setPiece(move.capturedPiece, refreshGUI);
+                this.board.fields[move.to + 8].SetPiece(move.capturedPiece, refreshGUI);
             } else {
-                this.board.fields[move.to - 8].setPiece(move.capturedPiece, refreshGUI);
+                this.board.fields[move.to - 8].SetPiece(move.capturedPiece, refreshGUI);
             }
                 
         }
         else if (move.specialRule >= 4) {
-            this.board.fields[move.from].setPiece(this, refreshGUI);
-            this.board.fields[move.to].setPiece(move.capturedPiece, refreshGUI);
+            if (animation)
+            {
+                this.board.fields[move.from].piece = this;
+                this.board.fields[move.to].piece = move.capturedPiece;
+                int[] refreshIDs = new int[]{move.from, move.to};
+                board.animationHandler.DoAnimation(this, move.to, move.from, refreshIDs);
+            }else{
+                this.board.fields[move.from].SetPiece(this, refreshGUI);
+                this.board.fields[move.to].SetPiece(move.capturedPiece, refreshGUI);
+            }
+
             if (color) { 
                 this.board.whitePieces.Add(this);
                 this.board.whitePieces.Remove(promotedPiece);
