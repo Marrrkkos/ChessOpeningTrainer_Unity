@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Microsoft.Unity.VisualStudio.Editor;
 public class Board : MonoBehaviour
 {   
     [Header("Current Objective")]
@@ -19,6 +20,7 @@ public class Board : MonoBehaviour
     [Header("OpeningController")]
     public OpeningTrainingController openingTrainingController;
     public bool openingTrainingActive = false;
+
 
 
     [Header("Util")]
@@ -187,7 +189,9 @@ public class Board : MonoBehaviour
         int x = this.currentGame.currentPlayer;
         this.currentGame.currentPlayer = (x + 1) % 2;
         this.drawOnBoard.refreshPossibles(refreshGUI);
-
+        if(refreshGUI){
+            this.drawOnBoard.DrawLastMove();
+        }
         // ******************************************************
         //                       Opening
         // ******************************************************
@@ -273,6 +277,7 @@ public class Board : MonoBehaviour
         }
 
         currentGame.currentPlayer = 0;
+        drawOnBoard.DrawLastMove();
     }
 
     

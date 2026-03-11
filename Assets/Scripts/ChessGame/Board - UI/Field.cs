@@ -3,11 +3,14 @@ using UnityEngine.UI;
 public class Field : MonoBehaviour
 {
     public Board board;
+    public RawImage fieldImage;
     public Text fieldName;
     public Piece piece;
     public Image pieceImage;
     public Image possibleImage;
-    public Image overLayImage;
+    public Image onPossibleHoverImage;
+    public Image lastMoveImage;
+    public Image selectedPieceImage;
     public void Awake() { 
         board = GetComponentInParent<Board>();
     }

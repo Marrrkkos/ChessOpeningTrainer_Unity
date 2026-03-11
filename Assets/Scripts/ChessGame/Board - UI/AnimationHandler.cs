@@ -6,13 +6,12 @@ public class AnimationHandler : MonoBehaviour
 {
     public Board board;
     public BoardScaler boardScaler;
-    public Image animationDummy; // Ziehe das neue Image hier in den Inspector
-    public Transform animationLayer;
     public float duration = 0.4f;
 
     public void DoAnimation(Piece piece, int pos1, int pos2, int[] refreshIDs)
     {
-        Image ghost = Instantiate(animationDummy, animationLayer);
+        Image ghost = Instantiate(board.fields[63].pieceImage, board.fields[63].transform);
+        ghost.transform.position = board.fields[pos1].pieceImage.transform.position;
         StartCoroutine(MoveGhostImage(pos1, pos2, piece, refreshIDs, ghost));
     }
 

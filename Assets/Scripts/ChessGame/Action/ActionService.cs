@@ -7,9 +7,8 @@ public class ActionService
 
     private string m1 = "";
     private string m2 = "";
-
-    private string selectedField = "";
-
+    public int selectedField = 0;
+    
     private bool promotion = false;
 
     private List<Vector2Int> possibleMoves = new List<Vector2Int>();
@@ -22,6 +21,7 @@ public class ActionService
     public void setFieldOnMouseDown(string fieldName)
     {
         if (promotion) {
+            Debug.Log("DoPromotionDown - Down");
             doPromotion(fieldName);
             return;
         }
@@ -29,15 +29,16 @@ public class ActionService
 
         if (m1 == "")
         {
-            selectedField = fieldName;
             m1 = fieldName;
             if (isCorrectPiece())
             {
+                Debug.Log("CorrectPiece, GetPossible - Down");
                 possibleMoves = board.getPossible(m1, true);
             }
             else
             {
-                refreshTurn();
+                Debug.Log("NotCorrectPiece - Down");
+                refreshTurn(false);
             }
         }
         else
@@ -46,20 +47,23 @@ public class ActionService
             int rule = isCorrectMove();
             if (rule == -1)
             {
-                refreshTurn();
+                Debug.Log("NoPossibles - Down");
+                refreshTurn(false);
             } else if(rule == -2) {
-
+                Debug.Log("OwnColor - Down");
                 string x = m2;
-                refreshTurn();
+                refreshTurn(false);
                 m1 = x;
                 possibleMoves = board.getPossible(m1, true);
             }else if  (rule >= 4) {
+                Debug.Log("Promotion - Down");
                 showPromotion();
             }
             else
             {
+                Debug.Log("Move - Down");
                 board.doMove(rule, m1, m2, true, true, false);
-                refreshTurn();
+                refreshTurn(true);
             }
         }
 
@@ -68,28 +72,41 @@ public class ActionService
     {
         if (promotion)
         {
+            Debug.Log("Promotion - UP");
             return;
         }
         if (m1 == "")
         {
+            Debug.Log("m1Empty - UP");
             return;
         }
         m2 = fieldName;
 
         if (m1.Equals(m2))
         {
+            Debug.Log("Equals - UP");
             return;
         }
 
         int rule = isCorrectMove();
-        if (rule > 0)
+        if (rule >= 0)
         {
+            Debug.Log("Move - UP");
             board.doMove(rule, m1, m2, true, true, false);
-            refreshTurn();
+            
+            refreshTurn(true);
         }
         else
         {
-            refreshTurn();
+            if(rule == -1)
+            {
+                Debug.Log("NoPossibles - UP");
+            }
+            else if( rule == -2)
+            {
+                Debug.Log("OwnColor - Up");
+            }
+            refreshTurn(false);
         }
     }
     public void showPromotion()
@@ -193,10 +210,46 @@ public class ActionService
             field.refreshImage();
         }
     }
-    private void refreshTurn()
+    private void refreshTurn(bool moveDone)
     {
+        
+        if(moveDone){
+            board.fields[selectedField].selectedPieceImage.gameObject.SetActive(false);
+        }
+
         m1 = "";
         m2 = "";
         board.drawOnBoard.refreshPossibles(true);
+
+    }
+
+
+
+    //  ***********
+    //  FIELDCOLORS
+    //  ***********
+    public void SetSelectedField(int id)
+    {
+        board.fields[selectedField].selectedPieceImage.gameObject.SetActive(false);
+        selectedField = id;
+        board.fields[id].selectedPieceImage.gameObject.SetActive(true);
+    }
+    public bool CheckPossibleField(string field)
+    {
+        int id = BoardUtil.StringToIndex(field);
+        foreach (Vector2Int pm in possibleMoves)
+        {
+            if (id == pm.x) {return true;}
+        }
+        return false;
+    }
+    public bool CheckOwnPiece(string field)
+    {
+        int id = BoardUtil.StringToIndex(field);
+        if(board.fields[id].piece != null && board.fields[id].piece.color == board.currentGame.players[board.currentGame.currentPlayer].color)
+        {
+            return true;
+        }
+        return false;
     }
 }
