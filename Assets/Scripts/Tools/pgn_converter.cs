@@ -64,7 +64,6 @@ public class pgn_converter : MonoBehaviour
                     game.players[1].name = name;
                 }
 
-                // Ein PGN-Spiel endet meistens mit dem Resultat (1-0, 0-1 oder 1/2-1/2)
                 if (line.EndsWith("1-0"))
                 {
                     convertGame(line, 1);

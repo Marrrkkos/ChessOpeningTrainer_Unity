@@ -29,11 +29,9 @@ public class BoardUtil
         int letterIndex;
         int numberIndex;
 
-        // Umkehrung von: (7 - number) * 8 + letter
         letterIndex = id % 8;
         numberIndex = 7 - (id / 8);
 
-        // Umwandlung der Zahlen (0-7) zur�ck in Zeichen ('a'-'h' und '1'-'8')
         char letter = (char)('a' + letterIndex);
         char number = (char)('1' + numberIndex);
 

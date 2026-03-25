@@ -53,9 +53,6 @@ public class ClickHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     }
     public void OnPointerEnter(PointerEventData eventData)
 {
-    // Die Methode wird automatisch beim reinen Hovern aufgerufen!
-    // Da dieses Skript auf dem gehoverten Feld liegt, können wir 
-    // direkt 'fieldName.text' nutzen.
     Debug.Log("Hover über: " + fieldName.text);
 
     if (board.actionService.CheckPossibleField(fieldName.text))
@@ -66,9 +63,6 @@ public class ClickHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
 public void OnPointerExit(PointerEventData eventData)
 {
-    // Wenn die Maus das Feld verlässt, schalten wir das Hover-Overlay wieder aus.
-    // (Achtung: Falls das Feld durch einen Klick markiert bleiben soll, 
-    // musst du hier evtl. noch eine Abfrage einbauen, ob das Feld gerade aktiv ausgewählt ist).
     onPossibleHoverImage.gameObject.SetActive(false);
 }
     public void OnBeginDrag(PointerEventData eventData)

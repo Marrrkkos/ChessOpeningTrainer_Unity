@@ -34,7 +34,7 @@ public class Tests : MonoBehaviour
     }
     void Update()
     {
-        sliderController.setFillStand(currentFillStand);
+        sliderController.SetFillStand(currentFillStand);
 
         if (isTesting && oneTimer)
         {
@@ -77,7 +77,7 @@ public class Tests : MonoBehaviour
             for (int i = 0; i < 5; i++)
             {
                 result = results[i];
-                sliderController.setMax(result);
+                sliderController.SetMinMax(0, result);
                 testCurrentPos(i + 1, result, "normal");
             }
             currentFillStand = 0;
@@ -115,7 +115,7 @@ public class Tests : MonoBehaviour
         Thread weirdPosition1 = new Thread(() =>
         {
             result = 89941194;
-            sliderController.setMax(result);
+            sliderController.SetMinMax(0, result);
             testCurrentPos(5, result, "weird position 1");
             currentFillStand = 0;
 
@@ -143,7 +143,7 @@ public class Tests : MonoBehaviour
         Thread najdorf = new Thread(() =>
         {
             result = 38114769;
-            sliderController.setMax(result);
+            sliderController.SetMinMax(0, result);
             testCurrentPos(5, result, "Najdorf");
             currentFillStand = 0;
 
@@ -171,7 +171,7 @@ public class Tests : MonoBehaviour
         Thread friedLiver = new Thread(() =>
         {
             result = 34062181;
-            sliderController.setMax(result);
+            sliderController.SetMinMax(0, result);
             testCurrentPos(5, result, "Fried Liver");
             currentFillStand = 0;
 
@@ -196,7 +196,7 @@ public class Tests : MonoBehaviour
         Thread kingsGambit = new Thread(() =>
         {
             result = 22095269;
-            sliderController.setMax(result);
+            sliderController.SetMinMax(0, result);
             testCurrentPos(5, result, "KönigsGambit");
             currentFillStand = 0;
 

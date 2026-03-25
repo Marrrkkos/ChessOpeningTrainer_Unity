@@ -1,14 +1,19 @@
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
-
 using System.Collections.Generic;
+using System; // Für Exception Handling beim Parsen
+
 public class OpeningDataBaseController : MonoBehaviour
 {
     public Board board;
-
     public List<OpeningLineController> openingLineControllers;
     private readonly string baseUrl = "https://explorer.lichess.ovh/masters";
+
+
+    private int maxRetries = 3;
+    private int currentRetryCount = 0; 
+    private float retryDelay = 3.0f;
 
 
     [System.Serializable]
@@ -29,77 +34,120 @@ public class OpeningDataBaseController : MonoBehaviour
         public int draws;
         public int black;
     }
+
     public void GetOpeningMoves(List<Move> gameMoves)
     {
+    
+        currentRetryCount = 0; 
+        
+        StopAllCoroutines(); 
         StartCoroutine(FetchOpeningData(gameMoves));
     }
 
     IEnumerator FetchOpeningData(List<Move> gameMoves)
     {
-        // FEN muss für die URL "escaped" werden
         string url = $"{baseUrl}?play={BoardUtil.GameToUCI(gameMoves, false)}";
-        Debug.Log(url);
+
         using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
         {
+            webRequest.timeout = 5;
             yield return webRequest.SendWebRequest();
 
-            if (webRequest.result == UnityWebRequest.Result.Success)
+            switch (webRequest.result)
             {
-                //Debug.Log("Daten empfangen: " + webRequest.downloadHandler.text);
-                Parsetext(webRequest.downloadHandler.text);
-                // Hier kannst du den JSON-String mit JsonUtility oder Newtonsoft.Json parsen
-            }
-            else
-            {
-                Debug.LogError("Fehler: " + webRequest.error);
+                case UnityWebRequest.Result.ConnectionError:
+                case UnityWebRequest.Result.DataProcessingError:
+                case UnityWebRequest.Result.ProtocolError:
+                    Debug.LogWarning($"Netzwerkfehler: {webRequest.error}");
+                    HandleNetworkError(gameMoves);
+                    break;
+
+                case UnityWebRequest.Result.Success:
+                    currentRetryCount = 0; 
+                    ParseText(webRequest.downloadHandler.text, gameMoves);
+                    break;
             }
         }
     }
 
-    public void Parsetext(string text)
+    private void HandleNetworkError(List<Move> gameMoves)
     {
-         // Wandelt den JSON-Text in unser C#-Objekt um
-        LichessOpeningData data = JsonUtility.FromJson<LichessOpeningData>(text);
+        ClearOpeningLines();
 
-    // Sicherheitsüberprüfung, falls das JSON fehlerhaft/leer ist
-    if (data == null || data.moves == null)
-    {
-        Debug.LogWarning("Fehler beim Parsen der Eröffnungsdaten oder keine Züge gefunden.");
-        return;
-    }
-    for (int i = 0; i < data.moves.Length; i++)
-    {
-
-        if(i == 16){break;}
-
-
-        LichessMove move = data.moves[i];
-        float totalGames = move.white + move.draws + move.black;
-        
-        if (totalGames > 0)
+        if (currentRetryCount < maxRetries)
         {
-            // Berechne die prozentualen Raten
-            float whiteWinRate = (move.white / totalGames) * 100f;
-            float drawRate = (move.draws / totalGames) * 100f;
-            float blackWinRate = (move.black / totalGames) * 100f;
-
-            // Ausgabe in der Konsole
-            //Debug.Log($"Zug: {data.moves[i].san} | Weiß gewinnt: {whiteWinRate:F1}% | Remis: {drawRate:F1}% | Schwarz gewinnt: {blackWinRate:F1}%");
-            openingLineControllers[i].SetMove(move.uci, move.san, whiteWinRate, drawRate, blackWinRate);
+            currentRetryCount++;
+            StartCoroutine(RetryFetch(gameMoves));
         }
         else
         {
-            Debug.Log($"Zug: {data.moves[i].san} hat keine verzeichneten Spiele.");
+            return;
         }
     }
+
+    IEnumerator RetryFetch(List<Move> gameMoves)
+    {
+        yield return new WaitForSeconds(retryDelay);
+        StartCoroutine(FetchOpeningData(gameMoves));
+    }
+
+    public void ParseText(string text, List<Move> gameMoves)
+    {
+        try 
+        {
+            LichessOpeningData data = JsonUtility.FromJson<LichessOpeningData>(text);
+
+            if (data == null || data.moves == null)
+            {
+                HandleNetworkError(gameMoves);
+                return;
+            }
+
+            ClearOpeningLines();
+
+            for (int i = 0; i < data.moves.Length; i++)
+            {
+                if (i >= openingLineControllers.Count) break; 
+
+                LichessMove move = data.moves[i];
+                float totalGames = move.white + move.draws + move.black;
+                
+                if (totalGames > 0)
+                {
+                    float whiteWinRate = (move.white / totalGames) * 100f;
+                    float drawRate = (move.draws / totalGames) * 100f;
+                    float blackWinRate = (move.black / totalGames) * 100f;
+
+                    openingLineControllers[i].gameObject.SetActive(true);
+                    openingLineControllers[i].SetMove(move.uci, move.san, whiteWinRate, drawRate, blackWinRate);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Parse-Exception: {e.Message}");
+            HandleNetworkError(gameMoves);
+        }
+    }
+
+    private void ClearOpeningLines()
+    {
+        foreach (var controller in openingLineControllers)
+        {
+            controller.gameObject.SetActive(false); 
+        }
     }
 
     public void SetActive(bool active)
     {
+        board.openingDataBaseActive = active;
         if (active)
         {
             GetOpeningMoves(board.currentGame.playedMoves);
         }
-        board.openingDataBaseActive = active;
+        else 
+        {
+            ClearOpeningLines();
+        }
     }
 }

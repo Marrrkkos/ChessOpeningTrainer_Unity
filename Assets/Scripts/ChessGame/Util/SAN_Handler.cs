@@ -7,7 +7,7 @@ using Unity.VisualScripting;
 public class SAN_Handler
 {
     
-    /*private static readonly Regex SanPattern = new Regex(@"^([NBRQK])?([a-h])?([1-8])?(x)?([a-h][1-8])(=[NBRQ])?([+#])?$");
+    private static readonly Regex SanPattern = new Regex(@"^([NBRQK])?([a-h])?([1-8])?(x)?([a-h][1-8])(=[NBRQ])?([+#])?$");
     public static string MoveToSAN(Board board, Move move)
     {
         int specialRule = move.specialRule;
@@ -20,7 +20,6 @@ public class SAN_Handler
         string promotion = GetPromotionString(specialRule);
         string check = GetCheckCondition(move.check, move.checkMate);
 
-        // Bei Bauernschl�gen (z.B. exd5) muss die Startlinie angegeben werden
         if (move.movedPiece.id == 0 && move.capturedPiece != null)
         {
             pieceChar = GetSquareString(BoardUtil.IndexToPos(move.from))[0].ToString();
@@ -47,7 +46,6 @@ public class SAN_Handler
         }
         if (san == "O-O-O" || san == "0-0-0")
         {
-            // e1 -> c1
             int fromIndex = BoardUtil.PosToIndex(new Vector2Int(4, kingY));
             int toIndex = BoardUtil.PosToIndex(new Vector2Int(2, kingY));
             return new Game.SimpleMove { from = fromIndex, to = toIndex, specialRule = 2 };
@@ -66,7 +64,7 @@ public class SAN_Handler
         string targetSqStr = match.Groups[5].Value;
         string promotionStr = match.Groups[6].Value;
 
-        int targetIndex = ParseSquareToIndex(targetSqStr, rotation);
+        int targetIndex = ParseSquareToIndex(targetSqStr);
         int pieceID = string.IsNullOrEmpty(pieceLetter) ? 0 : GetPieceID(pieceLetter[0]);
         //Debug.Log("pieceID: " + pieceID + " fromFile: " + fromFile + " fromRank: " + fromRank + " targetIndex: " + targetIndex + " promotionStr: " + promotionStr);
 
@@ -120,7 +118,7 @@ public class SAN_Handler
         List<Piece> competitors = new List<Piece>();
 
         Piece pieceSave = board.fields[move.to].piece;
-        pieceSave.undoMove(false);
+        pieceSave.undoMove(false, false);
         foreach (Piece p in allies)
         {
             if (p == move.movedPiece) continue;
@@ -136,7 +134,7 @@ public class SAN_Handler
                 }
             }
         }
-        pieceSave.doMove(move.to,move.specialRule, GameRules.removeChecks(pieceSave.position, pieceSave.getPossibleMoves(), board), false);
+        pieceSave.doMove(move.to,move.specialRule, GameRules.removeChecks(pieceSave.position, pieceSave.getPossibleMoves(), board), false, false);
 
         if (competitors.Count == 0) return "";
 
@@ -213,5 +211,5 @@ public class SAN_Handler
     }
 
     private static char GetFileChar(int x) => (char)('a' + x);
-    private static char GetRankChar(int y) => (char)('8' - y);*/
+    private static char GetRankChar(int y) => (char)('8' - y);
 }

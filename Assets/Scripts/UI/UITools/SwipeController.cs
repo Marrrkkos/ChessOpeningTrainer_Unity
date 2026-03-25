@@ -5,23 +5,28 @@ using System.Collections;
 
 public class SwipeController : MonoBehaviour, IEndDragHandler, IBeginDragHandler
 {
-    public ScrollRect scrollRect;
+   public ScrollRect scrollRect;
     public RectTransform content;
-    public float snapSpeed = 10f;
+    public UIButtonController uIButtonController;
+    [Header("Swipe Settings")]
+    public float snapSpeed = 15f;
+    public float swipeThreshold = 50f;
 
     private int totalPages;
     private float[] pagePositions;
+    private int currentPage = 0;
+    private Vector2 dragStartPosition;
 
     void Start()
     {
         UpdatePages();
     }
 
-    // Falls du w�hrend des Spiels Seiten hinzuf�gst, ruf diese Methode auf
     public void UpdatePages()
     {
         totalPages = content.childCount;
         pagePositions = new float[totalPages];
+        
         for (int i = 0; i < totalPages; i++)
         {
             pagePositions[i] = totalPages <= 1 ? 0 : (float)i / (totalPages - 1);
@@ -30,41 +35,67 @@ public class SwipeController : MonoBehaviour, IEndDragHandler, IBeginDragHandler
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        // Stop das Snapping, wenn der User wieder anf�ngt zu ziehen
         StopAllCoroutines();
+        
+        dragStartPosition = eventData.position;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        float currentPos = scrollRect.horizontalNormalizedPosition;
-        float nearest = float.MaxValue;
-        int nearestPage = 0;
+        float swipeDistance;
 
-        // Finde die n�chste Seite
-        for (int i = 0; i < totalPages; i++)
+        if (scrollRect.horizontal)
         {
-            float dist = Mathf.Abs(currentPos - pagePositions[i]);
-            if (dist < nearest)
-            {
-                nearest = dist;
-                nearestPage = i;
-            }
+            swipeDistance = dragStartPosition.x - eventData.position.x;
+        }
+        else
+        {
+            swipeDistance = dragStartPosition.y - eventData.position.y;
         }
 
-        StartCoroutine(SmoothSnap(pagePositions[nearestPage]));
+        if (swipeDistance > swipeThreshold && currentPage < totalPages - 1)
+        {
+            currentPage++;
+        }
+        else if (swipeDistance < -swipeThreshold && currentPage > 0)
+        {
+            currentPage--;
+        }
+
+        ScrollToPage(currentPage);
+    }
+
+    public void ScrollToPage(int pageIndex)
+    {
+        if (pageIndex < 0 || pageIndex >= totalPages) return;
+
+        currentPage = pageIndex;
+        StopAllCoroutines();
+        StartCoroutine(SmoothSnap(pagePositions[currentPage]));
+        uIButtonController.SetIndex(currentPage);
     }
 
     private IEnumerator SmoothSnap(float target)
     {
-        while (Mathf.Abs(scrollRect.horizontalNormalizedPosition - target) > 0.0001f)
+        scrollRect.velocity = Vector2.zero;
+
+        float currentPos = scrollRect.horizontal ? scrollRect.horizontalNormalizedPosition : scrollRect.verticalNormalizedPosition;
+
+        while (Mathf.Abs(currentPos - target) > 0.001f)
         {
-            scrollRect.horizontalNormalizedPosition = Mathf.Lerp(
-                scrollRect.horizontalNormalizedPosition,
-                target,
-                Time.deltaTime * snapSpeed
-            );
+            currentPos = Mathf.Lerp(currentPos, target, Time.deltaTime * snapSpeed);
+
+            if (scrollRect.horizontal)
+                scrollRect.horizontalNormalizedPosition = currentPos;
+            else
+                scrollRect.verticalNormalizedPosition = currentPos;
+
             yield return null;
         }
-        scrollRect.horizontalNormalizedPosition = target;
+        
+        if (scrollRect.horizontal)
+            scrollRect.horizontalNormalizedPosition = target;
+        else
+            scrollRect.verticalNormalizedPosition = target;
     }
 }

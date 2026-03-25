@@ -8,12 +8,10 @@ public class SnapPreview : MonoBehaviour
 
     public Texture2D TakePhoto()
     {
-        // Wir rufen die Funktion auf (Breite/Höhe z.B. 256x256)
         return CaptureScreenshot(previewCam, 512, 512);
         
     }
 
-    // Die Funktion von oben hier einfügen...
     public Texture2D CaptureScreenshot(Camera cam, int width, int height) {
         RenderTexture rt = new RenderTexture(width, height, 24);
         cam.targetTexture = rt;

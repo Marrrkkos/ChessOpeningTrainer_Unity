@@ -12,14 +12,15 @@ public class RootSelecter : MonoBehaviour
     public GameObject OpeningTraining;
     public GameObject OpeningResult;
     [Header("GameSense GameObjects")]
-    //public GameObject GameSense;
+    public GameObject GameSense;
     [Header("GameView GameObjects")]
     //public GameObject GameView;
 
     [Header("Loaders")]
-
     public OpeningLoader openingLoader;
 
+    [Header("MiniGamesInitializer")]
+    public GameSenseTrainingController gameSenseTrainingController;
     public BoardRootScaler boardRootScaler;
 
     public void OnEnable()
@@ -28,7 +29,8 @@ public class RootSelecter : MonoBehaviour
         Debug.Log(selected);
         if(selected == "GameSense")
         {
-            //GameSense.SetActive(true);
+            GameSense.SetActive(true);
+            gameSenseTrainingController.InitTrainig();
         }else if( selected == "Opening")
         {
             Opening.SetActive(true);
@@ -65,6 +67,10 @@ public class RootSelecter : MonoBehaviour
 
         boardRootScaler.SetTrainingSetUp();
     }
+    public void SetGameSenseTraining()
+    {
+        
+    }
     public void SetOpeningTrainingCreation()
     {
         OpeningTrainingCreator.SetActive(true);
@@ -87,4 +93,5 @@ public class RootSelecter : MonoBehaviour
     {
         InGameSettings.SetActive(true);
     }
+    
 }

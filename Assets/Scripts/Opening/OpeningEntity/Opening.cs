@@ -7,8 +7,6 @@ using Newtonsoft.Json;
 [System.Serializable]
 public class Opening
 {
-    // --- EINSTELLUNGEN FÜR NEWTONSOFT ---
-    // Das sorgt dafür, dass Unterklassen (Polymorphie) und tiefe Bäume funktionieren
     private static readonly JsonSerializerSettings JsonSettings = new JsonSerializerSettings
     {
         TypeNameHandling = TypeNameHandling.Auto,
@@ -26,7 +24,6 @@ public class Opening
     [System.NonSerialized]
     [JsonProperty] public Node rootNode; 
 
-    // --- KONSTRUKTOREN ---
     public Opening(string name, bool color, Texture2D startPos, List<Move> moves) 
     {
         this.color = color;
@@ -37,14 +34,9 @@ public class Opening
         Add(moves);
     }
     
-    // Leerer Konstruktor für Newtonsoft (wichtig beim Laden!)
+    // empty constructor for newtonsoft
     public Opening() { }
 
-
-    // --- SPEICHER LOGIK (DIREKT HIER) ---
-
-    // Wir nutzen eine kleine Hilfsklasse NUR fürs Speichern,
-    // damit wir genau kontrollieren, was in der Datei landet.
     private class SaveDataContainer
     {
         public string name;
@@ -69,7 +61,6 @@ public class Opening
     }
     public void SaveGame(string openingName)
     {
-        // 1. Daten in den Container packen
         SaveDataContainer data = new SaveDataContainer
         {
             name = this.name,
@@ -78,11 +69,9 @@ public class Opening
             rootNode = this.rootNode
         };
 
-        // 2. Pfad bauen
         string filename = "savegame" + openingName + ".json";
         string path = Path.Combine(Application.persistentDataPath, filename);
 
-        // 3. Speichern (Newtonsoft macht den Rest)
         string json = JsonConvert.SerializeObject(data, JsonSettings);
         File.WriteAllText(path, json);
 
@@ -100,12 +89,10 @@ public class Opening
         {
             string json = File.ReadAllText(path);
             
-            // Container laden
             SaveDataContainer data = JsonConvert.DeserializeObject<SaveDataContainer>(json, JsonSettings);
 
             if (data == null) return false;
 
-            // Werte zurück in DIESE Instanz schreiben
             this.name = data.name;
             this.color = data.color;
             this.moves = data.moves ?? new List<Move>();
@@ -120,7 +107,6 @@ public class Opening
         }
     }
 
-    // --- DEINE RESTLICHE LOGIK (Unverändert) ---
 
     public List<Move> GetMoves(List<Move> gameMoves)
     {
@@ -175,14 +161,11 @@ public class Opening
         {
             Node current = queue.Dequeue();
 
-            // Prüfen, ob dieser Node die gesuchte Farbe hat.
-            // Wichtig: Null-Check für 'move', da die Startposition (Root) evtl. keinen vorherigen Zug hat.
             if (current.move != null && current.move.movedPiece.color == this.color)
             {
                 allNodes.Add(current);
             }
 
-            // Alle direkten Kinder für die weitere Suche zur Queue hinzufügen
             if (current.children != null)
             {
                 foreach (var child in current.children)
@@ -196,23 +179,19 @@ public class Opening
     }
     public int GetNodeMovesSize(Node node)
 {
-    // Abbruchbedingung: Wenn der Knoten null ist, gibt es hier nichts zu zählen.
     if (node == null) return 0;
 
     int count = 0;
 
-    // Hat der aktuelle Knoten die richtige Farbe? Dann zählen wir ihn als 1.
     if (node.move != null && node.move.movedPiece.color == this.color)
     {
         count = 1;
     }
 
-    // Jetzt addieren wir die Ergebnisse aller Kinder dazu
     if (node.children != null)
     {
         foreach (var child in node.children)
         {
-            // Die Methode ruft sich selbst auf und addiert das Ergebnis
             count += GetNodeMovesSize(child); 
         }
     }
@@ -221,27 +200,22 @@ public class Opening
 }
 public int GetMaxDepth(Node node)
 {
-    // Wenn der Knoten nicht existiert, ist die Tiefe 0
     if (node == null) return 0;
 
-    // Wenn der Knoten keine Kinder hat (Blattknoten), ist die Tiefe hier 1
     if (node.children == null || node.children.Count == 0) return 1;
 
     int maxChildDepth = 0;
 
-    // Wir fragen jedes Kind nach seiner maximalen Tiefe
     foreach (var child in node.children)
     {
         int childDepth = GetMaxDepth(child);
         
-        // Wenn dieses Kind tiefer ist als unser bisheriges Maximum, merken wir uns diesen neuen Rekord
         if (childDepth > maxChildDepth)
         {
             maxChildDepth = childDepth;
         }
     }
 
-    // Die Tiefe dieses Knotens ist 1 (für sich selbst) + die Tiefe seines tiefsten Kindes
     return maxChildDepth + 1;
 }
     public int GetNodeLeafSize(Node node){
@@ -258,29 +232,27 @@ private int FindCounterRecursive(Node currentNode, int currentDepth, List<Move> 
 {
     bool isLeaf = currentNode.children == null || currentNode.children.Count == 0;
 
-    // Wenn wir am Ende eines Pfades sind (und es nicht nur der leere Root ist)
     if (isLeaf)
     {
         if (currentPath.Count > 0)
         {
-            return 1; // Dieser Pfad zählt als 1
+            return 1;
         }
         return 0;
     }
 
-    int totalCount = 0; // Zähler für DIESEN Knoten
+    int totalCount = 0;
 
     foreach (Node childNode in currentNode.children)
     {
         currentPath.Add(childNode.move);
         
-        // WICHTIG: Hier addieren wir das Ergebnis der Kinder auf unseren Zähler!
         totalCount += FindCounterRecursive(childNode, currentDepth + 1, currentPath);
         
         currentPath.RemoveAt(currentPath.Count - 1);
     }
     
-    return totalCount; // Gib die Summe aller gefundenen Pfade weiter nach oben
+    return totalCount;
 }
 
 

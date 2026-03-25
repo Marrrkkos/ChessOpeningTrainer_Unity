@@ -4,10 +4,10 @@ using UnityEngine.UI;
 
 public class NestedScrollRect : MonoBehaviour, IInitializePotentialDragHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    public ScrollRect mainScrollRect; // Horizontaler Main ScrollRect
+    public ScrollRect mainScrollRect;
     public SwipeController swipeController;
 
-    private ScrollRect innerScrollRect; // Vertikaler Inner ScrollRect
+    private ScrollRect innerScrollRect;
 
     private bool horizontalDrag;
 
@@ -24,13 +24,10 @@ public class NestedScrollRect : MonoBehaviour, IInitializePotentialDragHandler, 
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        // Entscheide, ob horizontal oder vertikal gescrollt wird
         horizontalDrag = Mathf.Abs(eventData.delta.x) > Mathf.Abs(eventData.delta.y);
 
-        // Inner Scroll nur vertikal aktivieren, wenn es vertikal ist
         innerScrollRect.vertical = !horizontalDrag;
 
-        // Weiterleiten
         if (horizontalDrag)
             mainScrollRect.OnBeginDrag(eventData);
         else
@@ -47,7 +44,7 @@ public class NestedScrollRect : MonoBehaviour, IInitializePotentialDragHandler, 
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        innerScrollRect.vertical = true; // Reset
+        innerScrollRect.vertical = true;
 
         if (horizontalDrag)
             swipeController.OnEndDrag(eventData);

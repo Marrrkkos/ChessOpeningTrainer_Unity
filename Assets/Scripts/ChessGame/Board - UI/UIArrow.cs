@@ -36,6 +36,7 @@ public class UIArrow : MaskableGraphic, IPointerClickHandler
                 activeOpeningArrows.Add(new ArrowData {from = f1, to = f2, start = from1, end = to1, color = col, listIndex = index});
                 break;
             case 1:
+                col.a = 1f - (activeEngineArrows.Count * 0.2f);
                 activeEngineArrows.Add(new ArrowData {from = f1, to = f2, start = from1, end = to1, color = col, listIndex = index});
                 break;
             case 2:
@@ -138,26 +139,19 @@ private bool IsPointNearArrow(Vector2 point, ArrowData arrow)
     float lineLen = lineVec.magnitude;
     Vector2 lineDir = lineVec.normalized;
 
-    // 1. Projektion des Punktes auf die Linie (Skalarprodukt)
-    // Wie weit ist der Punkt entlang der Linie vom Startpunkt entfernt?
     float projection = Vector2.Dot(point - arrow.start, lineDir);
 
-    // Prüfen, ob der Klick innerhalb der Länge des Pfeils liegt
     if (projection < 0 || projection > lineLen) return false;
 
-    // 2. Senkrechter Abstand zur Linie berechnen
     Vector2 closestPointOnLine = arrow.start + lineDir * projection;
     float distanceToLine = Vector2.Distance(point, closestPointOnLine);
 
-    // Klick ist gültig, wenn er nah genug am Schaft ist (Toleranz = shaftWidth)
-    // Oder wir prüfen die Pfeilspitze separat:
     if (projection > lineLen - headSize) 
     {
-        // In der Nähe der Spitze darf man etwas weiter weg klicken (Breite der Spitze)
         return distanceToLine < headSize / 1.5f;
     }
     
-    return distanceToLine < shaftWidth * 1.5f; // 1.5x Puffer für bessere Bedienbarkeit
+    return distanceToLine < shaftWidth * 1.5f;
 }
 
 
@@ -188,7 +182,7 @@ private bool IsPointNearArrow(Vector2 point, ArrowData arrow)
         Vector2 perpendicular = new Vector2(-direction.y, direction.x);
         Vector2 headBaseCenter = data.end - (direction * headSize);
 
-        // Schaft-Punkte
+        // Quadrat
         Vector2 v1 = data.start + (perpendicular * shaftWidth / 2f);
         Vector2 v2 = data.start - (perpendicular * shaftWidth / 2f);
         Vector2 v3 = headBaseCenter + (perpendicular * shaftWidth / 2f);
@@ -196,7 +190,7 @@ private bool IsPointNearArrow(Vector2 point, ArrowData arrow)
 
         AddQuad(vh, v1, v2, v3, v4, data.color);
 
-        // Spitzen-Punkte
+        // Triangle
         Vector2 t1 = data.end;
         Vector2 t2 = headBaseCenter + (perpendicular * headSize / 2f);
         Vector2 t3 = headBaseCenter - (perpendicular * headSize / 2f);
@@ -204,13 +198,12 @@ private bool IsPointNearArrow(Vector2 point, ArrowData arrow)
         AddTriangle(vh, t1, t2, t3, data.color);
     }
 
-    // Hilfsfunktion: F�gt ein Viereck zum Mesh hinzu
     private void AddQuad(VertexHelper vh, Vector2 v1, Vector2 v2, Vector2 v3, Vector2 v4, Color color)
     {
         int index = vh.currentVertCount;
 
         UIVertex vert = UIVertex.simpleVert;
-        vert.color = color; // Nutzt die Farbe aus dem Inspector
+        vert.color = color;
 
         vert.position = v1; vh.AddVert(vert);
         vert.position = v2; vh.AddVert(vert);
@@ -221,7 +214,6 @@ private bool IsPointNearArrow(Vector2 point, ArrowData arrow)
         vh.AddTriangle(index + 2, index + 1, index + 3);
     }
 
-    // Hilfsfunktion: F�gt ein Dreieck zum Mesh hinzu
     private void AddTriangle(VertexHelper vh, Vector2 v1, Vector2 v2, Vector2 v3, Color color)
     {
         int index = vh.currentVertCount;

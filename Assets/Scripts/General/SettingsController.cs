@@ -10,8 +10,6 @@ public class SettingsController : MonoBehaviour
     public Slider engineArrowCountSlider;
     public Slider engineStrengthSlider;
 
-
-
     public void SaveSettings()
     {
         //GENERAL

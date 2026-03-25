@@ -53,6 +53,12 @@ public class DrawOnBoard : MonoBehaviour
                 color = UnityEngine.Color.white;
                 break;
         }
+
+        if(index == 1)
+        {
+            
+        }
+
         arrow.AddArrow(BoardUtil.IndexToString(f1),BoardUtil.IndexToString(f2),pos1 * boardScaler.cellSize - offSet, pos2 * boardScaler.cellSize - offSet, color, index);
     }
     public void DrawLastMove()

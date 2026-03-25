@@ -5,25 +5,26 @@ using System.IO;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Globalization;
 
 public class StockFishController : MonoBehaviour
 {
-    
+
 
     public Board board;
     public DrawOnBoard drawOnBoard;
     private Process engineProcess;
     private StreamWriter engineInput;
-    
-    public Text[] evals;
     public Text[] evalLines;
-
+    public SliderControllerFillStand engineBarSliderController;
     // Wir nutzen ein Thread-sicheres Queue oder einen StringBuilder für die Antworten
     private StringBuilder outputBuffer = new StringBuilder();
     private readonly object lockObject = new object();
     private int currentArrowCount = 0;
 
     private Dictionary<int, string> currentTopMoves = new Dictionary<int, string>();
+    private Dictionary<int, string> currentPvTexts = new Dictionary<int, string>();
+    private Dictionary<int, string> currentEvals = new Dictionary<int, string>(); // NEU
     public void DrawStockFishArrows(List<Move> gameMoves)
     {
         SendCommand("stop");
@@ -35,15 +36,27 @@ public class StockFishController : MonoBehaviour
     }
     public void ChangeSettings()
     {
-        SendCommand("setoption name MultiPV value " + GameManager.instance.settings.engineArrowCount);
+        currentArrowCount = GameManager.instance.settings.engineArrowCount;
+
+        // Engine kurz anhalten
+        SendCommand("stop");
+
+        // Neue Einstellung senden
+        SendCommand("setoption name MultiPV value " + currentArrowCount);
+
+        // Suche mit der neuen Einstellung neu starten, falls aktiv
+        if (board.stockFishActive)
+        {
+            DrawStockFishArrows(board.currentGame.playedMoves);
+        }
     }
-  
+
     void OnEnable()
     {
+        engineBarSliderController.SetMinMax(-500, 500);
         UnityEngine.Debug.Log("Stockfish starting...");
-        
-        // Pfad anpassen (Linux-Binaries brauchen oft Ausführrechte!)
-        string path = Path.Combine(Application.streamingAssetsPath, "stockfishes/stockfish_linux/stockfish");
+
+        string path = Path.Combine(Application.streamingAssetsPath, "stockfishes/stockfish_windows/stockfish/stockfish-windows-x86-64-avx2.exe");
 
         engineProcess = new Process();
         engineProcess.StartInfo.FileName = path;
@@ -53,7 +66,8 @@ public class StockFishController : MonoBehaviour
         engineProcess.StartInfo.CreateNoWindow = true;
 
         // Das ist der Trick: Event-basiertes Auslesen
-        engineProcess.OutputDataReceived += (sender, e) => {
+        engineProcess.OutputDataReceived += (sender, e) =>
+        {
             if (!string.IsNullOrEmpty(e.Data))
             {
                 lock (lockObject)
@@ -73,72 +87,108 @@ public class StockFishController : MonoBehaviour
 
     void Update()
     {
-        if(board.stockFishActive){
-            
-        if(currentArrowCount != GameManager.instance.settings.engineArrowCount)
+        if (board.stockFishActive)
         {
-            currentArrowCount = GameManager.instance.settings.engineArrowCount;
-            SendCommand("setoption name MultiPV value " + currentArrowCount);
-        }
-        // Hier holen wir die Daten sicher in den Main-Thread von Unity
-        string currentOutput = "";
-        lock (lockObject)
-        {
-            if (outputBuffer.Length > 0)
+
+            if (currentArrowCount != GameManager.instance.settings.engineArrowCount)
             {
-                currentOutput = outputBuffer.ToString();
-                outputBuffer.Clear();
+                ChangeSettings();
             }
-        }
-
-        if (!string.IsNullOrEmpty(currentOutput))
-        {
-            bool arrowsNeedUpdate = false;
-            string[] lines = currentOutput.Split('\n');
-
-            foreach (string line in lines)
+            // Hier holen wir die Daten sicher in den Main-Thread von Unity
+            string currentOutput = "";
+            lock (lockObject)
             {
-                if (string.IsNullOrWhiteSpace(line)) continue;
-                
-                int multiPvIndex = GetMultiPvRank(line);
-                string firstMoveOfLine = GetFirstMoveFromInfo(line);
-                
-
-                if (multiPvIndex > 0 && !string.IsNullOrEmpty(firstMoveOfLine))
+                if (outputBuffer.Length > 0)
                 {
-                    currentTopMoves[multiPvIndex] = firstMoveOfLine;
-                    arrowsNeedUpdate = true;
+                    currentOutput = outputBuffer.ToString();
+                    outputBuffer.Clear();
                 }
             }
-            if (arrowsNeedUpdate)
+
+            if (!string.IsNullOrEmpty(currentOutput))
             {
-                UpdateArrows();
-                UpdateText(lines);
+                bool needsUpdate = false;
+                string[] lines = currentOutput.Split('\n');
+
+                foreach (string line in lines)
+                {
+                    // Only process valid UCI info lines that contain principal variations
+                    if (string.IsNullOrWhiteSpace(line) || !line.StartsWith("info") || !line.Contains(" pv "))
+                        continue;
+
+                    int multiPvIndex = GetMultiPvRank(line);
+                    string firstMoveOfLine = GetFirstMoveFromInfo(line);
+                    string score = GetScoreFromInfo(line); // NEU: Score auslesen
+
+                    if (multiPvIndex > 0 && !string.IsNullOrEmpty(firstMoveOfLine))
+                    {
+                        currentTopMoves[multiPvIndex] = firstMoveOfLine;
+                        currentEvals[multiPvIndex] = score; // NEU: Score speichern
+
+                        int pvIndex = line.IndexOf(" pv ");
+                        currentPvTexts[multiPvIndex] = line.Substring(pvIndex + 4).Trim();
+
+                        needsUpdate = true;
+                    }
+                }
+
+                if (needsUpdate)
+                {
+                    UpdateArrows();
+                    UpdateText(); // Use the new method
+                    UpdateEngineBar();
+                }
             }
-        }
-            
-        
+
+
         }
     }
-    private void UpdateText(string[] lines)
+    private void UpdateEngineBar()
+{
+    if (currentEvals.ContainsKey(1))
     {
-        for(int i = 0; i < currentArrowCount; i++)
+        string evalString = currentEvals[1];
+        long fillValue = 0;
+
+        if (evalString.Contains("M"))
         {
-            int pvIndex = lines[i].IndexOf(" pv ");
-            string pvPart = lines[i].Substring(pvIndex + 4).Trim();
-            evalLines[i].text = pvPart;
+            fillValue = evalString.StartsWith("-") ? -1000 : 1000;
+        }
+        else
+        {
+            string cleanEval = evalString.Replace("+", "").Replace(",", ".");
+
+            if (float.TryParse(cleanEval, NumberStyles.Any, CultureInfo.InvariantCulture, out float floatEval))
+            {
+                fillValue = (long)(floatEval * 100);
+            }
+        }
+
+        engineBarSliderController.SetFillStand(fillValue);
+    }
+}
+    private void UpdateText()
+    {
+        int maxLines = Mathf.Min(currentArrowCount, evalLines.Length);
+
+        for (int i = 0; i < maxLines; i++)
+        {
+            int rank = i + 1;
+            if (currentPvTexts.ContainsKey(rank) && currentEvals.ContainsKey(rank))
+            {
+                // combine eval and moves
+                evalLines[i].text = $"[{currentEvals[rank]}] {currentPvTexts[rank]}";
+            }
         }
     }
     private void UpdateArrows()
     {
-        // Löscht alle alten Pfeile vom Typ 1
         drawOnBoard.arrow.ClearArrows(1);
 
-        // Gehe durch alle gefundenen MultiPV-Ränge (1, 2, 3...)
         foreach (var kvp in currentTopMoves)
         {
             string move = kvp.Value;
-            if (move.Length >= 4) // Sicherheitshalber überprüfen, z.B. "e2e4"
+            if (move.Length >= 4)
             {
                 string from = move.Substring(0, 2);
                 string to = move.Substring(2, 2);
@@ -146,15 +196,35 @@ public class StockFishController : MonoBehaviour
                 int fromIndex = BoardUtil.StringToIndex(from);
                 int toIndex = BoardUtil.StringToIndex(to);
 
-                // Hier zeichnen wir den Pfeil
                 drawOnBoard.drawArrow(fromIndex, toIndex, 1);
             }
         }
     }
+    private string GetScoreFromInfo(string line)
+    {
+        string[] parts = line.Split(' ');
+        for (int i = 0; i < parts.Length; i++)
+        {
+            if (parts[i] == "score" && i + 2 < parts.Length)
+            {
+                string type = parts[i + 1];
+                string valStr = parts[i + 2];
 
+                if (type == "cp" && int.TryParse(valStr, out int cp))
+                {
+                    float eval = cp / 100f;
+                    return (eval > 0 ? "+" : "") + eval.ToString("0.00");
+                }
+                else if (type == "mate" && int.TryParse(valStr, out int mate))
+                {
+                    return "M" + mate;
+                }
+            }
+        }
+        return "0.00";
+    }
     private int GetMultiPvRank(string line)
     {
-        // Sucht nach dem Wert direkt nach "multipv" in der Zeile
         string[] parts = line.Split(' ');
         for (int i = 0; i < parts.Length; i++)
         {
@@ -166,7 +236,7 @@ public class StockFishController : MonoBehaviour
                 }
             }
         }
-        return 1; // Standard-Fallback
+        return 1;
     }
 
     private string GetFirstMoveFromInfo(string line)
@@ -178,13 +248,13 @@ public class StockFishController : MonoBehaviour
             string[] moves = pvPart.Split(' ');
             if (moves.Length > 0)
             {
-                return moves[0]; // Nur den allerersten Zug dieser Variante nehmen!
+                return moves[0];
             }
         }
         return null;
     }
     public void SendCommand(string command)
-    {   
+    {
         if (engineInput != null)
         {
             engineInput.WriteLine(command);
