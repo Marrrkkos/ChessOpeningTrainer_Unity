@@ -25,7 +25,7 @@ public class RootSelecter : MonoBehaviour
 
     public void OnEnable()
     {
-        string selected = GameManager.instance.selectedMode;
+        string selected = "GameManager.instance.selectedMode";
         Debug.Log(selected);
         if(selected == "GameSense")
         {
@@ -48,7 +48,7 @@ public class RootSelecter : MonoBehaviour
     public void SetDefault()
     {
         
-        boardRootScaler.SetEngineSetUp();
+        //boardRootScaler.SetEngineSetUp();
 
         Opening.SetActive(false); 
         //GameSense.SetActive(false);
@@ -65,7 +65,7 @@ public class RootSelecter : MonoBehaviour
         Opening.SetActive(false); 
         OpeningTraining.SetActive(true);
 
-        boardRootScaler.SetTrainingSetUp();
+        //boardRootScaler.SetTrainingSetUp();
     }
     public void SetGameSenseTraining()
     {
@@ -87,7 +87,7 @@ public class RootSelecter : MonoBehaviour
         InGameSettings.SetActive(false);
         Opening.SetActive(true);
         
-         boardRootScaler.SetEngineSetUp();
+         //boardRootScaler.SetEngineSetUp();
     }
     public void SetIngameSettings()
     {
