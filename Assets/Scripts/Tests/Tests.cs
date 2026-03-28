@@ -41,35 +41,35 @@ public class Tests : MonoBehaviour
             if (currentTest == 0)
             {
                 oneTimer = false;
-                najdorf();
+                Najdorf();
 
             }
             else if (currentTest == 1)
             {
                 oneTimer = false;
-                weirdPosition1();
+                WeirdPosition1();
             }
             else if (currentTest == 2)
             {
                 oneTimer = false;
-                normal();
+                Normal();
             }
             else if (currentTest == 3)
             {
                 oneTimer = false;
-                friedLiver();
+                FriedLiver();
             }
             else if (currentTest == 4)
             {
                 oneTimer = false;
-                kingsGambit();
+                KingsGambit();
             }
 
         }
 
     }
-    private void normal() {
-        Thread normal = new Thread(() =>
+    private void Normal() {
+        Thread Normal = new Thread(() =>
         {
             Piece piece = board.fields[0].piece;
             long result;
@@ -78,145 +78,145 @@ public class Tests : MonoBehaviour
             {
                 result = results[i];
                 sliderController.SetMinMax(0, result);
-                testCurrentPos(i + 1, result, "normal");
+                TestCurrentPos(i + 1, result, "normal");
             }
             currentFillStand = 0;
             currentTest++;
             oneTimer = true;
         });
-        normal.IsBackground = true;
-        normal.Start();
+        Normal.IsBackground = true;
+        Normal.Start();
     }
-    private void weirdPosition1() {
+    private void WeirdPosition1() {
 
         //Weird Position 1
         //BoardUtil.SANToMove(board, "e4", true)
-        board.doMove(0, "d2", "d4", withPreview, false,false);
-        board.doMove(0, "g8", "f6", withPreview, false,false);
+        board.DoMove(0, "d2", "d4", withPreview, false);
+        board.DoMove(0, "g8", "f6", withPreview, false);
 
-        board.doMove(0, "e2", "e4", withPreview, false,false);
-        board.doMove(0, "f6", "e4", withPreview, false,false);
+        board.DoMove(0, "e2", "e4", withPreview, false);
+        board.DoMove(0, "f6", "e4", withPreview, false);
 
-        board.doMove(0, "f1", "c4", withPreview, false,false);
-        board.doMove(0, "e4", "f2", withPreview,false, false);
+        board.DoMove(0, "f1", "c4", withPreview, false);
+        board.DoMove(0, "e4", "f2", withPreview,false);
 
-        board.doMove(0, "d4", "d5", withPreview, false,false);
-        board.doMove(0, "e7", "e6", withPreview, false,false);
+        board.DoMove(0, "d4", "d5", withPreview, false);
+        board.DoMove(0, "e7", "e6", withPreview, false);
 
-        board.doMove(0, "d5", "e6", withPreview, false,false);
-        board.doMove(0, "f8", "e7", withPreview, false,false);
+        board.DoMove(0, "d5", "e6", withPreview, false);
+        board.DoMove(0, "f8", "e7", withPreview, false);
 
-        board.doMove(0, "e6", "d7", withPreview, false,false);
-        board.doMove(0, "e8", "f8", withPreview,false, false);
+        board.DoMove(0, "e6", "d7", withPreview, false);
+        board.DoMove(0, "e8", "f8", withPreview,false);
 
-        board.doMove(0, "g1", "e2", withPreview, false,false);
-        board.doMove(0, "c7", "c6", withPreview,false, false);
+        board.DoMove(0, "g1", "e2", withPreview, false);
+        board.DoMove(0, "c7", "c6", withPreview,false);
 
-        Thread weirdPosition1 = new Thread(() =>
+        Thread WeirdPosition1 = new Thread(() =>
         {
             result = 89941194;
             sliderController.SetMinMax(0, result);
-            testCurrentPos(5, result, "weird position 1");
+            TestCurrentPos(5, result, "weird position 1");
             currentFillStand = 0;
 
             currentTest++;
-            undoPosition(14);
+            UndoPosition(14);
             oneTimer = true;
         });
-        weirdPosition1.IsBackground = true;
-        weirdPosition1.Start();
+        WeirdPosition1.IsBackground = true;
+        WeirdPosition1.Start();
     }
-    private void najdorf() {
+    private void Najdorf() {
 
         // Najdorf
-        board.doMove(0, "e2", "e4", withPreview, false,false);
-        board.doMove(0, "c7", "c5", withPreview, false,false);
+        board.DoMove(0, "e2", "e4", withPreview, false);
+        board.DoMove(0, "c7", "c5", withPreview, false);
 
-        board.doMove(0, "g1", "f3", withPreview, false,false);
-        board.doMove(0, "d7", "d6", withPreview,false, false);
+        board.DoMove(0, "g1", "f3", withPreview, false);
+        board.DoMove(0, "d7", "d6", withPreview,false);
 
-        board.doMove(0, "d2", "d4", withPreview,false, false);
-        board.doMove(0, "c5", "d4", withPreview,false, false);
+        board.DoMove(0, "d2", "d4", withPreview,false);
+        board.DoMove(0, "c5", "d4", withPreview,false);
 
-        board.doMove(0, "f3", "d4", withPreview,false, false);
+        board.DoMove(0, "f3", "d4", withPreview,false);
 
-        Thread najdorf = new Thread(() =>
+        Thread Najdorf = new Thread(() =>
         {
             result = 38114769;
             sliderController.SetMinMax(0, result);
-            testCurrentPos(5, result, "Najdorf");
+            TestCurrentPos(5, result, "Najdorf");
             currentFillStand = 0;
 
             currentTest++;
-            undoPosition(7);
+            UndoPosition(7);
             oneTimer = true;
         });
-        najdorf.IsBackground = true;
-        najdorf.Start();
+        Najdorf.IsBackground = true;
+        Najdorf.Start();
     }
-    private void friedLiver() {
+    private void FriedLiver() {
 
         // Fried Liver
-        board.doMove(0, "e2", "e4", withPreview,false, false);
-        board.doMove(0, "e7", "e5", withPreview,false, false);
+        board.DoMove(0, "e2", "e4", withPreview,false);
+        board.DoMove(0, "e7", "e5", withPreview,false);
 
-        board.doMove(0, "g1", "f3", withPreview,false, false);
-        board.doMove(0, "b8", "c6", withPreview,false, false);
+        board.DoMove(0, "g1", "f3", withPreview,false);
+        board.DoMove(0, "b8", "c6", withPreview,false);
 
-        board.doMove(0, "f1", "c4", withPreview,false, false);
-        board.doMove(0, "g8", "f6", withPreview,false, false);
+        board.DoMove(0, "f1", "c4", withPreview,false);
+        board.DoMove(0, "g8", "f6", withPreview,false);
 
-        board.doMove(0, "f3", "g5", withPreview,false, false);
+        board.DoMove(0, "f3", "g5", withPreview,false);
 
-        Thread friedLiver = new Thread(() =>
+        Thread FriedLiver = new Thread(() =>
         {
             result = 34062181;
             sliderController.SetMinMax(0, result);
-            testCurrentPos(5, result, "Fried Liver");
+            TestCurrentPos(5, result, "Fried Liver");
             currentFillStand = 0;
 
             currentTest++;
-            undoPosition(7);
+            UndoPosition(7);
             oneTimer = true;
         });
-        friedLiver.IsBackground = true;
-        friedLiver.Start();
+        FriedLiver.IsBackground = true;
+        FriedLiver.Start();
     }
    
-    private void kingsGambit() {
+    private void KingsGambit() {
         // KönigsGamit
-        board.doMove(0, "e2", "e4", withPreview,false, false);
-        board.doMove(0, "e7", "e5", withPreview,false, false);
+        board.DoMove(0, "e2", "e4", withPreview,false);
+        board.DoMove(0, "e7", "e5", withPreview,false);
 
-        board.doMove(0, "f2", "f4", withPreview,false, false);
-        board.doMove(0, "e5", "f4", withPreview, false,false);
+        board.DoMove(0, "f2", "f4", withPreview,false);
+        board.DoMove(0, "e5", "f4", withPreview, false);
 
-        board.doMove(0, "g1", "f3", withPreview, false,false);
+        board.DoMove(0, "g1", "f3", withPreview, false);
 
-        Thread kingsGambit = new Thread(() =>
+        Thread KingsGambit = new Thread(() =>
         {
             result = 22095269;
             sliderController.SetMinMax(0, result);
-            testCurrentPos(5, result, "KönigsGambit");
+            TestCurrentPos(5, result, "KönigsGambit");
             currentFillStand = 0;
 
             currentTest++;
-            undoPosition(5);
+            UndoPosition(5);
             oneTimer = true;
             Debug.Log("END");
         });
-        kingsGambit.IsBackground = true;
-        kingsGambit.Start();
+        KingsGambit.IsBackground = true;
+        KingsGambit.Start();
     }
-    private void undoPosition(int count)
+    private void UndoPosition(int count)
     {
         for (int i = 0; i < count; i++)
         {
-            board.undoMove(false,false);
+            board.UndoMove(false,false);
         }
     }
 
-    private void testCurrentPos(int depth, long result, string name)
+    private void TestCurrentPos(int depth, long result, string name)
     {
 
 
@@ -224,7 +224,7 @@ public class Tests : MonoBehaviour
 
         //Debug.Log(name + "\n");
         //System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
-        long moveCount = breadth_first_search(depth, x);
+        long moveCount = Breadth_first_search(depth, x);
         //sw.Stop();
         //Debug.Log($"Tiefe {depth} dauerte {sw.ElapsedMilliseconds}ms");
 
@@ -243,7 +243,7 @@ public class Tests : MonoBehaviour
     {
         isTesting = false;
     }
-    private long breadth_first_search(int depth, int currentGameDepth)
+    private long Breadth_first_search(int depth, int currentGameDepth)
     {
         if (!isTesting) return 0;
         if (depth == 0)
@@ -268,7 +268,7 @@ public class Tests : MonoBehaviour
             {
                  piece.doMove(move.x, move.y, null,false, false);
 
-                nodes += breadth_first_search(depth - 1, currentGameDepth - 1);
+                nodes += Breadth_first_search(depth - 1, currentGameDepth - 1);
 
                 piece.undoMove(false,false);
             }

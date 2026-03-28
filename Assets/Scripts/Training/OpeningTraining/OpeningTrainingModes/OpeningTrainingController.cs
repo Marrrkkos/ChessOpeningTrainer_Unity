@@ -54,7 +54,7 @@ public class OpeningTrainingController : MonoBehaviour
         if(opening.rootNode.children.Count == 0){rootSelecter.SetOpening(); return; }
 
         
-        board.openingTrainingActive = true;
+        board.gameController.openingTrainingActive = true;
 
         board.drawOnBoard.arrow.ClearAllArrows();
         board.ResetBoard(true);
@@ -93,7 +93,7 @@ public class OpeningTrainingController : MonoBehaviour
     
     public void ResetTraining(bool restart)
     {
-        board.openingTrainingActive = restart;
+        board.gameController.openingTrainingActive = restart;
 
         
         board.drawOnBoard.arrow.ClearAllArrows();

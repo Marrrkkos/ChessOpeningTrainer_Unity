@@ -19,7 +19,7 @@ public class OpeningLoader: MonoBehaviour
 
         foreach(Move move in opening.moves)
         {
-            board.doMove(move, true, false, false);
+            board.DoMove(move, true, false);
         }
         boardScaler.SetRotation(!opening.color);
     }

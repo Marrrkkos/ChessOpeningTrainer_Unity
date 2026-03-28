@@ -38,14 +38,11 @@ public class StockFishController : MonoBehaviour
     {
         currentArrowCount = GameManager.instance.settings.engineArrowCount;
 
-        // Engine kurz anhalten
         SendCommand("stop");
 
-        // Neue Einstellung senden
         SendCommand("setoption name MultiPV value " + currentArrowCount);
 
-        // Suche mit der neuen Einstellung neu starten, falls aktiv
-        if (board.stockFishActive)
+        if (board.gameController.stockFishActive)
         {
             DrawStockFishArrows(board.currentGame.playedMoves);
         }
@@ -87,7 +84,7 @@ public class StockFishController : MonoBehaviour
 
     void Update()
     {
-        if (board.stockFishActive)
+        if (board.gameController.stockFishActive)
         {
 
             if (currentArrowCount != GameManager.instance.settings.engineArrowCount)
@@ -275,6 +272,6 @@ public class StockFishController : MonoBehaviour
         {
             DrawStockFishArrows(board.currentGame.playedMoves);
         }
-        board.stockFishActive = active;
+        board.gameController.stockFishActive = active;
     }
 }

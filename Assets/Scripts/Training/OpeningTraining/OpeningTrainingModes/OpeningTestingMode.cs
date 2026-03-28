@@ -54,7 +54,7 @@ public class OpeningTestingMode : MonoBehaviour
 
         foreach(Move m in opening.moves)
         {
-            board.doMove(m, true,false, true);
+            board.DoMove(m, true,false);
             currentNode = currentNode.children[0];
         }
 
@@ -128,7 +128,7 @@ public class OpeningTestingMode : MonoBehaviour
         }
 
         trys--;
-        board.undoMove(true, false);
+        board.UndoMove(true, false);
         
         if(trys == 0)
         {
@@ -160,7 +160,7 @@ public class OpeningTestingMode : MonoBehaviour
         }
         for (int i = movesTillNode.Count - 1; i >= 0; i--)
         {
-            board.doMove(movesTillNode[i],true, false,true);
+            board.DoMove(movesTillNode[i],true, false);
         }
 
     }
@@ -171,9 +171,9 @@ public class OpeningTestingMode : MonoBehaviour
         board.ResetBoard(true);
         foreach(Move m in opening.moves)
         {
-            board.doMove(m,true, false,true);
+            board.DoMove(m,true, false);
         }
-        board.openingTrainingActive = false;
+        board.gameController.openingTrainingActive = false;
         openingResultController.SetResult(lineCounter, rightCounter, timer);
         rootSelecter.SetOpeningResult();
 
@@ -188,7 +188,7 @@ public class OpeningTestingMode : MonoBehaviour
 
         foreach(Move m in opening.moves)
         {
-            board.doMove(m, true, false, true);
+            board.DoMove(m, true, false);
             currentNode = currentNode.children[0];
         }
 

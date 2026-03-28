@@ -22,9 +22,10 @@ public class ClickHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        Debug.Log("test");
         board.fields[board.actionService.selectedField].selectedPieceImage.gameObject.SetActive(false);
         Debug.Log(fieldName.text);
-        board.actionService.setFieldOnMouseDown(fieldName.text);
+        board.actionService.SetFieldOnMouseDown(fieldName.text);
         //Debug.Log(GetComponent<Field>().piece.ToString() + " " +  GetComponent<Field>().piece.color.ToString());
 
         if (board.actionService.CheckOwnPiece(fieldName.text))
@@ -45,7 +46,7 @@ public class ClickHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
             if (targetField != null)
             {
                 Debug.Log(targetField.fieldName.text);
-                board.actionService.setFieldOnMouseUp(targetField.fieldName.text);
+                board.actionService.SetFieldOnMouseUp(targetField.fieldName.text);
                 return;
             }
         }

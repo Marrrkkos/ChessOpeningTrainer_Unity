@@ -158,6 +158,7 @@ GameObject:
   - component: {fileID: 3763251025850896969}
   - component: {fileID: 2322110258127106414}
   - component: {fileID: 6935328135591874447}
+  - component: {fileID: 5636605228108126233}
   m_Layer: 5
   m_Name: ChessBoard
   m_TagString: Untagged
@@ -209,13 +210,7 @@ MonoBehaviour:
     name: 
     startPos: {fileID: 0}
     moves: []
-  openingController: {fileID: 0}
-  stockFishController: {fileID: 0}
-  stockFishActive: 0
-  openingDataBaseController: {fileID: 0}
-  openingDataBaseActive: 0
-  openingTrainingController: {fileID: 0}
-  openingTrainingActive: 0
+  gameController: {fileID: 5636605228108126233}
   animationHandler: {fileID: 4122052743470986995}
   drawOnBoard: {fileID: 9222936849459583732}
   rotation: 0
@@ -303,6 +298,25 @@ MonoBehaviour:
   board: {fileID: 2322110258127106414}
   gridLayoutGroup: {fileID: 6491829344489755273}
   cellSize: 0
+--- !u!114 &5636605228108126233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4144213972774211881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfe874a215bfb44499e1dbbe2ad27fe8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameController
+  openingController: {fileID: 0}
+  stockFishController: {fileID: 0}
+  stockFishActive: 0
+  openingDataBaseController: {fileID: 0}
+  openingDataBaseActive: 0
+  openingTrainingController: {fileID: 0}
+  openingTrainingActive: 0
 --- !u!1 &7963422784807953746
 GameObject:
   m_ObjectHideFlags: 0

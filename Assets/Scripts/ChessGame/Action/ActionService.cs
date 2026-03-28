@@ -18,11 +18,11 @@ public class ActionService
     public ActionService(Board board) { 
         this.board = board;
     }
-    public void setFieldOnMouseDown(string fieldName)
+    public void SetFieldOnMouseDown(string fieldName)
     {
         if (promotion) {
             Debug.Log("DoPromotionDown - Down");
-            doPromotion(fieldName);
+            DoPromotion(fieldName);
             return;
         }
 
@@ -30,31 +30,31 @@ public class ActionService
         if (m1 == "")
         {
             m1 = fieldName;
-            if (isCorrectPiece())
+            if (IsCorrectPiece())
             {
                 Debug.Log("CorrectPiece, GetPossible - Down");
-                possibleMoves = board.getPossible(m1, true);
+                possibleMoves = board.GetPossible(m1, true);
             }
             else
             {
                 Debug.Log("NotCorrectPiece - Down");
-                refreshTurn(false);
+                RefreshTurn(false);
             }
         }
         else
         {
             m2 = fieldName;
-            int rule = isCorrectMove();
+            int rule = IsCorrectMove();
             if (rule == -1)
             {
                 Debug.Log("NoPossibles - Down");
-                refreshTurn(false);
+                RefreshTurn(false);
             } else if(rule == -2) {
                 Debug.Log("OwnColor - Down");
                 string x = m2;
-                refreshTurn(false);
+                RefreshTurn(false);
                 m1 = x;
-                possibleMoves = board.getPossible(m1, true);
+                possibleMoves = board.GetPossible(m1, true);
             }else if  (rule >= 4) {
                 Debug.Log("Promotion - Down");
                 showPromotion();
@@ -62,13 +62,13 @@ public class ActionService
             else
             {
                 Debug.Log("Move - Down");
-                board.doMove(rule, m1, m2, true, true, false);
-                refreshTurn(true);
+                board.DoMove(rule, m1, m2, true, true);
+                RefreshTurn(true);
             }
         }
 
     }
-    public void setFieldOnMouseUp(string fieldName)
+    public void SetFieldOnMouseUp(string fieldName)
     {
         if (promotion)
         {
@@ -88,13 +88,13 @@ public class ActionService
             return;
         }
 
-        int rule = isCorrectMove();
+        int rule = IsCorrectMove();
         if (rule >= 0)
         {
             Debug.Log("Move - UP");
-            board.doMove(rule, m1, m2, true, true, false);
+            board.DoMove(rule, m1, m2, true, true);
             
-            refreshTurn(true);
+            RefreshTurn(true);
         }
         else
         {
@@ -106,7 +106,7 @@ public class ActionService
             {
                 Debug.Log("OwnColor - Up");
             }
-            refreshTurn(false);
+            RefreshTurn(false);
         }
     }
     public void showPromotion()
@@ -116,7 +116,7 @@ public class ActionService
         Piece piece = board.fields[BoardUtil.StringToIndex(m1)].piece;
 
 
-        setPiecesActive(board, false);
+        SetPiecesActive(board, false);
 
         int direction = piece.color ? 1 : -1;
 
@@ -129,7 +129,7 @@ public class ActionService
         }
         board.drawOnBoard.refreshPossibles(true);
     }
-    public void doPromotion(string fieldName)
+    public void DoPromotion(string fieldName)
     {
         promotion = false;
         int fieldID = BoardUtil.StringToIndex(fieldName);
@@ -149,13 +149,13 @@ public class ActionService
         {
             if (promotionIndexes[i] == fieldID)
             {
-                board.doMove(5 + i, m1, m2, true, true, false);
+                board.DoMove(5 + i, m1, m2, true, true);
             }
         }
-        setPiecesActive(board, true);
+        SetPiecesActive(board, true);
     }
 
-    private bool isCorrectPiece()
+    private bool IsCorrectPiece()
     {
         Player player = board.currentGame.players[board.currentGame.currentPlayer];
         int fieldID = BoardUtil.StringToIndex(m1);
@@ -170,7 +170,7 @@ public class ActionService
         }
         return true;
     }
-    private int isCorrectMove() // return -1 bei fail und sonst die specialrule
+    private int IsCorrectMove() // return -1 bei fail und sonst die specialrule
     {
         Player player = board.currentGame.players[board.currentGame.currentPlayer];
         int fieldID = BoardUtil.StringToIndex(m2);
@@ -196,7 +196,7 @@ public class ActionService
 
     
     
-    private void setPiecesActive(Board board, bool active) {
+    private void SetPiecesActive(Board board, bool active) {
         foreach (Piece p in board.whitePieces)
         {
             Field field = board.fields[p.position];
@@ -210,7 +210,7 @@ public class ActionService
             field.refreshImage();
         }
     }
-    private void refreshTurn(bool moveDone)
+    private void RefreshTurn(bool moveDone)
     {
         
         if(moveDone){

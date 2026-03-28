@@ -30,7 +30,7 @@ public class OpeningTrainingControllerOld : MonoBehaviour
     {
         if(allLines.Count == 0){rootSelecter.SetOpening(); return; }
 
-        board.openingTrainingActive = true;
+        board.gameController.openingTrainingActive = true;
         lineIndex = 0;
         rightCounter = 0;
         timer = 0;
@@ -43,7 +43,7 @@ public class OpeningTrainingControllerOld : MonoBehaviour
 
         foreach(Move m in opening.moves)
         {
-            board.doMove(m, true, false, true);
+            board.DoMove(m, true, false);
         }
 
         currentLine = allLines[lineIndex];
@@ -78,7 +78,7 @@ public class OpeningTrainingControllerOld : MonoBehaviour
             return;
         }
 
-        board.doMove(currentLine[board.currentGame.playedMoves.Count], true, false, true);
+        board.DoMove(currentLine[board.currentGame.playedMoves.Count], true, false);
 
         if(currentLine.Count <= board.currentGame.playedMoves.Count)
         {
@@ -103,7 +103,7 @@ public class OpeningTrainingControllerOld : MonoBehaviour
         board.ResetBoard(true);
         foreach(Move m in opening.moves)
         {
-            board.doMove(m,true,false,true);
+            board.DoMove(m,true,false);
         }
 
         
@@ -123,9 +123,9 @@ public class OpeningTrainingControllerOld : MonoBehaviour
         board.ResetBoard(true);
         foreach(Move m in opening.moves)
         {
-            board.doMove(m,true,false,true);
+            board.DoMove(m,true,false);
         }
-        board.openingTrainingActive = false;
+        board.gameController.openingTrainingActive = false;
         openingResultController.SetResult(lineIndex, rightCounter, timer);
         rootSelecter.SetOpeningResult();
 
@@ -133,7 +133,7 @@ public class OpeningTrainingControllerOld : MonoBehaviour
     }
     public void ResetTraining(bool restart)
     {
-        board.openingTrainingActive = restart;
+        board.gameController.openingTrainingActive = restart;
         lineIndex = 0;
         rightCounter = 0;
         board.drawOnBoard.arrow.ClearAllArrows();
@@ -142,7 +142,7 @@ public class OpeningTrainingControllerOld : MonoBehaviour
 
         foreach(Move m in opening.moves)
         {
-            board.doMove(m, true,false, true);
+            board.DoMove(m, true,false);
         }
 
         currentLine = allLines[lineIndex];

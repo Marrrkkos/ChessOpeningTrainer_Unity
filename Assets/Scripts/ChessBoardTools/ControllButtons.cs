@@ -17,16 +17,16 @@ public class ControllButtons : MonoBehaviour
 
         board.ResetBoard(true);
         if(board.opening.name != ""){
-            board.openingController.DrawOpeningArrows();
+            board.gameController.openingController.DrawOpeningArrows();
         }
     }
     
     public void DoUndo() {
-        Move m = board.undoMove(true, true);
+        Move m = board.UndoMove(true, true);
     }
     public void GoNext() {
         if(board.currentGame.movesMemory.Count == 0){return;}
-        board.doMove(board.currentGame.movesMemory.Last(), true, true, false);
+        board.DoMove(board.currentGame.movesMemory.Last(), true, true);
         
     }
     public void GoEnd() {
@@ -34,7 +34,7 @@ public class ControllButtons : MonoBehaviour
         int count = board.currentGame.movesMemory.Count;
         for (int i = 0; i < count; i++)
         {
-            board.doMove(board.currentGame.movesMemory.Last(), true, true, false);
+            board.DoMove(board.currentGame.movesMemory.Last(), true, true);
         }
     }
 }

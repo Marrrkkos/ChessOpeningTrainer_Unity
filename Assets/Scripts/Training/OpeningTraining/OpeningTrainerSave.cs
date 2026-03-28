@@ -50,7 +50,7 @@ public class OpeningTrainingControllerSave : MonoBehaviour
         this.startLinesFromStart = startLinesFromStart;
 
 
-        board.openingTrainingActive = true;
+        board.gameController.openingTrainingActive = true;
         //openingSize = opening.GetOpeningSize();
         Debug.Log("openingSize: " + openingSize);
         lineCounter = 0;
@@ -65,7 +65,7 @@ public class OpeningTrainingControllerSave : MonoBehaviour
 
         foreach(Move m in opening.moves)
         {
-            board.doMove(m, true,false, true);
+            board.DoMove(m, true,false);
             currentNode = currentNode.children[0];
         }
 
@@ -196,7 +196,7 @@ public class OpeningTrainingControllerSave : MonoBehaviour
         currentNode = currentNode.children[0];
 
         Debug.Log(currentNode.move.ToString());
-        board.doMove(currentNode.move, true,false, true);
+        board.DoMove(currentNode.move, true,false);
     }
 
     private void GoNextLine(bool everythingRight)
@@ -225,7 +225,7 @@ public class OpeningTrainingControllerSave : MonoBehaviour
         }
         for (int i = movesTillNode.Count - 1; i >= 0; i--)
         {
-            board.doMove(movesTillNode[i],true,false,true);
+            board.DoMove(movesTillNode[i],true,false);
         }
         
 
@@ -245,9 +245,9 @@ public class OpeningTrainingControllerSave : MonoBehaviour
         board.ResetBoard(true);
         foreach(Move m in opening.moves)
         {
-            board.doMove(m,true,false,true);
+            board.DoMove(m,true,false);
         }
-        board.openingTrainingActive = false;
+        board.gameController.openingTrainingActive = false;
         openingResultController.SetResult(lineCounter, rightCounter, timer);
         rootSelecter.SetOpeningResult();
 
@@ -255,7 +255,7 @@ public class OpeningTrainingControllerSave : MonoBehaviour
     }
     public void ResetTraining(bool restart)
     {
-        board.openingTrainingActive = restart;
+        board.gameController.openingTrainingActive = restart;
         currentNode = opening.rootNode;
         lineCounter = 0;
         rightCounter = 0;
@@ -265,7 +265,7 @@ public class OpeningTrainingControllerSave : MonoBehaviour
 
         foreach(Move m in opening.moves)
         {
-            board.doMove(m, true,false, true);
+            board.DoMove(m, true,false);
             currentNode = currentNode.children[0];
         }
 

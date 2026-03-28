@@ -140,7 +140,7 @@ public class OpeningDataBaseController : MonoBehaviour
 
     public void SetActive(bool active)
     {
-        board.openingDataBaseActive = active;
+        board.gameController.openingDataBaseActive = active;
         if (active)
         {
             GetOpeningMoves(board.currentGame.playedMoves);

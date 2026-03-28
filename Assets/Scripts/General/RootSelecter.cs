@@ -6,8 +6,9 @@ public class RootSelecter : MonoBehaviour
     [Header("General GameObjects")]
     public GameObject InGameSettings;
 
+    public GameObject MainPanel;
+
     [Header("Opening GameObjects")]
-    public GameObject Opening;
     public GameObject OpeningTrainingCreator;
     public GameObject OpeningTraining;
     public GameObject OpeningResult;
@@ -25,15 +26,14 @@ public class RootSelecter : MonoBehaviour
 
     public void OnEnable()
     {
-        string selected = "GameManager.instance.selectedMode";
-        Debug.Log(selected);
+        string selected = GameManager.instance.selectedMode;
         if(selected == "GameSense")
         {
             GameSense.SetActive(true);
             gameSenseTrainingController.InitTrainig();
         }else if( selected == "Opening")
         {
-            Opening.SetActive(true);
+            MainPanel.SetActive(true);
             openingLoader.LoadOpening();
         }else if(selected == "GameView")
         {
@@ -50,7 +50,7 @@ public class RootSelecter : MonoBehaviour
         
         //boardRootScaler.SetEngineSetUp();
 
-        Opening.SetActive(false); 
+        MainPanel.SetActive(false); 
         //GameSense.SetActive(false);
         //GameView.SetActive(false);
         InGameSettings.SetActive(false);
@@ -62,7 +62,7 @@ public class RootSelecter : MonoBehaviour
     {
         OpeningResult.SetActive(false);
         OpeningTrainingCreator.SetActive(false);
-        Opening.SetActive(false); 
+        MainPanel.SetActive(false); 
         OpeningTraining.SetActive(true);
 
         //boardRootScaler.SetTrainingSetUp();
@@ -85,7 +85,7 @@ public class RootSelecter : MonoBehaviour
         OpeningTraining.SetActive(false);
         OpeningResult.SetActive(false);
         InGameSettings.SetActive(false);
-        Opening.SetActive(true);
+        MainPanel.SetActive(true);
         
          //boardRootScaler.SetEngineSetUp();
     }
