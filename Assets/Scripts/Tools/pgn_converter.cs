@@ -14,7 +14,7 @@ public class pgn_converter : MonoBehaviour
     public int count = 0;
     public List<Game> games = new List<Game>();
 
-    Game game = new Game(new Player[] { new Player("", 0, true), new Player("", 0, false) });
+    Game game = new Game(new PlayerData[] { new PlayerData("", 0, true), new PlayerData("", 0, false) });
     public void Start() {
         /*Thread normal = new Thread(() =>
         {
@@ -43,25 +43,25 @@ public class pgn_converter : MonoBehaviour
                 {
                     string name = line.Replace("[White \"", "");
                     name = name.Replace("\"]", "");
-                    game.players[0].name = name;
+                    game.playerDatas[0].name = name;
                 }
                 if (line.StartsWith("WhiteElo "))
                 {
                     string name = line.Replace("[WhiteElo \"", "");
                     name = name.Replace("\"]", "");
-                    game.players[0].dwz = int.Parse(name);
+                    game.playerDatas[0].dwz = int.Parse(name);
                 }
                 if (line.StartsWith("Black "))
                 {
                     string name = line.Replace("[Black \"", "");
                     name = name.Replace("\"]", "");
-                    game.players[1].name = name;
+                    game.playerDatas[1].name = name;
                 }
                 if (line.StartsWith("BlackElo "))
                 {
                     string name = line.Replace("[BlackElo \"", "");
                     name = name.Replace("\"]", "");
-                    game.players[1].name = name;
+                    game.playerDatas[1].name = name;
                 }
 
                 if (line.EndsWith("1-0"))

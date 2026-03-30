@@ -78,7 +78,7 @@ public class Board : MonoBehaviour
 
         //LOAD DEFAULT GAME
 
-        currentGame = new Game(new Player[] { new Player("Player 1", 0, true), new Player("Player 2", 0, false) });
+        currentGame = new Game(new PlayerData[] { new("Player 1", 0, true), new("Player 2", 0, false) });
     }
     public Move UndoMove(bool refreshGUI, bool animation){
 
@@ -115,7 +115,7 @@ public class Board : MonoBehaviour
             return false;
         }
 
-        if (piece.color != currentGame.players[currentGame.currentPlayer].color) {
+        if (piece.color != currentGame.playerDatas[currentGame.currentPlayer].color) {
             Debug.Log("Piece is Wrong Color!");
             return false;
         }
@@ -154,7 +154,7 @@ public class Board : MonoBehaviour
             return new List<Vector2Int>();
         }
 
-        if (piece.color != currentGame.players[currentGame.currentPlayer].color)
+        if (piece.color != currentGame.playerDatas[currentGame.currentPlayer].color)
         {
             Debug.Log("Piece is Wrong Color!");
             return new List<Vector2Int>();
@@ -184,6 +184,7 @@ public class Board : MonoBehaviour
         if(gameController != null)
             gameController.OnMoveDone(opening, currentGame);
            
+        
     }
 
 

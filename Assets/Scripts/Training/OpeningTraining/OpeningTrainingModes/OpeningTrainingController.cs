@@ -1,9 +1,7 @@
-using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-
+using System;
+using System.Collections;
 public enum TrainingMode
 {
     Testing = 0,
@@ -19,6 +17,7 @@ public class OpeningTrainingController : MonoBehaviour
     public Board board;
     public BoardScaler boardScaler;
 
+
     [Header("TrainingPanel")]
     public Text percentNumber;
     public Text time;
@@ -28,67 +27,79 @@ public class OpeningTrainingController : MonoBehaviour
     [Header("OpeningResult")]
     public OpeningResultController openingResultController;
 
+    public OpeningRandomizedMode openingRandomizedMode;
+    public OpeningTestingMode openingTestingMode;
+    public OpeningLearningMode openingLearningMode;
 
-
-    public OpeningRandomizedMode openingRandomizedMode = new();
-    public OpeningTestingMode openingTestingMode = new();
-    public OpeningLearningMode openingLearningMode = new();
-
-    private Node currentNode = new();
-    private List<Node> queue = new();
-    private int openingLeafSize = 0;
-    private int openingNodeSize = 0;
-    
-    private int lineCounter;
-    private float rightCounter;
-    private float timer;
-
-
+    private IOpeningTrainer currentOpeningTrainer;
     //Constructor
     private Opening opening;
-    private int depth;
     private TrainingMode mode;
+
+
+
+
+    private IPlayer whitePlayer;
+    private IPlayer blackPlayer;
+    private IPlayer currentPlayer;
+
+    private bool isGameRunning = false;
+    private Move pendingMove = null;
     public void InitTraining(Opening opening, int depth, TrainingMode mode)
     {
 
         if(opening.rootNode.children.Count == 0){rootSelecter.SetOpening(); return; }
 
-        
+        this.mode = mode;
         board.gameController.openingTrainingActive = true;
 
         board.drawOnBoard.arrow.ClearAllArrows();
         board.ResetBoard(true);
         boardScaler.SetRotation(!opening.color);
 
+        
         switch (mode)
         {
+            case TrainingMode.Learning:
+                currentOpeningTrainer = openingLearningMode;
+                break;
             case TrainingMode.Testing:
-                openingTestingMode.InitTraining(opening, depth);
+                currentOpeningTrainer = openingTestingMode;
                 break;
             case TrainingMode.Randomized:
-                openingRandomizedMode.InitTraining(opening, depth);
-                break;
-            case TrainingMode.Learning:
-                openingLearningMode.InitTraining(opening, depth);
+                currentOpeningTrainer = openingRandomizedMode;
                 break;
         }
+
+        currentOpeningTrainer.InitTraining(opening, depth, board, boardScaler);
         
+        StartCoroutine(GameLoop());
         
+    }
+    private IEnumerator GameLoop()
+    {
+        while (isGameRunning)
+        {
+            pendingMove = null;
+
+            currentOpeningTrainer.ManageNext();
+
+            while (pendingMove == null)
+            {
+                yield return null; 
+            }
+
+            board.DoMove(pendingMove, true, true);
+
+
+            // Prüf ob game zu ende ist
+
+            currentPlayer = (currentPlayer == whitePlayer) ? blackPlayer : whitePlayer;
+        }
     }
     public void ManageNext()
     {
-        switch (mode)
-        {
-            case TrainingMode.Testing:
-                openingTestingMode.ManageNext();
-                break;
-            case TrainingMode.Randomized:
-                openingRandomizedMode.ManageNext();
-                break;
-            case TrainingMode.Learning:
-                openingLearningMode.ManageNext();
-                break;
-        }
+        currentOpeningTrainer.ManageNext();
     }
     
     public void ResetTraining(bool restart)
@@ -101,18 +112,7 @@ public class OpeningTrainingController : MonoBehaviour
         boardScaler.SetRotation(!opening.color);
 
 
-        switch (mode)
-        {
-            case TrainingMode.Testing:
-                openingTestingMode.ResetTraining();
-                break;
-            case TrainingMode.Randomized:
-                openingRandomizedMode.ResetTraining();
-                break;
-            case TrainingMode.Learning:
-                openingLearningMode.ResetTraining();
-                break;
-        }
+        currentOpeningTrainer.ResetTraining();
     }
     
     

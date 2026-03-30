@@ -2,9 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class OpeningRandomizedMode : MonoBehaviour
+public class OpeningRandomizedMode : MonoBehaviour, IOpeningTrainer
 {
-    public Board board;
+    private Board board;
+    private BoardScaler boardScaler;
     public RootSelecter rootSelecter;
 
 
@@ -15,8 +16,15 @@ public class OpeningRandomizedMode : MonoBehaviour
     private int trys;
     private List<Node> currentNodeSave = new();
     private Opening opening;
-    public void InitTraining(Opening opening, int depth)
+    public void InitTraining(Opening opening, int depth, Board board, BoardScaler boardScaler)
     {
+
+        if(opening.rootNode.children.Count == 0){rootSelecter.SetOpening(); return; }
+
+        this.board = board;
+        this.boardScaler = boardScaler;
+        this.opening = opening;
+
         allPossibleNodes = opening.GetAllNodes();
         this.opening = opening;
 

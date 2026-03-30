@@ -3,14 +3,14 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class OpeningTestingMode : MonoBehaviour
+public class OpeningTestingMode : MonoBehaviour, IOpeningTrainer
 {
     public RootSelecter rootSelecter;
 
     
     [Header("Board")]
-    public Board board;
-    public BoardScaler boardScaler;
+    private Board board;
+    private BoardScaler boardScaler;
 
     [Header("TrainingPanel")]
     public Text percentNumber;
@@ -34,11 +34,13 @@ public class OpeningTestingMode : MonoBehaviour
     //Constructor
     private Opening opening;
     private int depth;
-    public void InitTraining(Opening opening, int depth)
+    public void InitTraining(Opening opening, int depth, Board board, BoardScaler boardScaler)
     {
 
         if(opening.rootNode.children.Count == 0){rootSelecter.SetOpening(); return; }
 
+        this.board = board;
+        this.boardScaler = boardScaler;
         this.opening = opening;
         this.depth = depth;
 

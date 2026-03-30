@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 public class ClickHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
-    public Text fieldName;
+    public string fieldName;
     public Image currentPieceImage;
     public Image onPossibleHoverImage;
     public Image lastMoveImage;
@@ -24,13 +24,13 @@ public class ClickHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     {
         Debug.Log("test");
         board.fields[board.actionService.selectedField].selectedPieceImage.gameObject.SetActive(false);
-        Debug.Log(fieldName.text);
-        board.actionService.SetFieldOnMouseDown(fieldName.text);
+        Debug.Log(fieldName);
+        board.actionService.SetFieldOnMouseDown(fieldName);
         //Debug.Log(GetComponent<Field>().piece.ToString() + " " +  GetComponent<Field>().piece.color.ToString());
 
-        if (board.actionService.CheckOwnPiece(fieldName.text))
+        if (board.actionService.CheckOwnPiece(fieldName))
         {   
-            int id = BoardUtil.StringToIndex(fieldName.text);
+            int id = BoardUtil.StringToIndex(fieldName);
             board.actionService.SetSelectedField(id);
         }
     }
@@ -45,8 +45,8 @@ public class ClickHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
             if (targetField != null)
             {
-                Debug.Log(targetField.fieldName.text);
-                board.actionService.SetFieldOnMouseUp(targetField.fieldName.text);
+                Debug.Log(targetField.fieldName);
+                board.actionService.SetFieldOnMouseUp(targetField.fieldName);
                 return;
             }
         }
@@ -54,9 +54,9 @@ public class ClickHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     }
     public void OnPointerEnter(PointerEventData eventData)
 {
-    Debug.Log("Hover über: " + fieldName.text);
+    Debug.Log("Hover über: " + fieldName);
 
-    if (board.actionService.CheckPossibleField(fieldName.text))
+    if (board.actionService.CheckPossibleField(fieldName))
     {
         onPossibleHoverImage.gameObject.SetActive(true);
     }

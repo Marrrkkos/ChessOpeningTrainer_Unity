@@ -28,7 +28,6 @@ public class BoardPreview: MonoBehaviour
     }
     public void GetOpening()
     {
-        Debug.Log("Load Opening; " + opening.name);
         GameManager.instance.selcetedOpening = opening;
         GameManager.instance.selectedMode = "Opening";
         GameManager.instance.sceneSwitcher.Switch();

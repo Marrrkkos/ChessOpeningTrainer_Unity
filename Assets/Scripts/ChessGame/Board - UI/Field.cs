@@ -4,7 +4,6 @@ public class Field : MonoBehaviour
 {
     public Board board;
     public RawImage fieldImage;
-    public Text fieldName;
     public Piece piece;
     public Image pieceImage;
     public Image possibleImage;
@@ -31,6 +30,18 @@ public class Field : MonoBehaviour
             }
             else
             {
+                if(board == null)
+                {
+                    Debug.Log("Board");
+                }
+                if(board.pieceSet == null)
+                {
+                    Debug.Log("board.pieceSet");
+                }
+                if(board.pieceSet.blackPieces == null)
+                {
+                    Debug.Log("board.pieceSet.blackPieces");
+                }
                 pieceImage.sprite = board.pieceSet.blackPieces[piece.id];
             }
         }

@@ -51,7 +51,6 @@ public class StockFishController : MonoBehaviour
     void OnEnable()
     {
         engineBarSliderController.SetMinMax(-500, 500);
-        UnityEngine.Debug.Log("Stockfish starting...");
 
         string path = Path.Combine(Application.streamingAssetsPath, "stockfishes/stockfish_windows/stockfish/stockfish-windows-x86-64-avx2.exe");
 

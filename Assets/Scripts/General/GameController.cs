@@ -4,23 +4,23 @@ using UnityEngine;
     
 public class GameController : MonoBehaviour
 {
-    [Header("OpeningController")]
+    [Header("OpeningController (Optional)")]
     public OpeningController openingController;
     
-    [Header("OpeningController")]
+    [Header("OpeningController (Optional)")]
     public StockFishController stockFishController;
     public bool stockFishActive = false;
-    [Header("OpeningController")]
+    [Header("OpeningController (Optional)")]
     public OpeningDataBaseController openingDataBaseController;
     public bool openingDataBaseActive = false;
-    [Header("OpeningController")]
+    [Header("OpeningController (Optional)")]
     public OpeningTrainingController openingTrainingController;
     public bool openingTrainingActive = false;
-
+    public bool playerHasMoved = false;
 
     public void OnMoveDone(Opening opening, Game currentGame)
     {
-         if(openingTrainingController != null && openingTrainingActive)
+         /*if(openingTrainingController != null && openingTrainingActive)
             {
 
                 if(opening.color != currentGame.players[currentGame.currentPlayer].color){
@@ -29,8 +29,8 @@ public class GameController : MonoBehaviour
                     openingController.DrawOpeningArrows();  // For tests
                 }else{openingController.DrawOpeningArrows();}
                 return;
-            }
-        if(opening.name != "")
+            }*/
+        if(openingController != null && opening.name != "")
         {
             openingController.DrawOpeningArrows();
         }

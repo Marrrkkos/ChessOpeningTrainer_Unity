@@ -21,7 +21,6 @@ public class ActionService
     public void SetFieldOnMouseDown(string fieldName)
     {
         if (promotion) {
-            Debug.Log("DoPromotionDown - Down");
             DoPromotion(fieldName);
             return;
         }
@@ -32,12 +31,10 @@ public class ActionService
             m1 = fieldName;
             if (IsCorrectPiece())
             {
-                Debug.Log("CorrectPiece, GetPossible - Down");
                 possibleMoves = board.GetPossible(m1, true);
             }
             else
             {
-                Debug.Log("NotCorrectPiece - Down");
                 RefreshTurn(false);
             }
         }
@@ -47,22 +44,19 @@ public class ActionService
             int rule = IsCorrectMove();
             if (rule == -1)
             {
-                Debug.Log("NoPossibles - Down");
                 RefreshTurn(false);
             } else if(rule == -2) {
-                Debug.Log("OwnColor - Down");
                 string x = m2;
                 RefreshTurn(false);
                 m1 = x;
                 possibleMoves = board.GetPossible(m1, true);
             }else if  (rule >= 4) {
-                Debug.Log("Promotion - Down");
                 showPromotion();
             }
             else
             {
-                Debug.Log("Move - Down");
                 board.DoMove(rule, m1, m2, true, true);
+                board.gameController.playerHasMoved = true;
                 RefreshTurn(true);
             }
         }
@@ -72,39 +66,33 @@ public class ActionService
     {
         if (promotion)
         {
-            Debug.Log("Promotion - UP");
             return;
         }
         if (m1 == "")
         {
-            Debug.Log("m1Empty - UP");
             return;
         }
         m2 = fieldName;
 
         if (m1.Equals(m2))
         {
-            Debug.Log("Equals - UP");
             return;
         }
 
         int rule = IsCorrectMove();
         if (rule >= 0)
         {
-            Debug.Log("Move - UP");
             board.DoMove(rule, m1, m2, true, true);
-            
+            board.gameController.playerHasMoved = true;
             RefreshTurn(true);
         }
         else
         {
             if(rule == -1)
             {
-                Debug.Log("NoPossibles - UP");
             }
             else if( rule == -2)
             {
-                Debug.Log("OwnColor - Up");
             }
             RefreshTurn(false);
         }
@@ -150,6 +138,7 @@ public class ActionService
             if (promotionIndexes[i] == fieldID)
             {
                 board.DoMove(5 + i, m1, m2, true, true);
+                board.gameController.playerHasMoved = true;
             }
         }
         SetPiecesActive(board, true);
@@ -157,7 +146,7 @@ public class ActionService
 
     private bool IsCorrectPiece()
     {
-        Player player = board.currentGame.players[board.currentGame.currentPlayer];
+        PlayerData player = board.currentGame.playerDatas[board.currentGame.currentPlayer];
         int fieldID = BoardUtil.StringToIndex(m1);
         Piece piece = board.fields[fieldID].piece;
         if (piece == null)
@@ -172,7 +161,7 @@ public class ActionService
     }
     private int IsCorrectMove() // return -1 bei fail und sonst die specialrule
     {
-        Player player = board.currentGame.players[board.currentGame.currentPlayer];
+        PlayerData player = board.currentGame.playerDatas[board.currentGame.currentPlayer];
         int fieldID = BoardUtil.StringToIndex(m2);
         Piece piece = board.fields[fieldID].piece;
         if (piece != null) {
@@ -246,7 +235,7 @@ public class ActionService
     public bool CheckOwnPiece(string field)
     {
         int id = BoardUtil.StringToIndex(field);
-        if(board.fields[id].piece != null && board.fields[id].piece.color == board.currentGame.players[board.currentGame.currentPlayer].color)
+        if(board.fields[id].piece != null && board.fields[id].piece.color == board.currentGame.playerDatas[board.currentGame.currentPlayer].color)
         {
             return true;
         }

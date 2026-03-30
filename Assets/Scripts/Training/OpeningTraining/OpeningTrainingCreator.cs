@@ -24,18 +24,7 @@ public class OpeningTrainingCreator : MonoBehaviour
         Opening opening = GameManager.instance.selcetedOpening;
 
         currentDepth = (int)depthSliderController.slider.value;
-        switch (currentIndex)
-        {
-            case 0:
-                openingTrainingController.InitTraining(opening, currentDepth, modes[0]);
-                break;
-            case 1:
-                openingTrainingController.InitTraining(opening, currentDepth, modes[1]);
-                break;
-            case 2:
-                openingTrainingController.InitTraining(opening, currentDepth, modes[2]);
-                break;
-        }
+        openingTrainingController.InitTraining(opening, currentDepth, modes[currentIndex]);
     }
     
     public void Init()

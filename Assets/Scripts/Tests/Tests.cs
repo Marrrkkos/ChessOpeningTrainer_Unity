@@ -12,8 +12,8 @@ public class Tests : MonoBehaviour
     public Board board;
 
     public Game game;
-    public Player player1;
-    public Player player2;
+    public PlayerData playerData1;
+    public PlayerData playerData2;
 
     private Piece piece;
 
